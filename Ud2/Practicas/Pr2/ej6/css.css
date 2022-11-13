@@ -1,0 +1,45 @@
+input[type="color"]
+{
+    width: 25%;
+}
+
+.arial
+{
+    font-family: Arial, sans-serif;
+}
+
+.brush 
+{
+    font-family:'Brush Script MT', cursive;
+}
+
+.copper
+{
+    font-family: Copperplate, Papyrus, fantasy;
+}
+
+.georgia
+{
+    font-family:Georgia, serif;
+}
+
+.lucida
+{
+    font-family: Lucida Handwriting, cursive;
+}
+
+.monospace
+{
+    font-family: monospace;
+}
+
+.tnr
+{
+    font-family:'Times New Roman', serif;
+}
+
+.verdana
+{
+    font-family: Verdana, sans-serif;
+}           
+                        

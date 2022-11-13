@@ -1,0 +1,67 @@
+body 
+{
+    background: url("https://wallpaper.dog/large/10884579.jpg");
+    
+}
+header nav 
+{
+    background: transparent;
+    border-bottom: 1px solid #bba67f;    
+}
+main p{
+    color: #899d71;
+}
+footer {
+    background-color: #cfd1cb;
+}
+
+a {
+    text-decoration: none;
+    color: #cfd1cb;
+}
+
+h3, h6 a,
+a i {
+    color: #bba67f;
+}
+
+h5, h2
+{
+    color: #bba67f;
+}
+
+li a {
+    color: #fff;
+}
+
+h6 a,
+a i:hover {
+    color: #ba8f40;
+}
+
+h6 a,
+a i:active {
+    color: #ac7d25;
+}
+
+.my-5 {
+    margin-top: 1rem  !important;
+    margin-bottom: 2rem  !important;
+    
+    color: #bba67f;    
+}
+
+.mb-5{
+    margin-bottom: 2rem !important;
+}
+
+.last-div
+{
+    background-color: #bba67f;
+}
+
+h3 
+{
+    font-family: cursive;
+    color: #ba8f40;
+}

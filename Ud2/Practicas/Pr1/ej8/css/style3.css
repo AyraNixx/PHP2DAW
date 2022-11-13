@@ -1,0 +1,70 @@
+*{
+    font-family: monospace;
+    color: palevioletred;
+}
+
+body 
+{
+    background: url("https://img.freepik.com/premium-vector/seamless-pattern-dog-paws-hand-lettering-vector-illustration_521637-33.jpg?w=2000");
+    
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+}
+
+.nav-link
+{
+    color: #e895a3;
+    font-weight: 900;
+}
+
+h2{
+    color: #e895a3;
+    font-weight: 900;
+}
+
+footer
+{
+    background-color: #fcf1e3;
+}
+
+footer p 
+{
+    color: #6a6969;
+    font-style: italic;
+}
+
+.last-div
+{
+    background-color: #e895a3;
+
+    color: #fff;
+}
+
+h5, h3 
+{
+    font-weight: 900;
+    color: #c26c7a;
+}
+  
+a 
+{
+    color: #6a6969;
+    text-decoration: none;
+}
+
+
+h6 a,
+a i {
+    color: #c26c7a;
+}
+
+h6 a,
+a i:hover {
+    color: #6a6969;
+}
+
+h6 a,
+a i:active {
+    color: #c26c7a;
+}

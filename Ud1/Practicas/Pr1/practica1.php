@@ -1,4 +1,4 @@
-<html lang="en">
+Start pet coding sessio<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -9,12 +9,18 @@
     <?php
 
         # EJERCICIO 7
-       $dado10 = rand(1, 10);
-       $dado20 = rand(1, 20);
-       $dado100 = rand(1, 100);
+            //mt_rand es más rápida que la función rand(), por lo que es recomendable usarla
+       $dado10 = mt_rand(1, 10);
+       $dado20 = mt_rand(1, 20);
+       $dado100 = mt_rand(1, 100);
 
-       echo "DADO 10 --> " . $dado10 . "<br>DADO 20 --> " . 
-           $dado20 . "<br>DADO 100 --> " . $dado100;
+            //Utilizamos <br/> para indicar que es formato HTML
+
+            //Si queremos poner por ejemplo $dado100 <br/>" pero pegado, 
+            //empleamos corchetes {$dado100}<br>"
+
+        echo "DADO 10 --> " . $dado10 . "<br>DADO 20 --> " . 
+            $dado20 . "<br>DADO 100 --> " . $dado100;
 
 
     
@@ -34,18 +40,20 @@
         echo "<br> Redondeo: <br> \t- Num 1 = " . round($random1) . 
             "<br> \t- Num 2 = " . round($random2);
 
+            //Podemos usar ival($variable) para convertir de float a entero.
+
+            //Otra solución para redondear es con printf 
+            //printf("%.1f, $random2");
             
-    
-
-
 
         #EJERCICIO 9
         $name = "Juan";
         $direction = "Avd. de los Liberadores";
 
-        echo "$name's address is $direction";     
+        echo "$name's address is $direction"; 
         
-        
+        //la forma correcta ees poniendo las llaves al lado de las variables
+        //echo "{$name}'s address is {$direction}"; 
 
         #EJERCICIO 10
         //Asignación de varios valores (Asociativos)
@@ -81,6 +89,10 @@
         echo "Media Matemáticas: " . round(($mates/$mc), 1);
         echo "<br>Media Lengua: " . round(($leng/$lc), 1);
 
+
+        //CORRECCIÓN DEL DIEZ
+        
+        
 
     ?>
 </body>
