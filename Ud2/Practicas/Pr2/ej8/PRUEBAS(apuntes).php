@@ -124,15 +124,14 @@
         //Establecemos el uso horario que tendrán las funciones de fecha y hora
         date_default_timezone_set("Europe/Madrid");
 
-        //Sacamos la fecha del cumpleaños 
-        $birthday = date_create_from_format("d-m-Y", date("d-m-Y", strtotime($date)));
-        var_dump($birthday);
-        echo "<br>";
-        //Sacamos la fecha actual con la hora introducida
+        //Obtenemos la fecha actual con la hora que hemos introducido
         $current_date = date("d/m/Y H:i:s", strtotime($time));
 
+        //Creamos un objeto DateTime
+        $current_date = date_create_from_format("d/m/Y H:i:s", $current_date);
+
         //Obtenemos un string con la fecha y hora del inicio de la pascua
-        $holy_week = date("d/m/Y H:i:s", easter_date(2022));
+        $holy_week = date("d/m/Y H:i:s", easter_date(date("Y")));
         
         //Creamos un objeto DateTime usando la funcion date_create_from_format
         //que nos pide como argumentos, el formato para la fecha y hora y 
@@ -140,23 +139,17 @@
         //El objeto DateTime nos permitirá usar muchas funciones diferentes
         $holy_week = date_create_from_format("d/m/Y H:i:s", $holy_week);
 
-        var_dump($holy_week);
+        //modificamos el objeto $holy_week para que se remonte a una semana antes
+        //que es cuando empieza la semana santa
+        $holy_week = date_modify($holy_week, "-1 week");
 
-        echo "<br>";
+        if($current_date > $holy_week)
+        {
+            $holy_week = date_modify($holy_week, "+1 year");
+            $dif = date_diff($current_date, $holy_week);
 
-        $holy_week = $holy_week->modify("-1 week");
-
-        var_dump($holy_week);
-
-        
-
-        // “Bienvenido [nombre], estás en [primavera/otoño/verano/invierno] quedan xx días 
-        // para las vacaciones de navidad y xxx dias xxx horas para vacaciones de semana santa 
-        // [del año que viene]. Tu cumpleaños [no] cae en fin de semana y es el día jueves, 
-        // 3 de octubre del 22” 
-
-        //echo $current_date["mday"] . " de " . $current_date["month"] . " del " . $current_date["year"];
-
+            return date_interval_format($dif, "%r%a");
+        }
     }
     ?>
     <form method="POST" action="#">
