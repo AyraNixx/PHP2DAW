@@ -20,6 +20,7 @@
     //como las posiciones de sus letras
     function alphabet_pos($str)
     {
+        $str = strtolower($str);
         //Definimos una variable que será la que devolveremos como resultado
         $result = "";
 
@@ -39,7 +40,7 @@
                 //desde 1 (el alfabeto va del 1 al 26 (en inglés), no de 97 a 122)
                 //Entonces si nuestro primer caracter es "a", sería 97 - 97 + 1 = 1.
                 //Si es i, sería 105 - 97 + 1 = 9
-                $result = $result . ord(strtolower($str[$i])) - ord('a') + 1;
+                $result = $result . ord($str[$i]) - ord('a') + 1;
             //Si no es una letra, miramos si es un espacio, añadimos un espacio a result
             //porque significa que hay termina la palabra y empieza otra
             } elseif($str[$i] === " "){

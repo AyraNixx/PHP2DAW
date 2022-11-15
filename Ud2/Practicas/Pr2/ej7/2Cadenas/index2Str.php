@@ -20,6 +20,7 @@
     //como las posiciones de sus letras
     function alphabet_pos($str)
     {
+        $str = strtolower($str);
         //Definimos una variable que será la que devolveremos como resultado
         $result = "";
 
@@ -30,16 +31,14 @@
                 //Concatenamos result con el resultado obtenido de la funcion ord
                 //que nos devuelve un entero entre 0 y 255 (código ASCII).
                 //Sin embargo, tenemos que tener cuidado porque en el código ASCII
-                //hay valores para indicar, por ejemplo, ^. Por lo tanto,
-                //lo primero que haremos es utilizar strtolower para que la letra
-                //esté en minúscula
+                //hay valores para indicar, por ejemplo, ^.
                 //Con el primer ord obtenemos la posicion del caracter en la tabla ASCII, 
                 //es decir, si es 'a' nos saca 97.
                 //Luego le restamos el resultado de ord("a") más 1 para que empiece a contar
                 //desde 1 (el alfabeto va del 1 al 26 (en inglés), no de 97 a 122)
                 //Entonces si nuestro primer caracter es "a", sería 97 - 97 + 1 = 1.
                 //Si es i, sería 105 - 97 + 1 = 9
-                $result = $result . ord(strtolower($str[$i])) - ord('a') + 1;
+                $result = $result . ord($str[$i]) - ord('a') + 1;
             }
         }
         //Devolvemos la cadena
@@ -76,18 +75,18 @@
         if (isset($_POST["submit"])) {
             //Comprobamos que las cadenas no estén vacías
             if (isset($_POST["str1"]) && isset($_POST["str2"])) {
-                //Almacenamos las cadenas
-                $str1 = $_POST["str1"];
-                $str2 = $_POST["str2"];
+                //Almacenamos las cadenas y las enviamos como argumento a 
+                //alphabet_pos que nos devuelve un numero con sus posiciones
+                $str1 = alphabet_pos($_POST["str1"]);
+                $str2 = alphabet_pos($_POST["str2"]);
 
-                //Con un condicional comprobamos cual de las cadenas nos devuelve un
-                //numero mayor al pasarlas como argumentos a la funcion alphabet_pos
-                if(alphabet_pos($str1) > alphabet_pos($str2))
+                //Con un condicional comprobamos cual de las cadenas es mayor
+                if($str1 > $str2)
                 {
                     echo"<h6>";
                     echo "La primera cadena:<br/><br/>'$str1'<br/><br/>Es mayor";
                     echo"</h6>";
-                }elseif(alphabet_pos($str1) < alphabet_pos($str2))
+                }elseif($str1 < $str2)
                 {
                     echo"<h6>";
                     echo "La segunda cadena:<br/><br/>'$str2'<br/><br/>Es mayor";
