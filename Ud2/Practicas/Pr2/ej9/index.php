@@ -11,56 +11,75 @@
 </head>
 
 <body>
-    <?php
-    ?>
-    <form method="POST" action="#">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-sm-12">
-                    <div class="form-group row mb-sm-2 mt-sm-2">
-                        <div class="col-lg-6">
-                            <label for="name">Nombre</label>
-                            <input type="text" class="form-control" id="name" name="name">
-                        </div>
+    <div class="container">
+        <form method="POST" action="menu.php">
+            <div class="container">
+                <div class="row">
+                    <!-- CREAMOS LOS CHECKBOXS PARA ELEGIR LAS OPCIONES DEL MENÚ-->
+                    <h4 class = "mt-4 p-0">Añadir al menú</h4>
+                    <br />
+                    <br />
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="home" id="home" name="options[]" checked>
+                        <label class="form-check-label" for="home">
+                            Inicio
+                        </label>
                     </div>
-                    <div class="form-group row mb-sm-2 mt-sm-2">
-                        <div class="col-lg-6">
-                            <label for="date">Fecha de nacimiento</label>
-                            <input type="date" class="form-control" id="date" name="date">
-                        </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="catalog" id="catalog" name="options[]">
+                        <label class="form-check-label" for="catalog">
+                            Catálogo
+                        </label>
                     </div>
-                    <div class="form-group row mb-sm-2 mt-sm-2">
-                        <div class="col-lg-6">
-                            <label for="time">Hora</label>
-                            <input type="time" class="form-control" id="time" name="time">
-                        </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="location" id="location" name="options[]">
+                        <label class="form-check-label" for="location">
+                            Localización
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="services" id="services" name="options[]">
+                        <label class="form-check-label" for="services">
+                            Servicios
+                        </label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" value="contact" id="contact" name="options[]">
+                        <label class="form-check-label" for="contact">
+                            Contacto
+                        </label>
                     </div>
                 </div>
+
+                <br />
+                <h4 class = "mt-2 p-0">Seleccionar tamaño tabla</h4>
+                <div class="row p-0">
+                    <!--CREAMOS UN GRID DE 8X8 DE CHECKBOX-->
+                    <?php
+                    //Realizamos un bucle que va del 1 al 8(incluido) para las filas
+                    for ($i = 1; $i <= 8; $i++) {
+                        echo "<div class='row'>";
+                        //Hacemos otro para generar 8 columnas por cada fila
+                        for ($j = 1; $j <= 8; $j++) {
+                            echo "<div class='col-1 text-center p-2'>";
+                            //Ponemos como value el valor de la fila y de la columna en la que se encuentra
+                            //la celda, separadas por una coma
+                            echo "<input type='checkbox' id='table' name='table[]' value='$i,$j' class='m-1'/>celda $i.$j";
+                            echo "</div>";
+                        }
+                        echo "</div>";
+                    }
+                    ?>
+
+                </div>
+
+                <div class="row my-3 mx-1">
+                    <button type="submit" class="btn btn-primary w-25" name="submit">Enviar</button>
+                </div>
             </div>
-            <div class="row my-3 mx-1">
-                <button type="submit" class="btn btn-primary w-25" name="submit">Enviar</button>
-            </div>
-        </div>
-    </form>
-    <div class="container mt-3 text-center">
-        <!--Llamamos a la funcion y mostramos el resultado-->
-        <?php
-        //Si se ha pulsado el botón de enviar 
-        if (isset($_POST["submit"])) {
-            //Comprobamos que la cadena no esté vacía
-            if (isset($_POST["date"]) && isset($_POST["time"])) {
-
-                $name = $_POST["name"];
-
-                $date = $_POST["date"];
-                $time = $_POST["time"];
-
-                echo show_message($date, $time);
-            }
-        }
-        ?>
-
+        </form>
     </div>
+
 </body>
 
 </html>

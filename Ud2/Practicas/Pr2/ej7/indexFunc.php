@@ -56,16 +56,11 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 col-sm-12">
-                    <!-- Margenes con mb mr ml mt -sm-distancia-->
-                    <!-- Misma linea -->
                     <div class="form-group row mb-sm-2 mt-sm-2">
                         <div class="col-lg-6">
                             <input type="text" class="form-control" id="str" name="str" placeholder="Escriba aqui...">
                         </div>
                     </div>
-                    <!--Sombra shadow p-3 mb-5 bg-body rounded-->
-                    <!-- btn btn-default boton por defecto-->
-                    <!-- px-4 py-5 pading x e y -->
                     <button type="submit" class="btn btn-default mb-sm-2 shadow p-3 mb-5 bg-body rounded px-3 py-2" name="submit">Enviar</button>
                 </div>
             </div>

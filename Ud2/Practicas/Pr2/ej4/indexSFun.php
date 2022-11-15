@@ -11,31 +11,59 @@
 </head>
 
 <body>
+    <form method="POST" action="#">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                    <!-- Margenes con mb mr ml mt -sm-distancia-->
+                    <!-- Misma linea -->
+                    <div class="form-group row mb-sm-2 mt-sm-2">
+                        <label for="nombre" class="col-lg-3 col-form-label">Nombre:</label>
+                        <div class="col-lg-6">
+                            <input type="text" class="form-control" id="name" name="name">
+                        </div>
+                    </div>
+                    <!--Sombra shadow p-3 mb-5 bg-body rounded-->
+                    <!-- btn btn-default boton por defecto-->
+                    <!-- px-4 py-5 pading x e y -->
+                    <button type="submit" class="btn btn-default mb-sm-2 shadow p-3 mb-5 bg-body rounded px-3 py-2" name="submit">Enviar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+    <br>
+    <br>
     <?php
-
-    function totalVocals()
-    {
-        if (isset($_POST)) {
+    if (isset($_POST["submit"])) {
+        if (isset($_POST["name"])) {
 
             //Obtenemos el nombre introducido
             $name = $_POST["name"];
 
             //Definimos variables que usaremos como contadores
-            $a = 0;
-            $e = 0;
-            $i = 0;
-            $o = 0;
-            $u = 0;
+            $a = 0; $e = 0; $i = 0; $o = 0; $u = 0;
 
             //Definimos una variable para sacar cada palabra
             $palabra = "";
-            //Un array para almacenar las palabras
-            $palabras = array();
             //Pos para recordar la posicion en la que nos quedamos
             $pos = 0;
 
+            //Contador para el número de palabaras que hay
+            //(no sé si en esta version puedo usar str_word_count para 
+            //un bucle así que hago esto por si acaso)
+            $palabras = 1;
+
+            //Bucle que recorre la cadena para sacar el numero de palabras
+            for($j = 0; $j < strlen($name); $j++)
+            {
+                if($name[$j] === " ")
+                {
+                    $palabras++;
+                }
+            }
+
             //Recorremos la cadena name
-            for ($x = 0; $x < (str_word_count($name)); $x++) {
+            for ($x = 0; $x < $palabras; $x++) {
 
                 //Utilizamos otro bucle para recorrer de nuevo la cadena 
                 //y sacar la palabra que corresponda
@@ -92,11 +120,20 @@
                             break;
                     }
                 }
+                ?>
 
-                //Mostramos la palabra y el total de vocales que hay en ella
-                echo "<h5>Palabra -------->    $palabra</h5>";
-                echo "<h6>Total de vocales  --->    " . ($a + $e + $i + $o + $u) . "</h6>";
-                echo "<br/>";
+                <!--Mostramos la palabra y el total de vocales que hay en ella-->
+                <div class="m-4">
+                    <h6>Palabra --------><?=$palabra ?> </h6>
+                    <p class="m-0">Total de vocales  --->    <?= ($a + $e + $i + $o + $u)?> </p>
+                    <p class="m-0">&nbsp;&nbsp; - A: <?= $a ?></p>
+                    <p class="m-0">&nbsp;&nbsp; - E: <?= $e ?></p>
+                    <p class="m-0">&nbsp;&nbsp; - I: <?= $i ?></p>
+                    <p class="m-0">&nbsp;&nbsp; - O: <?= $o ?></p>
+                    <p class="m-0">&nbsp;&nbsp; - U: <?= $u ?></p>
+                </div>
+
+                <?php
 
                 //Reiniciamos la palabra
                 $palabra = "";
@@ -108,36 +145,6 @@
                 $u = 0;
             }
         }
-    }
-
-
-
-    ?>
-    <form method="POST" action="#">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 col-sm-12">
-                    <!-- Margenes con mb mr ml mt -sm-distancia-->
-                    <!-- Misma linea -->
-                    <div class="form-group row mb-sm-2 mt-sm-2">
-                        <label for="nombre" class="col-lg-3 col-form-label">Nombre:</label>
-                        <div class="col-lg-6">
-                            <input type="text" class="form-control" id="name" name="name">
-                        </div>
-                    </div>
-                    <!--Sombra shadow p-3 mb-5 bg-body rounded-->
-                    <!-- btn btn-default boton por defecto-->
-                    <!-- px-4 py-5 pading x e y -->
-                    <button type="submit" class="btn btn-default mb-sm-2 shadow p-3 mb-5 bg-body rounded px-3 py-2" name="submit">Enviar</button>
-                </div>
-            </div>
-        </div>
-    </form>
-    <br>
-    <br>
-    <?php
-    if (isset($_POST["submit"])) {
-        totalVocals();
     }
     ?>
 </body>
