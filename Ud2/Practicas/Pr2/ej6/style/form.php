@@ -10,20 +10,19 @@
 
     <?php
 
-
-    /**
-     * @author Paula Moreno Hermoso
-     * @param 
-     */
+    //Funcion que crea una tabla según las columnas y filas introducidas
     function crearTabla($cols, $rows)
     {
         echo "<table>";
-
+        //Hacemos un bucle que va hasta el número de filas introducidas
+        //y creamos etiquetas tr (representan a la filas de las tablas)
         for ($i = 1; $i <= $rows; $i++) {
             echo "<tr>";
+            //Con otro bucle, que tiene como tope el número de columnas
+            //vamos creando las tds
             for ($j = 1; $j <= $cols; $j++) {
                 echo "<td>";
-                echo "Casilla " . $i . "." . $j;
+                    echo "Casilla " . $i . "." . $j;
                 echo "</td>";
             }
             echo "</tr>";
@@ -31,17 +30,17 @@
         echo "</table>";
     }
 
-    /**
-     * @author Paula Moreno Hermoso
-     * @param 
-     */
+
+
+    //Función que crea input de tipo radio para el sexo
+    //usamos echo
     function crearSexo()
     {
         echo "<br/>";
         echo "<h6>Sexo</h6>";
         echo "<div class='form-check form-check-inline'>";
-        echo "<input class='form-check-input' type='radio' value='Masculino' id='radio1' name='sexo'>";
-        echo "<label class='form-check-label' for='radio1'>Masculino</label>";
+            echo "<input class='form-check-input' type='radio' value='Masculino' id='radio1' name='sexo'>";
+            echo "<label class='form-check-label' for='radio1'>Masculino</label>";
         echo "</div>";
 
 
@@ -58,11 +57,17 @@
         echo "<br/>";
     }
 
+
+
+    //Funcion que crea un textArea según el ancho y las filas que se le
+    //pase como argumento (aquí utilizaremos los mismas que los de la tabla,
+    //en esta ocasión)
     function crearObservaciones($width, $rows)
     {
         echo "<br/>";
         echo "<label for='remark'><h6>Observaciones</h6></label>";
         echo "<br/>";
+        //Para indicar 
         echo "<textarea name='remark' id='remark' cols='$width' rows='$rows'>";
         echo "</textarea>";
     }

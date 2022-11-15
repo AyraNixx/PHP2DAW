@@ -34,8 +34,8 @@
             //Obtenemos el nombre introducido
             $name = $_POST["name"];
 
-            //Definimos variables que usaremos como contadores
-            $a = 0; $e = 0; $i = 0; $o = 0; $u = 0;
+            //Definimos una variable que sirve como contador de vocales
+            $vocals = 0;
 
             //Definimos una variable para sacar cada palabra
             $palabra = "";
@@ -57,8 +57,8 @@
             }
 
             //Recorremos la cadena name
-            for ($x = 0; $x < $palabras; $x++) {
-
+            for ($x = 1; $x < $palabras; $x++) {
+                
                 //Utilizamos otro bucle para recorrer de nuevo la cadena 
                 //y sacar la palabra que corresponda
                 for ($y = $pos; $y < strlen($name); $y++) {
@@ -68,7 +68,7 @@
                     //Si el caracter coincide con un espacio en blanco,
                     //guardamos la posicion del siguiente caracter para que 
                     //el bucle empiece por el.
-                    if ($name[$y] === " ") {
+                    if ($name[$y] === " " ) {
                         $pos = $pos + 1;
                         break;
                     }
@@ -77,40 +77,24 @@
                 }
 
                 //Quitamos los espacios en blanco del principio y del final por si acaso
+                //he supuesto que esta función se puede usar en esta versión porque el 
+                //enunciado habla de ella
                 $palabra = trim($palabra);
 
                 //Recorremos la palabra y aumentamos los contadores de cada vocal según toque
                 for ($j = 0; isset($palabra[$j]); $j++) {
                     switch ($palabra[$j]) {
                         case "a":
-                            $a++;
-                            break;
                         case "A":
-                            $a++;
-                            break;
                         case "e":
-                            $e++;
-                            break;
                         case "E":
-                            $e++;
-                            break;
                         case "i":
-                            $i++;
-                            break;
                         case "I":
-                            $i++;
-                            break;
                         case "o":
-                            $o++;
-                            break;
                         case "O":
-                            $o++;
-                            break;
                         case "u":
-                            $u++;
-                            break;
                         case "U":
-                            $u++;
+                            $vocals++;
                             break;
                     }
                 }
@@ -119,24 +103,15 @@
                 <!--Mostramos la palabra y el total de vocales que hay en ella-->
                 <div class="m-4">
                     <h6>Palabra --------><?=$palabra ?> </h6>
-                    <p class="m-0">Total de vocales  --->    <?= ($a + $e + $i + $o + $u)?> </p>
-                    <p class="m-0">&nbsp;&nbsp; - A: <?= $a ?></p>
-                    <p class="m-0">&nbsp;&nbsp; - E: <?= $e ?></p>
-                    <p class="m-0">&nbsp;&nbsp; - I: <?= $i ?></p>
-                    <p class="m-0">&nbsp;&nbsp; - O: <?= $o ?></p>
-                    <p class="m-0">&nbsp;&nbsp; - U: <?= $u ?></p>
+                    <p class="m-0">Total de vocales  --->    <?= $vocals ?> </p>                    
                 </div>
 
                 <?php
 
                 //Reiniciamos la palabra
                 $palabra = "";
-                //Reiniciamos las vocales
-                $a = 0;
-                $e = 0;
-                $i = 0;
-                $o = 0;
-                $u = 0;
+                //Reiniciamos el contador $vocals
+                $vocals = 0;
             }
         }
     }
