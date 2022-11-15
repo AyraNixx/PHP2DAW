@@ -13,6 +13,12 @@
 <body>
     <?php
 
+
+    //PODRÍA HABER USADO DATETIME, PERO HE INTENTADO USAR LAS FUNCIONES DEL
+    //ENLACE DEL EJERCICIO
+
+
+
     date_default_timezone_set("Europe/Madrid");
 
 
@@ -43,12 +49,13 @@
 
     function season($current_date)
     {
+        $año = date("Y", strtotime($current_date));
         //Hacemos un array asociativo para los rangos de fechas de las estaciones 
         //(No hace falta que pongamos Winter)
         $seasons = [
-            "Sp" => [date("Y-03-20 H:i:s"), date("Y-06-20 H:i:s")],
-            "Sm" => [date("Y-06-21 H:i:s"), date("Y-09-22 H:i:s")],
-            "F"  => [date("Y-09-23 H:i:s"), date("Y-12-20 H:i:s")]
+            "Sp" => [date("$año-03-20 H:i:s"), date("$año-06-20 H:i:s")],
+            "Sm" => [date("$año-06-21 H:i:s"), date("$año-09-22 H:i:s")],
+            "F"  => [date("$año-09-23 H:i:s"), date("$año-12-20 H:i:s")]
         ];
 
         //Comprobamos que $current_date se encuentra dentro del rango de Primavera          
@@ -167,13 +174,17 @@
  
         //Definimos una variable para almacenar la fecha formateada con el formato
         //que queremos
-        //Utilizamos la clase IntleDateFormatter para formatear la fecha
+        //Utilizamos IntleDateFormatter para formatear la fecha
         $date = IntlDateFormatter::formatObject(
             //El primer parámetro (necesario) es un objeto de tipo DateTime 
             //le pasamos $birthday para indicar la fecha que queremos que 
             //represente
             new DateTime($birthday),
             //Luego, poneemos el formato que queremos que nos saque
+            //EEEE--> nombre día entero
+            //dd--> día del mes
+            //MMMM--> nombre mes entero
+            //yy --> los dos últimos dígitos del año
             "EEEE, dd 'de' MMMM 'del' yy",
             //La configuración regional a usar
             'es_ES');
