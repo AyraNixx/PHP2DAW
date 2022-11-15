@@ -189,7 +189,7 @@
             //La configuración regional a usar
             'es_ES');
 
-        //Sacamos el número de la semana en el que cae el cumpleaños (7 es domingo,
+        //Sacamos el número del día de la semana en el que cae el cumpleaños (7 es domingo,
         //1 es lunes)
         $day_week = date("N", strtotime($birthday));
 
