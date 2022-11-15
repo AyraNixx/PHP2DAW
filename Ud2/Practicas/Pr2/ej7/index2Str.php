@@ -26,7 +26,7 @@
         //Recorremos la cadena
         for ($i = 0; $i < strlen($str); $i++) {
             //Si la letra actual es verdaderamente una letra
-            if (preg_match("/[a-zA-Z]/i", $str[$i])) {
+            if (ctype_alpha($str[$i])) {
                 //Concatenamos result con el resultado obtenido de la funcion ord
                 //que nos devuelve un entero entre 0 y 255 (código ASCII).
                 //Sin embargo, tenemos que tener cuidado porque en el código ASCII

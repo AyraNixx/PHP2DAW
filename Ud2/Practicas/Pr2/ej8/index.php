@@ -32,7 +32,8 @@
         global $name;
 
 
-        //Devolvemos el mensaje
+        //Devolvemos el mensaje concatenando lo que nos devuelven el resto de 
+        //funciones
         return "Bienvenido $name, " . season($current_date)
             . untilChristmass($current_date) . untilHolyWeek($current_date)
             . birthday($birth_date, $current_date);
@@ -228,14 +229,16 @@
         <?php
         //Si se ha pulsado el botón de enviar 
         if (isset($_POST["submit"])) {
-            //Comprobamos que la cadena no esté vacía
-            if (isset($_POST["date"]) && isset($_POST["time"])) {
+            //Comprobamos los campos date, time y name no están vacíos
+            if (isset($_POST["name"]) && isset($_POST["date"]) && isset($_POST["time"])) {
 
+                //Si no están vacíos, almacenamos
                 $name = $_POST["name"];
 
                 $date = $_POST["date"];
                 $time = $_POST["time"];
 
+                //Mostramos el mensaje obtenido
                 echo show_message($date, $time);
             }
         }

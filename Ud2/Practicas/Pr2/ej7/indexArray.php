@@ -82,7 +82,7 @@
             if (isset($_POST["str"])) {
                 //Almacenamos la cadena
                 $str = $_POST["str"];
-                echo "La cadena según las posiciones de las letras de cada palabra:<br/>";
+                echo "<p>La cadena según las posiciones de las letras de cada palabra:</p>";
                 echo"<h6>";
                     echo alphabet_pos($str);
                 echo"</h6>";
