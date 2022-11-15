@@ -84,12 +84,12 @@
                 if($str1 > $str2)
                 {
                     echo"<h6>";
-                    echo "La primera cadena:<br/><br/>'$str1'<br/><br/>Es mayor";
+                    echo "La primera cadena:<br/><br/>". $_POST["str1"] . "<br/><br/>Es mayor";
                     echo"</h6>";
                 }elseif($str1 < $str2)
                 {
                     echo"<h6>";
-                    echo "La segunda cadena:<br/><br/>'$str2'<br/><br/>Es mayor";
+                    echo "La segunda cadena:<br/><br/>". $_POST["str2"] . "<br/><br/>Es mayor";
                     echo"</h6>";
                 }else{
                     echo"<h6>";
