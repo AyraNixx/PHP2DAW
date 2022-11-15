@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -80,6 +80,7 @@
         $font = $_POST["font"];
     ?>
 
+        <!--En la etiqueta style, establecemos el estilo que queremos para la tabla-->
         <style>
             table,
             td {
@@ -117,10 +118,16 @@
             <form>
 
                 <?php
+                    //Si options no está vacío
                     if (isset($_POST["options"])) {
+                        //Almacenamos las columnas y filas
                         $options = $_POST["options"];
 
+                        //Recorremos el array de opciones
                         foreach ($options as $add) {
+                            //Si en el array hay un elemento que coincida con 
+                            //age, sex o remark, se nos mostrará el código 
+                            //correspondiente.
                             if ($add === "age") {
                                 echo "<div class='form-group'>";
                                 echo "<label for='age'><h6>Edad</h6></label>";

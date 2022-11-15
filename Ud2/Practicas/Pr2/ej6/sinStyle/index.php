@@ -14,7 +14,7 @@
     <h1 class="m-4">CREAR UN FORMULARIO</h1>
     <!--examen formulario en el que vas a tener que utilizar funciones, hacer bucles para 
         sacar máximos y mínimos, sacar datros, etc. -->
-    <form method="POST" action="sinStyleV.php">
+    <form method="POST" action="form.php">
         <div class="container mt-5">
             <div class="row">
 
@@ -60,14 +60,14 @@
                     <div class="form-group">
                         <label for="font">Tipo de letra</label>
                         <select class="form-select w-25" id="font" name="font">
-                            <option value="Arial, sans-serif" style="font-family: Arial, sans-serif;" >Arial</option>   
-                            <option value="'Copperplate, Papyrus, fantasy" style="font-family: Copperplate, Papyrus, fantasy;">Brush Script MT</option>                            
-                            <option value="'Brush Script MT', cursive" style="font-family:'Brush Script MT', cursive;">Brush Script MT</option>
-                            <option value="Georgia, serif" style="font-family:Georgia, serif">Georgia</option>
-                            <option value="Verdana, sans-serif" style="font-family: Lucida Handwriting, cursive;" class="p-2">Lucida Handwriting</option>              
-                            <option value="monospace" style="font-family: monospace;">Monospace</option>      
-                            <option value="Times New Roman, serif" style="font-family:'Times New Roman', serif ">Times New Roman</option>     
-                            <option value="Verdana, sans-serif" style="font-family: Verdana, sans-serif;">Verdana</option>              
+                            <option value="Arial, sans-serif" class="arial"" >Arial</option>                             
+                            <option value="'Brush Script MT', cursive" class="brush">Brush Script MT</option>
+                            <option value="'Copperplate, Papyrus, fantasy" class="copper">Copperplate</option>                             
+                            <option value="Georgia, serif" class="georgia">Georgia</option>
+                            <option value="Verdana, sans-serif" class="lucida">Lucida Handwriting</option>              
+                            <option value="monospace" class="monospace">Monospace</option>      
+                            <option value="Times New Roman, serif" class="tnr">Times New Roman</option>     
+                            <option value="Verdana, sans-serif" class="verdana">Verdana</option>              
                         </select>
                     </div>
 

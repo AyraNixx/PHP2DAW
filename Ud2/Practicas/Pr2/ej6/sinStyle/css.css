@@ -1,45 +1,44 @@
 input[type="color"]
 {
-    width: 25%;
+width: 25%;
 }
 
 .arial
 {
-    font-family: Arial, sans-serif;
+font-family: Arial, sans-serif;
 }
 
-.brush 
+.brush
 {
-    font-family:'Brush Script MT', cursive;
+font-family:'Brush Script MT', cursive;
 }
 
 .copper
 {
-    font-family: Copperplate, Papyrus, fantasy;
+font-family: Copperplate, Papyrus, fantasy;
 }
 
 .georgia
 {
-    font-family:Georgia, serif;
+font-family:Georgia, serif;
 }
 
 .lucida
 {
-    font-family: Lucida Handwriting, cursive;
+font-family: Lucida Handwriting, cursive;
 }
 
 .monospace
 {
-    font-family: monospace;
+font-family: monospace;
 }
 
 .tnr
 {
-    font-family:'Times New Roman', serif;
+font-family:'Times New Roman', serif;
 }
 
 .verdana
 {
-    font-family: Verdana, sans-serif;
-}           
-                        
+font-family: Verdana, sans-serif;
+}

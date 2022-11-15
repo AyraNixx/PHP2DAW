@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
@@ -13,7 +13,7 @@
     <h1 class="m-4">CREAR UN FORMULARIO</h1>
     <!--examen formulario en el que vas a tener que utilizar funciones, hacer bucles para 
         sacar máximos y mínimos, sacar datros, etc. -->
-    <form method="POST" action="styleV.php">
+    <form method="POST" action="form.php">
         <div class="container mt-5">
             <div class="row">
 
@@ -43,7 +43,7 @@
                         <label for="rows">N.º de filas</label>
                         <select class="form-select w-25" id="rows" name="rows">
                             <?php
-                            for ($i = 1; $i < 8; $i++) {
+                            for ($i = 1; $i < 13; $i++) {
                                 echo "<option value = '$i'> $i </option>";
                             }
                             ?>

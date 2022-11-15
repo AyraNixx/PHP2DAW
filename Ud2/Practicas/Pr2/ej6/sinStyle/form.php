@@ -11,14 +11,14 @@
     <?php
 
 
-    /**
-     * @author Paula Moreno Hermoso
-     * @param 
-     */
+    //Funcion que crea una tabla según las columnas y filas introducidas
     function crearTabla($cols, $rows)
     {
+        //Hacemos un bucle que va hasta el número de filas introducidas
+        //y creamos etiquetas tr (representan a la filas de las tablas)
         echo "<table>";
-
+        //Con otro bucle, que tiene como tope el número de columnas
+        //vamos creando las tds
         for ($i = 1; $i <= $rows; $i++) {
             echo "<tr>";
             for ($j = 1; $j <= $cols; $j++) {
@@ -31,10 +31,8 @@
         echo "</table>";
     }
 
-    /**
-     * @author Paula Moreno Hermoso
-     * @param 
-     */
+    //Función que crea input de tipo radio para el sexo
+    //usamos echo
     function crearSexo()
     {
         echo "<br/>";
@@ -58,6 +56,9 @@
         echo "<br/>";
     }
 
+    //Funcion que crea un textArea según el ancho y las filas que se le
+    //pase como argumento (aquí utilizaremos los mismas que los de la tabla,
+    //en esta ocasión)
     function crearObservaciones($width, $rows)
     {
         echo "<br/>";
@@ -66,26 +67,23 @@
         echo "<textarea name='remark' id='remark' cols='$width' rows='$rows'>";
         echo "</textarea>";
     }
-
-
-
-
-
-
+    
     if (isset($_POST)) {
+        //Almacenamos las columnas y filas
         $cols = $_POST["cols"];
         $rows = $_POST["rows"];
 
         $bg_color = $_POST["bg_color"];
         $font = $_POST["font"];
-    }
+
+        include "css.php";
     ?>
-<link rel="stylesheet" type="text/css" href="css.php"/>
+
+    
 </head>
 
 <body>
-
-<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt recusandae veniam rerum obcaecati iusto sapiente labore fugiat non maiores soluta aspernatur excepturi, nihil reiciendis, ab nisi fugit deserunt rem blanditiis!</p>
+   
     <h4 class="mt-4 text-center">FORMULARIO CREADO</h4>
     <br />
     <div class="container justify-content-center">
@@ -102,13 +100,21 @@
             <form>
 
                 <?php
+                
+
+                    //Si options no está vacío
                     if (isset($_POST["options"])) {
+                        //Almacenamos las opicones
                         $options = $_POST["options"];
 
+                        //Recorremos el array de opciones
                         foreach ($options as $add) {
+                            //Si en el array hay un elemento que coincida con 
+                            //age, sex o remark, se nos mostrará el código 
+                            //correspondiente.
                             if ($add === "age") {
                                 echo "<div class='form-group'>";
-                                echo "<label for='age'><h6>Edad</h6></label>";
+                                    echo "<label for='age'><h6>Edad</h6></label>";
                                 echo "<select class='form-select w-50' id='age' name='age'>";
                                 for ($i = 1; $i <= 120; $i++) {
                                     echo "<option value = $i> $i </option>";
@@ -126,6 +132,7 @@
                             }
                         }
                     }
+                }
                 ?>
             </form>
         </div>
