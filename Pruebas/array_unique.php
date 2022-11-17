@@ -22,5 +22,19 @@ foreach($prueba as $p => $val)
 
 
 
+//La manera más rápida de arreglar el hueco que ha dejado
+//el array_unique, es emplear array_values para sacar los valores
+//y los indexe numéricamente
+$prueba = array_values($prueba);
+
+
+echo "<br>";
+
+var_dump($prueba);
+
+
+//array_keys(array_flip($originalArray))
+
+
 ?>
 
