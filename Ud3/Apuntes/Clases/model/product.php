@@ -26,6 +26,15 @@ class Product
     //herederas
     protected $precio;
 
+
+
 }
 
+
+$monitor  = new Product();
+
+//Para acceder a un atributo o función miembro de la clase,
+//usamos ->
+$monitor->name = "Juan";
+print($monitor->name);
 ?>
