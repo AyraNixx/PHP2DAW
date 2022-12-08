@@ -9,28 +9,22 @@ function solution($roman)
     //romano
     $number = 0;
 
-    //Pasamos la cadena a mayuscula, la convertimos en array y obtenemos un array
-    //asociativo con el numero de veces que aparece un caracter en dicha cadena
-    $roman = array_count_values(str_split(strtoupper($roman)));
+    $roman = strtoupper($roman);
 
-    //Recorremos el array roman
-    foreach ($roman as $num => $val) {
+    for ($i = 0; $i < strlen($roman); $i++) {
 
-        //Si hay una clave en el array_numbers que se llame como $num
-        if (isset($roman_numbers[$num])) {
-
-            //Cambiamos el valor de la clave, multiplicando este por el numero
-            //de veces que aparece en la cadena introducida
-            $roman_numbers[$num] = $roman_numbers[$num] * $val;
-            
-            if (current($roman) != null && $roman_numbers[$num] < $roman_numbers[key($roman)]) {
-
-                $number -= ($roman_numbers[$num] * 2);
+        if (($i + 1) < strlen($roman)) {
+            if ($roman_numbers[$roman[$i]] < $roman_numbers[$roman[$i + 1]]) {
+                $number -= $roman_numbers[$roman[$i]];
+            } else {
+                $number += $roman_numbers[$roman[$i]];
             }
-            
-            reset($roman);
+        }else{
+            $number += $roman_numbers[$roman[$i]];
         }
     }
+
+    echo $number;
 
     //return (array_sum(array_intersect_key($roman_numbers, $roman)) + $number);
 }
