@@ -112,6 +112,7 @@ class User
             && isset($rol["direccion"]) && isset($rol["telefono"]) && isset($rol["correo"]) 
             && isset($rol["passwd"]) && isset($rol["foto"]) && isset($rol["id_rol"]) && isset($conBD)) {
             try {
+                LO HE DEJADO AQUÍ!
                 //Consulta que vamos a pasar al prepare
                 $query = "INSERT INTO tienda_animales.roles (rol, descripcion) VALUES (:rol, :descripcion)";
                 //Usamos prepare(), que prepara una sentencia para su ejecución por el método 
