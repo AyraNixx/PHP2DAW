@@ -46,12 +46,12 @@ CREATE TABLE IF NOT EXISTS `tienda_animales`.`Usuarios` (
   `correo` VARCHAR(100) NOT NULL,
   `passwd` VARCHAR(45) NOT NULL,
   `foto` VARCHAR(4000) NULL,
-  `Roles_id_rol` INT NOT NULL,
+  `id_rol` INT NOT NULL,
   PRIMARY KEY (`id_usuario`),
   UNIQUE INDEX `id_usuario_UNIQUE` (`id_usuario` ASC),
-  INDEX `fk_Usuarios_Roles1_idx` (`Roles_id_rol` ASC),
+  INDEX `fk_Usuarios_Roles1_idx` (`id_rol` ASC),
   CONSTRAINT `fk_Usuarios_Roles1`
-    FOREIGN KEY (`Roles_id_rol`)
+    FOREIGN KEY (`id_rol`)
     REFERENCES `tienda_animales`.`Roles` (`id_rol`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
