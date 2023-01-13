@@ -1,4 +1,8 @@
 <?php
+    namespace models;
+    use \PDO;
+    use \PDOException;
+    
     class Utils
     {
         /**

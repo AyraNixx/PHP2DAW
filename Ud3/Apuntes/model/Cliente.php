@@ -1,5 +1,11 @@
 <?php
+
+namespace models;
+
 require_once("Utils.php");
+
+use \PDO;
+use \PDOException;
 class Cliente
 {
     /**
@@ -137,8 +143,10 @@ class Cliente
 
 
 
+    //Funcion para modificar los campos del cliente
     function updateCliente($cliente, $conBD)
     {
+        
         $result = false;
         try{
             if(isset($cliente) && (isset($cliente["idCliente"]) && is_numeric($cliente["idCliente"])) && $conBD != NULL)
@@ -162,21 +170,85 @@ class Cliente
 
         return $result;
     }
+
+
+
+    /**
+     * Funcion que nos devuleve todos los clientes 
+     */
+    public function getClientesPag($conBD, $ordAsc, $campoOrd, $numPag, $cantidadElem)
+    {
+        try {
+            if ($conBD != NULL) {
+                //En vez de ? podemos poner nombres, por ejemplo, en vez de edad> ? ponemos
+                //edad > :edad (nombre que le hemos querido dar)
+
+
+                //Query inicial
+                $query = "SELECT *  FROM tienda.clientes ORDER BY ?";
+
+                //Si esta ordenada descentemente añadimos DESC
+                if(!$ordAsc) $query .= "DESC";
+
+                //Añadimos a la query la cantidad de elementos por página con LIMIT
+                //y desde qué pagina empieza con OFFSET
+
+                $query .= "LIMIT ? OFFSET ?";
+
+                $sentence = $conBD->prepare($query);
+                //el primer parametro es el campo a ordernar
+                $sentence->bindParam(1, $campoOrd);
+                //El segundo parametro es la cantidad de elementos por página para mostrar
+                $sentence->bindParam(2, $cantidadElem);
+                //El tercer parámetro es desde qué registro empieza a mostrar 
+                //la página actual
+                $offset = ($numPag - 1) * $cantidadElem;
+                if($numPag != 1) $offset++;
+                //PONEMOS PDO::PARAM_INT PARA INDICAR QE ES DE TIPO ENTERO
+                $sentence->bindParam(3, $offset, PDO::PARAM_INT);
+
+                /**
+                 * queryString va con la sentencia a usar ??
+                 */
+
+
+                 
+                $sentence->execute();
+
+                //devolvemos 
+                return $sentence->fetchAll();
+            }
+        } catch (PDOException $e) {
+            print("Error al acceder a la base de datos: " . $e->getMessage());
+        }
+    }
+
+
+    /**
+     * EN MYSQL, PONEMOS LIMIT PARA DECIRLE CUANTOS ELEMENTOS QUEREMOS QUE NOS SAQUE 
+     * EN LA CONSULTA.
+     * CON OFFSET LE DECIMOS DESDE DONDE QUEREMOS QUE NOS SAQUE LA SIGUIENTE TANDA
+     * CON ORDERBY, LE INDICAMOS COMO QUEREMOS QUE SE ORDENE (ASCENDENTE POR DEFECTO)
+     * EJEMPLO--> SELECT *  FROM tienda.clientes ORDER BY EDAD DESC LIMIT 10 OFFSET 10.
+     */
 }
 
-$cliente = new Cliente();
 
-//Nos conectamos a la base de datos
-$conBD = Utils::conectar();
+//  PRUEBAS QUE NO DEBERÍAN DE ESTAR AQUÍ
 
-var_dump($cliente->getCliente(1, $conBD));
-$resultado = $cliente->getClienteSel(18, "M", $conBD);
-$resultado2 = $cliente->getClientes($conBD, null, null, null, null);
+// $cliente = new Cliente();
 
-print("El nombre de la segunda mujer es " . $resultado[1]["nombre"]);
-$alvaro = ["nombre" => "Alvaro", "email" => "alvaro@gmail.com", "edad" => 24, "sexo" => "H"];
+// //Nos conectamos a la base de datos
+// $conBD = Utils::conectar();
 
-var_dump($cliente->addCliente($alvaro, $conBD));
+// var_dump($cliente->getCliente(1, $conBD));
+// $resultado = $cliente->getClienteSel(18, "M", $conBD);
+// $resultado2 = $cliente->getClientes($conBD, null, null, null, null);
+
+// print("El nombre de la segunda mujer es " . $resultado[1]["nombre"]);
+// $alvaro = ["nombre" => "Alvaro", "email" => "alvaro@gmail.com", "edad" => 24, "sexo" => "H"];
+
+// var_dump($cliente->addCliente($alvaro, $conBD));
 
 
 
