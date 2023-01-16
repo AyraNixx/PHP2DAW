@@ -8,6 +8,8 @@ use \model\Rol;
 //Creamos un array para almacenar los valores pasados por POST
 $rol = [];
 
+//Definimos un nuevo objeto de la clase Rol e iniciamos la conexion con la 
+//base de datos
 $updateRol = new Rol();
 $conBD = Utils::conectar();
 
@@ -22,8 +24,7 @@ if (isset($_POST["id_rol"]) && isset($_POST["rol"]) && isset($_POST["descripcion
     include("../../view/rol/updateRol.php");
 
     if (isset($_POST["submit"])) {
-        if (($updateRol->updateRol($conBD, $rol)) != null) {
-
+        if ($updateRol->updateRol($conBD, $rol)) {
             header("Location:../../controller/rol/mainRol.php");
         }
     }

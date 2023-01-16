@@ -139,11 +139,10 @@ class Rol
         //Si rol no es nulo, así como id_rol, rol y descripcion y tampoco la conexion
         if (
             isset($rol) != null && $rol["id_rol"] != null && $rol["rol"] != null
-            && $rol["descripcion"] != null && $conBD != null
-        ) {
+            && $rol["descripcion"] != null && $conBD != null) {
             try {
                 //Consulta que vamos a pasar al prepare
-                $query = "UPDATE tienda_animales.roles set id_rol = :id_rol, rol = :rol, descripcion = :descripcion WHERE id_rol = :id_rol";
+                $query = "UPDATE tienda_animales.roles SET id_rol=:id_rol, rol=:rol, descripcion=:descripcion WHERE id_rol=:id_rol";
                 //Usamos prepare(), que prepara una sentencia para su ejecución por el método 
                 //execute()
                 $sentence = $conBD->prepare($query);
@@ -181,5 +180,21 @@ class Rol
             print("¡Error! : " . $e->getMessage() . "<br/>");
         }
         return null;
+    }
+
+    function resetID($conBD)
+    {
+        try {
+            //Si la conexion no es nula
+            if (isset($conBD)) {
+                //
+                $max = "SELECT MAX(id_rol) FROM tienda_animales.roles";
+                $max_id = $conBD->prepare($max);
+                $max_id->execute();
+                $max_id = $max_id->fetch();
+            }
+        } catch (PDOException $e) {
+            print("¡Error! : " . $e->getMessage() . "<br/>");
+        }
     }
 }

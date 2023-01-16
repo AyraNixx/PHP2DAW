@@ -24,9 +24,11 @@ class User
                 //Definimos la consulta
                 $query = "SELECT * FROM tienda_animales.usuarios;";
 
+                //Preparamos la sentencia para su ejecución
                 $sentence = $conBD->prepare($query);
                 $sentence->execute();
 
+                //Devolvemos un array que contiene todas las filas de la tabla usuarios
                 return $sentence->fetchAll();
             }
         } catch (PDOException $e) {
@@ -34,21 +36,27 @@ class User
         }
     }
 
-    //Funcion que devuelve el rol indicado de la base de datos
+    //Funcion que devuelve el user indicado de la base de datos
     function getUser($conBD, $id_usuario)
     {
-        try {
-            //Si la conexion no es nula
-            if (isset($conBD)) {
+        //Si la conexion no es nula
+        if (isset($conBD)) {
+            try {
+                //Escribimos la consulta para sacar todas las filas que tengan el id_usuario
+                //que hayamos pasado (el id_usuario no se repite así que solo muestra a uno)
                 $query = "SELECT * FROM tienda_animales.usuarios WHERE id_usuario = :id_usuario";
+                //Preparamos la sentencia para su ejecución
                 $sentence = $conBD->prepare($query);
+                //Vinculamos el parámetro al nombre de variable especificado
                 $sentence->bindParam("id_usuario", $id_usuario);
                 $sentence->execute();
 
+                //Devolvemos la fila obtenida
                 return $sentence->fetch();
+            } catch (PDOException $e) {
+                print("¡Error! : " . $e->getMessage() . "<br/>");
             }
-        } catch (PDOException $e) {
-            print("¡Error! : " . $e->getMessage() . "<br/>");
+            return null;
         }
     }
 
@@ -101,51 +109,22 @@ class User
             } catch (PDOException $e) {
                 print("¡Error! : " . $e->getMessage() . "<bd/>");
             }
-        }
-    }
-
-    //Funcion que añade un nuevo rol
-    function addUser($conBD, $user)
-    {
-        //Si rol no es nulo, así como id_rol, rol y descripcion y tampoco la conexion
-        if (isset($user) && isset($user["nombre"]) && isset($rol["apellidos"]) 
-            && isset($rol["direccion"]) && isset($rol["telefono"]) && isset($rol["correo"]) 
-            && isset($rol["passwd"]) && isset($rol["foto"]) && isset($rol["id_rol"]) && isset($conBD)) {
-            try {
-                //Consulta que vamos a pasar al prepare
-                $query = "INSERT INTO tienda_animales.roles (rol, descripcion) VALUES (:rol, :descripcion)";
-                //Usamos prepare(), que prepara una sentencia para su ejecución por el método 
-                //execute()
-                $sentence = $conBD->prepare($query);
-
-                //Vinculamos los parametros al nombre de variable especificado 
-                //(También podemos poner ? en la consulta y luego poner un número indicando
-                //a que ? hacemos referencia)
-                $sentence->bindParam(":rol", $rol["rol"]);
-                $sentence->bindParam(":descripcion", $rol["descripcion"]);
-
-                //Ejecutamos la sentencia
-                return $sentence->execute();
-            } catch (PDOException $e) {
-                print("¡Error! : " . $e->getMessage() . "<bd/>");
-            }
-
             return null;
         }
     }
 
-
-    //Funcion que actualiza un rol
-    function updateRol($conBD, $rol)
+    //Funcion que añade un nuevo user
+    function addUser($conBD, $user)
     {
-        //Si rol no es nulo, así como id_rol, rol y descripcion y tampoco la conexion
+        //Si $user no es nulo ni tampoco los valores de cada clave del array asociativo
         if (
-            isset($rol) != null && $rol["id_rol"] != null && $rol["rol"] != null
-            && $rol["descripcion"] != null && $conBD != null
+            isset($user) && isset($user["nombre"]) && isset($user["apellidos"])
+            && isset($user["direccion"]) && isset($user["telefono"]) && isset($user["correo"])
+            && isset($user["passwd"]) && isset($user["foto"]) && isset($user["Roles_id_rol"]) && isset($conBD)
         ) {
             try {
                 //Consulta que vamos a pasar al prepare
-                $query = "UPDATE tienda_animales.roles set id_rol = :id_rol, rol = :rol, descripcion = :descripcion WHERE id_rol = :id_rol";
+                $query = "INSERT INTO tienda_animales.roles (nombre, apellidos, direccion, telefono, correo, passwd, foto, Roles_id_rol) VALUES (:nombre, :apellidos, :direccion, :telefono, :correo, :passwd, :foto, :Roles_id_rol)";
                 //Usamos prepare(), que prepara una sentencia para su ejecución por el método 
                 //execute()
                 $sentence = $conBD->prepare($query);
@@ -153,9 +132,56 @@ class User
                 //Vinculamos los parametros al nombre de variable especificado 
                 //(También podemos poner ? en la consulta y luego poner un número indicando
                 //a que ? hacemos referencia)
-                $sentence->bindParam(":id_rol", $rol["id_rol"]);
-                $sentence->bindParam(":rol", $rol["rol"]);
-                $sentence->bindParam(":descripcion", $rol["descripcion"]);
+                $sentence->bindParam(":nombre", $user["nombre"]);
+                $sentence->bindParam(":apellidos", $user["apellidos"]);
+                $sentence->bindParam(":direccion", $user["direccion"]);
+                $sentence->bindParam(":telefono", $user["telefono"]);
+                $sentence->bindParam(":correo", $user["correo"]);
+                $sentence->bindParam(":passwd", $user["passwd"]);
+                $sentence->bindParam(":foto", $user["foto"]);
+                $sentence->bindParam(":Roles_id_rol", $user["Roles_id_rol"]);
+
+                //Ejecutamos la sentencia
+                return $sentence->execute();
+            } catch (PDOException $e) {
+                print("¡Error! : " . $e->getMessage() . "<bd/>");
+            }
+
+            return null;
+        }
+    }
+
+
+    //Funcion que actualiza un user
+    function updateUser($conBD, $user)
+    {
+        //Si user no es nulo
+        if (
+            isset($user) && isset($user["nombre"]) && isset($user["apellidos"])
+            && isset($user["direccion"]) && isset($user["telefono"]) && isset($user["correo"])
+            && isset($user["passwd"]) && isset($user["foto"]) && isset($user["Roles_id_rol"]) && isset($conBD)
+        ) {
+            try {
+                //Consulta que vamos a pasar al prepare
+                $query = "UPDATE tienda_animales.usuarios set id_user = :id_user, nombre = :nombre, apellidos = :apellidos, direccion = :direccion, 
+                telefono = :telefono, correo = :correo, passwd = :passwd, foto = :foto, Roles_id_rol = :Roles_id_rol
+                WHERE id_rol = :id_rol";
+                //Usamos prepare(), que prepara una sentencia para su ejecución por el método 
+                //execute()
+                $sentence = $conBD->prepare($query);
+
+                //Vinculamos los parametros al nombre de variable especificado 
+                //(También podemos poner ? en la consulta y luego poner un número indicando
+                //a que ? hacemos referencia)
+                $sentence->bindParam(":id_user", $user["id_user"]);
+                $sentence->bindParam(":nombre", $user["nombre"]);
+                $sentence->bindParam(":apellidos", $user["apellidos"]);
+                $sentence->bindParam(":direccion", $user["direccion"]);
+                $sentence->bindParam(":telefono", $user["telefono"]);
+                $sentence->bindParam(":correo", $user["correo"]);
+                $sentence->bindParam(":passwd", $user["passwd"]);
+                $sentence->bindParam(":foto", $user["foto"]);
+                $sentence->bindParam(":Roles_id_rol", $user["Roles_id_rol"]);
 
                 //Ejecutamos la sentencia
                 return $sentence->execute();
@@ -167,16 +193,16 @@ class User
     }
 
 
-    //Funcion que elimina un rol
-    function deleteRol($conBD, $id_rol)
+    //Funcion que elimina un user
+    function deleteUser($conBD, $id_user)
     {
         try {
             //Si la conexion no es nula
             if (isset($conBD)) {
                 //
-                $query = "DELETE FROM tienda_animales.roles WHERE id_rol = ?";
+                $query = "DELETE FROM tienda_animales.usuarios WHERE id_user = :id_user";
                 $sentence = $conBD->prepare($query);
-                $sentence->bindParam(1, $id_rol);
+                $sentence->bindParam(1, $id_user);
                 return $sentence->execute();
             }
         } catch (PDOException $e) {
