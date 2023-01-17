@@ -21,7 +21,16 @@
 <body>
 
 
+
     <?php
+    switch ($action) {
+        case "modificar":
+            $url_destino="../controller/modificarCliente.php";
+            break;
+        case "insertar":
+            break;
+        default:
+    }
     //Array con arrays asociativos como elementos
     $datosClientes;
     ?>

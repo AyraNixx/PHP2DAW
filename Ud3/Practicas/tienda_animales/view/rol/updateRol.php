@@ -24,7 +24,7 @@
           <!-- Margenes con mb mr ml mt -sm-distancia-->
           <!-- Misma linea -->
           <div class="form-group row mb-sm-2 mt-sm-2">
-            <label for="rol" class="col-lg-3 col-form-label">Id_rol</label>
+            <label for="id_rol" class="col-lg-3 col-form-label">Id_rol</label>
             <div class="col-lg-6">
               <input type="text" class="form-control" id="id_rol" name="id_rol"
                value=<?=(isset($rol) ? $rol["id_rol"] : "") ?>>

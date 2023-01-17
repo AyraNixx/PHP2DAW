@@ -31,5 +31,10 @@ class Passwd
         //significa que es correcta.
         return ($hash == self::toHash($passwd)) ? true : false;
     }
+
+    public static function changePasswd($oldPasswd, $newPasswd)
+    {
+        
+    }
 }
 
