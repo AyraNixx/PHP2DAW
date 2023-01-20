@@ -1,4 +1,15 @@
-<?php namespace viewsProduct; ?>
+<?php namespace viewsProduct; 
+//Comprobamos que la sesion está inciada
+session_destroy();
+//Si no está iniciada
+if(!isset($_SESSION["id"]))
+{
+    print("sesion no valida, redireccionando a la página principal");
+}else{
+    print("el id de session es " . $_SESSION["id"]);
+}
+
+?>
 
 <!DOCTYPE html>
 <html>
