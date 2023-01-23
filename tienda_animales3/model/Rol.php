@@ -134,7 +134,7 @@ class Rol
                 //Vinculamos los parametros al nombre de variable especificado
                 $sentence->bindParam(":id_rol", $id_rol);
                 //Devolvemos el resultado de la ejecucion (será un boolean true si todo ha ido bien)
-                $result =  $sentence->execute();
+                return $sentence->execute();
             } catch (PDOException $e) {
                 print("¡Error! : " . $e->getMessage() . "<br/>");
             }
