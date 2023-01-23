@@ -70,6 +70,7 @@
                 </tbody>
             </table>
         </div>
+        <div id="info_content"></div>
         <div class="m-4">
             <nav>
                 <ol class="pagination" style="list-style-type: none;" name="num_page">
@@ -82,8 +83,7 @@
                 </ol>
             </nav>
         </div>
-    </div>
-    <div id="info_content"></div>
+    </div>    
     <!-- <div name="pepe" id="pepe" onclick="pagination()">eeeee</div>
     <script src="../view/js/index.js"></script> -->
     <script src="../view/js/index.js"></script>

@@ -36,25 +36,38 @@ class Controller
         require_once("../view/index.php");
     }
 
+    //Funcion que añade o modifica según la opcion elegida
     public function add_or_edit(int $option)
     {
-        if ($option != 1) {
+        //Si la opcion es 2, almacenamos en $data_rol los valores pasados por POST
+        if ($option == 2) {
             $data_rol["id_rol"] = $_POST["id_rol"];
             $data_rol["rol"] = $_POST["rol"];
             $data_rol["descripcion"] = $_POST["descripcion"];
         }
+        //Incluimos la vista de añadir o modificar
         require_once("../view/add_or_edit.php");
     }
 
+
+    //Funcion que guarda los datos recibidos en la base de datos
     public function save($rol)
     {
-        (isset($rol["id_rol"])) ? "" : $data_rol["id_rol"] = $rol["id_rol"];
+        //Si hay una clave id_rol dentro del array que se ha pasaod
+        if (isset($rol["id_rol"])) {
+            //Guardamos su valor
+            $data_rol["id_rol"] = $rol["id_rol"];
+        }
+        //Guardamos los valores del array
         $data_rol["rol"] = $rol["rol"];
         $data_rol["descripcion"] = $rol["descripcion"];
 
+        //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
+        //de datos
         if ($this->rol->add($data_rol) != null) {
-            $option = 0;
-            include("../view/index.php");
+            //Llamamos a la funcion index() para que nos lleve de vuelta a la página
+            //principal
+            $this->index();
         }
     }
 
@@ -72,14 +85,17 @@ class Controller
         }
     }
 
+    //Funcion que muestra más detalles acerca del elemento seleccionado
     public function details($id_rol)
     {
+        //Guardamos en un array el resultado de la funcion get_one
         $data_rol = $this->rol->get_one($id_rol);
 
-        if($data_rol != null)
-        {
+        //Si data_rol no es nulo, nos llevará a la vista de detalles rol
+        if ($data_rol != null) {
             include("../view/details_rol.php");
-        }else{
+        //En caso contrario, se guarda un mensaje de error
+        } else {
             $msg = "¡Error! ¡No se ha podido conectar con la base de datos!";
         }
     }
@@ -102,14 +118,20 @@ if (isset($_POST)) {
         $option = 0;
     }
 
+    //Creamos un switch para que dependiendo del valor de option se haga una cosa u otra
     switch ($option) {
+        //Si es 0, llamamos al index
         case 0:
             $rol->index();
             break;
+        //Si es 1 (añadir) o 2 (modificar)
         case 1:
         case 2:
+            //Llamamos a la funcion add_or_edit y le pasamos $option para que dependiendo
+            //de la opcion elegida nos salga una cosa u otra
             $rol->add_or_edit($option);
             break;
+        //Si es 3, llamamos a la funcion delete
         case 3:
             //Si id_rol no es nulo y es numerico
             if (isset($_POST["id_rol"]) && is_numeric($_POST["id_rol"])) {
@@ -117,10 +139,17 @@ if (isset($_POST)) {
                 $rol->delete($_POST["id_rol"]);
             }
             break;
-        case 4:            
+        //Si es 4, llamamos a la funcion details que nos mostrará más detalles acerca
+        //del elemento que hayamos pinchado
+        case 4:
             if (isset($_POST["id_rol"]) && is_numeric($_POST["id_rol"])) {
                 $rol->details($_POST["id_rol"]);
             }
             break;
+        //La opcion guardar, la obtenemos al enviar los datos del formulario de modificar
+        //o añadir y lo que hará es llamar a la función save, pasándole el array $_POST
+        //para su introduccion en la base de datos
+        case "Guardar":
+            $rol->save($_POST);
     }
 }
