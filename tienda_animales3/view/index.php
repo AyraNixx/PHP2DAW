@@ -5,8 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Roles</title>
-    <link rel="stylesheet" href="../view/css/css.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/8d125d2b91.js" crossorigin="anonymous"></script>
 </head>
 
@@ -30,8 +29,8 @@
             <table class="table table-striped">
                 <thead class="table-dark text-center">
                     <tr>
-                        <th scope="col">#<i class="fa-sharp fa-solid fa-arrow-down-short-wide"></i></th>
-                        <th scope="col">Rol<i class="fa-sharp fa-solid fa-arrow-down-short-wide"></i></th>
+                        <th scope="col">#<a class=" p-0 text-white asc" href='index.php?submit=0&field=id_rol'><i class="fa-sharp fa-solid fa-arrow-down-short-wide pag ASC"></i></a></th>
+                        <th scope="col">Rol<a class=" p-0 text-white asc" href='index.php?submit=0&field=rol'><i class="fa-sharp fa-solid fa-arrow-down-short-wide pag ASC"></i></a></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -43,7 +42,7 @@
                         echo "<tr>";
                         echo "<td id='" . $i . "'>" . $one_rol["id_rol"] . "</td>";
                         echo "<td><a onclick=details(" . $i . ")>" . $one_rol["rol"] . "</a></td>";
-                        echo "<td>";                        
+                        echo "<td class='p-0'>";
                     ?>
                         <form action="index.php" method="POST" class="d-inline-block">
                             <input type="hidden" name="id_rol" value='<?= $one_rol["id_rol"] ?>'>
@@ -69,26 +68,33 @@
                     ?>
                 </tbody>
             </table>
+            <div id="info_content"></div>
+            <div>
+                <nav>
+                    <ol class="pagination justify-content-end" style="list-style-type: none;">
+                        <?php
+                        if ($actual_page != 1) {
+                            echo "<li class='page-item'><a href='index.php?submit=0&field=id_rol&ord=" . true . "&num_page=" . ($actual_page - 1) . "' class='page-link'>Previous</a></li>";
+                        } else {
+                            echo "<li class='page-item disabled'><a class='page-link'>Previous</li>";
+                        }
+                        for ($i = 1; $i <= $total_page; $i++) {
+                            echo "<li class='page-item".(($i == $actual_page) ? ' active' : '') ."'><a href='index.php?submit=0&field=id_rol&ord=" . true . "&num_page=$i' class='page-link'>$i</a></li>";
+                        }
+                        if ($actual_page != $total_page) {
+                            echo "<li class='page-item'><a href='index.php?submit=0&field=id_rol&ord=" . true . "&num_page=" . ($actual_page + 1) . "' class='page-link'>Next</a></li>";
+                        } else {
+                            echo "<li class='page-item disabled'><a class='page-link'>Next</li>";
+                        }
+                        ?>
+                    </ol>
+                </nav>
+            </div>
         </div>
-        <div id="info_content"></div>
-        <div class="m-4">
-            <nav>
-                <ol class="pagination" style="list-style-type: none;" name="num_page">
-                    <?php
-                    for ($i = 1; $i <= $total_page; $i++) {
-
-                        echo "<li class='page-item " . (($i == 1) ? ("active") : ("")) . "' value='$i' onclick='pagination()'><a href='#' class='page-link'>$i</a></li>";
-                    }
-                    ?>
-                </ol>
-            </nav>
-        </div>
-    </div>    
-    <!-- <div name="pepe" id="pepe" onclick="pagination()">eeeee</div>
-    <script src="../view/js/index.js"></script> -->
-    <script src="../view/js/index.js"></script>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script language="JavaScript" type="text/javascript" src="../view/js/index.js"></script>
 </body>
 
 </html>

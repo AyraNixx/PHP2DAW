@@ -1,4 +1,4 @@
-    <div class="table-wrapper">
+    <div class="table-wrapper pl-0 my-3">
         <table class="table table-striped">
             <thead class="table-dark text-center">
                 <tr>

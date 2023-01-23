@@ -4,7 +4,7 @@ function details(id_td) {
     let url = "index.php";
     //Obtenemos el id
     rol = document.getElementById(id_td).innerHTML;
-    
+
     //Creamos un nuevo objeto de la clase FormData
     let data = new FormData();
     //Añadimos nuevos valores con sus claves
@@ -30,10 +30,27 @@ function details(id_td) {
     xhr.send(data);
 }
 
-function pagination() {
-    if ($(".page-item").hasClass("active", () => {
-        $(this).removeClass("active");
-    }))
-        alert($(this).val());
-    $(this).addClass("active");
-}
+$(document).on("click", function (e) {
+    //Si el elemento al que le hacemos click tiene la clase pag
+    if ($(e.target).hasClass("pag")) {
+
+        // //Obtenemos el numero de página que es aquel que tenga la clase active
+        let page = $(".active").first().text();
+        //Obtenemos la url del nodo padre (que es la etiqueta a)
+        let url = $(e.target).parent().attr("href");
+
+        //Si el nodo padre tiene la clase asc
+        if ($(e.target).parent().hasClass("asc")) {
+
+            //Quitamos la clase y añadimos la clase desc
+            $(e.target).parent().removeClass("asc");
+            //concatenamos la url
+            url += ("&ord=" + null + "&num_page=" + page);
+            console.log(url);
+            //Le pasamos la nueva url
+            $(e.target).parent().attr("href", url);
+        }
+    }
+})
+
+
