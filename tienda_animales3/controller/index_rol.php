@@ -5,7 +5,7 @@ use \model\Rol;
 require_once("../model/Rol.php");
 
 //Creamos una clase controller (lo hago para que luego en el switch no sea tan lioso)
-class Controller
+class RolC
 {
     //Lo ponemos privado para que solo se pueda acceder desde esta clase y estatico
     //para poder usarlo en funciones estaticas
@@ -28,13 +28,15 @@ class Controller
     //Funcion que guarda los datos paginados y muestra la página principal
     public function index()
     {
+        //Almacenamos el orden y el campo por el que se ha ordenado actual
+        $actual_ord = $this->ord;
+        //Almacenamos la página actual 
         $actual_page = $this->num_page;
         //Almacenamos los datos
         $data_rol = $this->rol->pagination($this->ord, $this->field, $this->num_page, $this->amount);
         $total_page = $this->rol->get_total_pages($this->amount);
-
         //Incluimos la vista del index.
-        require_once("../view/index.php");
+        require_once("../view/index_rol.php");
     }
 
     //Funcion que añade o modifica según la opcion elegida
@@ -47,7 +49,7 @@ class Controller
             $data_rol["descripcion"] = $_POST["descripcion"];
         }
         //Incluimos la vista de añadir o modificar
-        require_once("../view/add_or_edit.php");
+        require_once("../view/add_or_edit_rol.php");
     }
 
 
@@ -63,12 +65,22 @@ class Controller
         $data_rol["rol"] = $rol["rol"];
         $data_rol["descripcion"] = $rol["descripcion"];
 
-        //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
-        //de datos
-        if ($this->rol->add($data_rol) != null) {
-            //Llamamos a la funcion index() para que nos lleve de vuelta a la página
-            //principal
-            $this->index();
+        if ($rol["prev_option"] == 1) {
+            //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
+            //de datos
+            if ($this->rol->add($data_rol) != null) {
+                //Llamamos a la funcion index() para que nos lleve de vuelta a la página
+                //principal
+                $this->index();
+            }
+        }else{
+            //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
+            //de datos
+            if ($this->rol->update($data_rol) != null) {
+                //Llamamos a la funcion index() para que nos lleve de vuelta a la página
+                //principal
+                $this->index();
+            }
         }
     }
 
@@ -102,37 +114,41 @@ class Controller
     }
 }
 
-
+//Creamos una variable llamada msg para guardar el mensaje resultante
 $msg = null;
 
-
+//Si el array $_REQUEST no está vacío
 if (isset($_REQUEST)) {
     
+    //Comprobamos que sus valores tampoco lo estén
     if (isset($_REQUEST["ord"]) && isset($_REQUEST["field"]) && isset($_REQUEST["num_page"])) {
-        
+
+        //Almacenamos los valores y usamos filter_var para filtrar las variables con los
+        //filtros especificados
         $ord = filter_var($_REQUEST["ord"], FILTER_VALIDATE_BOOLEAN);
         $field = ($_REQUEST["field"]);
         $num_page = filter_var($_REQUEST["num_page"], FILTER_VALIDATE_INT);
-        $amount = 5;        
-        
+        $amount = 5;
+        //Si son nulos
     } else {
+        //Inicializamos las variables
         $ord = "";
         $field = "id_rol";
         $num_page = 1;
         $amount = 5;
     }
 
+    //Si la clave submit no es nula
     if (isset($_REQUEST["submit"])) {
-
+        //Guardamos la opcion elegida y filtramos su valor con filter_var
         $option = filter_var($_REQUEST["submit"], FILTER_VALIDATE_INT);
-        
+        //En caso contrario, inicializamos option
     } else {
         $option = 0;
     }
 
-    echo $ord . " " . $field . " " . $num_page . " " . $amount;
-
-    $rol = new Controller($ord, $field, $num_page, $amount);
+    //Creamos un nuevo objeto de la clase RolC
+    $rol = new RolC($ord, $field, $num_page, $amount);
 
     //Creamos un switch para que dependiendo del valor de option se haga una cosa u otra
     switch ($option) {
@@ -157,16 +173,17 @@ if (isset($_REQUEST)) {
             break;
             //Si es 4, llamamos a la funcion details que nos mostrará más detalles acerca
             //del elemento que hayamos pinchado
-        case 4:
+        case 4:            
             //Si el id_rol no está vacío y es un número
-            if (isset($_POST["id_rol"]) && is_numeric($_POST["id_rol"])) {
-                $rol->details($_POST["id_rol"]);
+            if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
+                //Llamamos a la funcion details
+                $rol->details($_POST["id"]);
             }
             break;
-            //La opcion guardar, la obtenemos al enviar los datos del formulario de modificar
+            //La opcion 5, la obtenemos al enviar los datos del formulario de modificar
             //o añadir y lo que hará es llamar a la función save, pasándole el array $_POST
             //para su introduccion en la base de datos
-        case "Guardar":
+        case 5:
             $rol->save($_POST);
     }
 }

@@ -1,15 +1,22 @@
 //Funcion que muestra más detalles de un elemento seleccionado de la tabla
-function details(id_td) {
-    //Definimos la url
-    let url = "index.php";
+function details(id_td, url) {
+    
     //Obtenemos el id
-    rol = document.getElementById(id_td).innerHTML;
-
+    id_cell = document.getElementById(id_td).innerHTML;
+    
     //Creamos un nuevo objeto de la clase FormData
     let data = new FormData();
     //Añadimos nuevos valores con sus claves
     data.append("submit", 4);
-    data.append("id_rol", rol);
+    data.append("id", id_cell);
+
+
+    // //Para poder ver el contenido de un formdata(por si tenemos algun problema)
+    // // console.log(data.entries());
+    // for(var par of data.entries())
+    // {
+    //     console.log(par);
+    // }
 
     //Creamos objeto xmlhttprequest
     let xhr = new XMLHttpRequest();
@@ -19,7 +26,6 @@ function details(id_td) {
         //Cuando el estado de nuestra peticion sea 4 (completa) y el estado sea 200
         //(éxito)
         if (xhr.readyState == 4 && xhr.status == 200) {
-
             //Mostramos la respuesta a la peticion en el elemento info_content
             $("#info_content").html(xhr.response);
         }
@@ -41,11 +47,13 @@ $(document).on("click", function (e) {
 
         //Si el nodo padre tiene la clase asc
         if ($(e.target).parent().hasClass("asc")) {
-
-            //Quitamos la clase y añadimos la clase desc
-            $(e.target).parent().removeClass("asc");
             //concatenamos la url
-            url += ("&ord=" + null + "&num_page=" + page);
+            url += ("&ord=false&num_page=" + page);            
+            //Le pasamos la nueva url
+            $(e.target).parent().attr("href", url);
+        } else if($(e.target).parent().hasClass("desc")){
+            //concatenamos la url
+            url += ("&ord=true&num_page=" + page);
             console.log(url);
             //Le pasamos la nueva url
             $(e.target).parent().attr("href", url);

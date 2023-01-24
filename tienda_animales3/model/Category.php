@@ -54,7 +54,7 @@ class Category
     function get_one(int $id_categoria)
     {
         //Si id no es nulo y es numerico
-        if (isset($id_categoria) && is_num($id_categoria)) {
+        if (isset($id_categoria) && is_numeric($id_categoria)) {
             try {
                 //Definimos la consulta
                 $query = "SELECT * FROM tienda_animales.categoria WHERE id_categoria = :id_categoria";
@@ -160,7 +160,7 @@ class Category
     function delete(int $id_categoria)
     {
         //Si id no es nulo y es numerico
-        if (isset($id_categoria) && is_num($id_categoria)) {
+        if (isset($id_categoria) && is_numeric($id_categoria)) {
             try {
                 //Definimos la consulta
                 $query = "DELETE FROM tienda_animales.categoria WHERE id_categoria = :id_categoria";
@@ -175,5 +175,29 @@ class Category
             }
             return null;
         }
+    }
+
+     //Funcion que devuelve el total de páginas que tendremos en función de la cantidad
+    //de elementos que queramos mostrar en cada una de llas
+    function get_total_pages(int $amount)
+    {
+        try {
+            //Definimos la consulta (usamos count para que cuente el total de filas de la tabla,
+            //lo dividimos entre la cantidad de elementos que queremos por cada página y usamos
+            //round para que nos redondee el resultado obtenido)
+            $query = "SELECT CEILING(COUNT(*)/:amount) AS pages FROM tienda_animales.categoria";
+            //Preparamos la sentencia
+            $sentence = $this->conBD->prepare($query);
+            //Vinculamos los parámetros al nombre de la variable especificada
+            $sentence->bindParam(":amount", $amount);
+            //Ejecutamos la consulta
+            $sentence->execute();
+            //Devolvemos el total de páginas (como la funcion fetch nos devuelve un array
+            //asociativo, pongo pages para que me devuelva el valor de la clave pages)            
+            return $sentence->fetch()["pages"];
+        } catch (PDOException $e) {
+            print("¡Error! : " . $e->getMessage() . "<bd/>");
+        }
+        return null;
     }
 }

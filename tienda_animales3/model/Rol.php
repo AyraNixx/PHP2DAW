@@ -125,7 +125,7 @@ class Rol
     function delete($id_rol)
     {
         //Si id no es nulo y es numerico
-        if (isset($id_rol) && is_numeric($id_rol)) {            
+        if (isset($id_rol) && is_numeric($id_rol)) {
             try {
                 //Definimos la consulta
                 $query = "DELETE FROM tienda_animales.roles WHERE id_rol=:id_rol";
@@ -141,17 +141,17 @@ class Rol
             return null;
         }
     }
-    
-    
+
+
     //Funcion que devuelve la tabla paginada
-    function pagination(bool $ordAsc, string $fieldOrd, int $numPag, int $amount)
+    function pagination(bool $ordAsc, string $field, int $numPag, int $amount)
     {
         try {
             //Definimos la consulta
-            $query = "SELECT * FROM tienda_animales.roles ORDER BY :fieldOrd";
+            $query = "SELECT * FROM tienda_animales.roles ORDER BY :field";
             //Si ordAsc es true concatenamos sin poner DESC en la otra cadena. En caso contrario,
             //se pondrá DESC en la otra cadena para indicar que el orden será descendente
-            ($ordAsc) ? ($query = $query . " LIMIT :amount OFFSET :offset;") : ($query = $query . " DESC LIMIT :amount OFFSET :offset;");
+            ($ordAsc) ? ($query .= " LIMIT :amount OFFSET :offset") : ($query .= " DESC LIMIT :amount OFFSET :offset");
             //La variable offset indica la primera fila de cada página.
             //Calculamos su valor restando uno a la página en la que nos encontremos para
             //luego multiplicarlo por la cantidad de objetos que queremos en cada página.
@@ -162,11 +162,20 @@ class Rol
             //Preparamos la consulta
             $sentence = $this->conBD->prepare($query);
             //Vinculamos los parámetros al nombre de la variable especificada
-            $sentence->bindParam(":fieldOrd", $fieldOrd);
+            $sentence->bindParam(":field", $field);
             //Utilizamos PDO::PARAM_INT para indicar que se trata de un número entero
             //ya que en ocasiones puede contarlo como una cadena.
             $sentence->bindParam(":amount", $amount, PDO::PARAM_INT);
             $sentence->bindParam(":offset", $offset, PDO::PARAM_INT);
+
+            //Para ver la consulta que se está pasando
+            // var_dump($ordAsc);
+            // var_dump($field);
+            // var_dump($numPag);
+            // var_dump($amount);
+            // var_dump($offset);
+            // echo "<br>";
+            // print($sentence->queryString);
             //Ejecutamos la consulta
             $sentence->execute();
             //Devolvemos las filas resultantes
@@ -182,11 +191,11 @@ class Rol
     //de elementos que queramos mostrar en cada una de llas
     function get_total_pages(int $amount)
     {
-        try{
+        try {
             //Definimos la consulta (usamos count para que cuente el total de filas de la tabla,
             //lo dividimos entre la cantidad de elementos que queremos por cada página y usamos
             //round para que nos redondee el resultado obtenido)
-            $query = "SELECT ROUND(COUNT(*)/:amount, 0) AS pages FROM tienda_animales.roles";
+            $query = "SELECT CEILING(COUNT(*)/:amount) AS pages FROM tienda_animales.roles";
             //Preparamos la sentencia
             $sentence = $this->conBD->prepare($query);
             //Vinculamos los parámetros al nombre de la variable especificada
@@ -196,7 +205,7 @@ class Rol
             //Devolvemos el total de páginas (como la funcion fetch nos devuelve un array
             //asociativo, pongo pages para que me devuelva el valor de la clave pages)
             return $sentence->fetch()["pages"];
-        }catch(PDOException $e){
+        } catch (PDOException $e) {
             print("¡Error! : " . $e->getMessage() . "<bd/>");
         }
         return null;
