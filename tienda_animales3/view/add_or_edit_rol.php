@@ -22,20 +22,21 @@
                 if ($option == 2) {
                     echo "<div class='form-group col-md-12'>";
                     echo "<label for='rol' class='mb-3'>Id</label>";
-                    echo "<input type=text name=id_rol class=form-control value=" . $data_rol["id_rol"] . ">";
+                    echo "<input type=text name=new_id class=form-control value=" . $data["id_rol"] . ">";
+                    echo "<input type=hidden name=id_rol value=". $data["id_rol"] . ">";
                     echo "</div>";
                 }
                 ?>
                 <div class="form-group col-md-12">
                     <label for="rol" class="mt-2 mb-1">Rol</label>
                     <!-- Si option vale 2, se muestran datos del rol a cambiar -->
-                    <input type="text" name="rol" class="form-control" value="<?= ($option == 2) ? $data_rol["rol"] : "" ?>">
+                    <input type="text" name="rol" class="form-control" value="<?= ($option == 2) ? $data["rol"] : "" ?>">
                 </div>
                 <div class="form-group col-md-12">
                     <label for="descripcion" class="mt-2 mb-1">Descripcion</label>
-                    <input type="text" name="descripcion" class="form-control" value=<?= ($option == 2) ? $data_rol["descripcion"] : "" ?>>
+                    <input type="text" name="descripcion" class="form-control" value=<?= ($option == 2) ? $data["descripcion"] : "" ?>>
                 </div>
-                <input type="hidden" name="prev_option" value="<?=$option?>">
+                <input type="hidden" name="option" value="<?=$option?>">
                 <div class="form-group col-md-12 text-center">
                     <button type="submit" value="5" name="submit" class="mt-3 btn btn-secondary">Guardar</button>
                 </div>

@@ -37,24 +37,26 @@ function details(id_td, url) {
 }
 
 $(document).on("click", function (e) {
-    //Si el elemento al que le hacemos click tiene la clase pag
-    if ($(e.target).hasClass("pag")) {
-
+    
+    // //Si el elemento al que le hacemos click tiene la clase pag
+    if ($(e.target).hasClass("filter")) {
+        
         // //Obtenemos el numero de página que es aquel que tenga la clase active
         let page = $(".active").first().text();
         //Obtenemos la url del nodo padre (que es la etiqueta a)
         let url = $(e.target).parent().attr("href");
 
         //Si el nodo padre tiene la clase asc
-        if ($(e.target).parent().hasClass("asc")) {
+        if ($(e.target).parent().hasClass("asc")) {            
+        
             //concatenamos la url
-            url += ("&ord=false&num_page=" + page);            
+            url = url + ("&ord=DESC&num_page=" + page);       
             //Le pasamos la nueva url
             $(e.target).parent().attr("href", url);
+        
         } else if($(e.target).parent().hasClass("desc")){
             //concatenamos la url
-            url += ("&ord=true&num_page=" + page);
-            console.log(url);
+            url = url + ("&ord=ASC&num_page=" + page);
             //Le pasamos la nueva url
             $(e.target).parent().attr("href", url);
         }

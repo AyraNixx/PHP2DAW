@@ -19,7 +19,7 @@ class Rol
             //Iniciamos conexion con la base de datos
             $this->conBD = Utils::conectar();
         } catch (PDOException $e) {
-            print("¡Error! : " . $e->getMessage() . "<br/>");
+            Utils::save_log($e->getMessage());
         }
     }
 
@@ -44,7 +44,7 @@ class Rol
             //Devolvemos el resultado obtenido
             return $sentence->fetchAll();
         } catch (PDOException $e) {
-            print("¡Error! : " . $e->getMessage() . "<br/>");
+            Utils::save_log($e->getMessage());
         }
         return null;
     }
@@ -67,7 +67,7 @@ class Rol
                 //Devolvemos el resultado obtenido
                 return $sentence->fetch();
             } catch (PDOException $e) {
-                print("¡Error! : " . $e->getMessage() . "<br/>");
+                Utils::save_log($e->getMessage());
             }
             return null;
         }
@@ -101,24 +101,26 @@ class Rol
     function update(array $rol)
     {
         //Comprobamos que no sea nulo
-        if (isset($rol) && isset($rol["id_rol"]) && isset($rol["rol"]) && isset($rol["descripcion"])) {
+        if (isset($rol) && isset($rol["id_rol"]) && isset($rol["new_id"]) && isset($rol["rol"]) && isset($rol["descripcion"])) {
             try {
                 //Definimos la consulta
-                $query = "UPDATE tienda_animales.roles SET id_rol=:id_rol, rol=:rol, descripcion=:descripcion WHERE id_rol=:id_rol";
+                $query = "UPDATE tienda_animales.roles SET id_rol=:new_id, rol=:rol, descripcion=:descripcion WHERE id_rol=:id_rol";
                 //Preparamos la sentencia
                 $sentence = $this->conBD->prepare($query);
                 //Vinculamos los parametros al nombre de variable especificado
-                $sentence->bindParam(":id_rol", $rol["id_rol"]);
-                $sentence->bindParam(":rol", $rol["rol"]);
-                $sentence->bindParam(":descripcion", $rol["descripcion"]);
+                $sentence->bindParam(":id_rol", $rol["id_rol"], PDO::PARAM_INT);
+                $sentence->bindParam(":new_id", $rol["new_id"], PDO::PARAM_INT);
+                $sentence->bindParam(":rol", $rol["rol"], PDO::PARAM_STR);
+                $sentence->bindParam(":descripcion", $rol["descripcion"], PDO::PARAM_STR);
                 //Devolvemos el resultado de la ejecucion (será un boolean true si todo ha ido bien)
                 return $sentence->execute();
             } catch (PDOException $e) {
-                print("¡Error! : " . $e->getMessage() . "<bd/>");
+                Utils::save_log($e->getMessage());
             }
             return null;
         }
     }
+
 
 
     //Funcion que elimina el rol indicado
@@ -136,7 +138,7 @@ class Rol
                 //Devolvemos el resultado de la ejecucion (será un boolean true si todo ha ido bien)
                 return $sentence->execute();
             } catch (PDOException $e) {
-                print("¡Error! : " . $e->getMessage() . "<br/>");
+                Utils::save_log($e->getMessage());
             }
             return null;
         }
@@ -144,39 +146,28 @@ class Rol
 
 
     //Funcion que devuelve la tabla paginada
-    function pagination(bool $ordAsc, string $field, int $numPag, int $amount)
+    function pagination(string $ordAsc, string $field, int $numPag, int $amount)
     {
         try {
-            //Definimos la consulta
-            $query = "SELECT * FROM tienda_animales.roles ORDER BY :field";
-            //Si ordAsc es true concatenamos sin poner DESC en la otra cadena. En caso contrario,
-            //se pondrá DESC en la otra cadena para indicar que el orden será descendente
-            ($ordAsc) ? ($query .= " LIMIT :amount OFFSET :offset") : ($query .= " DESC LIMIT :amount OFFSET :offset");
-            //La variable offset indica la primera fila de cada página.
-            //Calculamos su valor restando uno a la página en la que nos encontremos para
-            //luego multiplicarlo por la cantidad de objetos que queremos en cada página.
-            //Ejemplo --> Si estamos en la página 1 y queremos que nos muestren 10 filas
-            //la primera fila será la 0 ((1-1) * 10 = 0), en la página dos, la primera fila
-            //será la 10 ((2-1) * 10 = 10).
+            //Calculamos desde que línea se empieza
             $offset = ($numPag - 1) * $amount;
+
+            $query = "SELECT * FROM tienda_animales.roles ORDER BY $field $ordAsc LIMIT :amount OFFSET :offset";
+            
             //Preparamos la consulta
             $sentence = $this->conBD->prepare($query);
-            //Vinculamos los parámetros al nombre de la variable especificada
-            $sentence->bindParam(":field", $field);
-            //Utilizamos PDO::PARAM_INT para indicar que se trata de un número entero
-            //ya que en ocasiones puede contarlo como una cadena.
-            $sentence->bindParam(":amount", $amount, PDO::PARAM_INT);
-            $sentence->bindParam(":offset", $offset, PDO::PARAM_INT);
+            //Por alguna razón que desconozco con mis escasos conocimientos, el bindparam 
+            // Vinculamos los parámetros al nombre de la variable especificada
+            // Utilizamos PDO::PARAM_INT para indicar que se trata de un número entero
+            // ya que en ocasiones puede contarlo como una cadena.
+            $sentence->bindValue(":amount", $amount, PDO::PARAM_INT);
+            $sentence->bindValue(":offset", $offset, PDO::PARAM_INT);
 
-            //Para ver la consulta que se está pasando
-            // var_dump($ordAsc);
-            // var_dump($field);
-            // var_dump($numPag);
-            // var_dump($amount);
-            // var_dump($offset);
-            // echo "<br>";
-            // print($sentence->queryString);
-            //Ejecutamos la consulta
+            //No quito lo de debugDumpParams porque es algo interesante
+            // echo "<pre>";
+            // var_dump($sentence->debugDumpParams());
+            // echo "</pre>";
+          
             $sentence->execute();
             //Devolvemos las filas resultantes
             return $sentence->fetchAll();
@@ -211,3 +202,4 @@ class Rol
         return null;
     }
 }
+

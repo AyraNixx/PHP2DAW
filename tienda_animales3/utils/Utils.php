@@ -7,6 +7,12 @@ use \PDOException;
 
 class Utils
 { 
+
+    /***********************************************************************
+     *                                                                     *
+     *                         CONEXIÓN BD                                 *
+     *                                                                     *
+     ***********************************************************************/
     /**
      * Funcion para conectar con la base de datos y nos devuelve una conexion PDO 
      * activa
@@ -41,11 +47,15 @@ class Utils
         }
     }
 
+
+
+    
     public static function limpiar_datos($data)
     {
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
+
         return $data;
     }
 
@@ -75,6 +85,24 @@ class Utils
     public static function delete_dir_img($name_folder)
     {
 
+    }
+
+
+    /***********************************************************************
+     *                                                                     *
+     *                         EXCEPCIONES - LOG                           *
+     *                                                                     *
+     ***********************************************************************/
+
+    //Funcion para guardar las excepciones en un log
+    public static function save_log($error, $path = "../log/log.log")
+    {
+        //Utilizamos error_log que envia un mensaje de error según lo indicado
+        //Le pasamos el error (que pasamos con print_r para que se vea más claro)
+        //Indicamos que el tipo de registro es 3, lo que indica que el mensaje
+        //se adjuntará al archivo de destino
+        //Y por último la ruta del archivo
+        error_log(print_r($error . "\xA", true), 3, $path);
     }
 }
 

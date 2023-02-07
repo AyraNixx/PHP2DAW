@@ -12,9 +12,9 @@
                 <?php
                 //Mostramos la informacion
                 echo "<tr>";
-                echo "<td>" . $data_rol["id_rol"] . "</td>";
-                echo "<td>" . $data_rol["rol"] . "</td>";
-                echo "<td>" . $data_rol["descripcion"] . "</td>";
+                echo "<td>" . $data["id_rol"] . "</td>";
+                echo "<td>" . $data["rol"] . "</td>";
+                echo "<td>" . $data["descripcion"] . "</td>";
                 echo "<td>";
                 echo "</td>";
                 echo "</tr>";
