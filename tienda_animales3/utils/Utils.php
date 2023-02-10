@@ -6,7 +6,7 @@ use \PDO;
 use \PDOException;
 
 class Utils
-{ 
+{
 
     /***********************************************************************
      *                                                                     *
@@ -49,7 +49,11 @@ class Utils
 
 
 
-    
+
+
+
+
+
     public static function limpiar_datos($data)
     {
         $data = trim($data);
@@ -59,33 +63,77 @@ class Utils
         return $data;
     }
 
-    public static function save_img($file)
+
+
+
+
+
+
+
+    /***********************************************************************
+     *                                                                     *
+     *                         IMÁGENES                                    *
+     *                                                                     *
+     ***********************************************************************/
+    /**
+     * Funcion para conectar con la base de datos y nos devuelve una conexion PDO 
+     * activa
+     */
+
+    public static function save_img(array $file)
     {
         //Comprobamos que el elemento pasado es una imagen, para ello usamos la funcion
-        //getimagesize
+        //getimagesize. Si nos devuelve false, significa que el archivo no es una imagen válida
         if (getimagesize($file["tmp_name"])) {
-            //Definimos una variable con la ruta de la carpeta en la que guardamos las 
-            //imagenes subidas
-            $destinatation_folder = "../imgs/";
-            //Definimos otra variable en la que vamos a concatenar la ruta de la carpeta
-            //con el nombre de la imagen
-            $upload_file = $destinatation_folder . $file["name"];
-            //usamos la funcion move_uploaded_file para mover el archivo subido 
-            //a la carpeta en la que queremos que se encuentre
-            move_uploaded_file($file["tmp_name"], $upload_file);
-            return $upload_file;
+
+            //Una vez comprobado que el archivo es una imagen, verificamos su tamaño
+            if ($file["size"] > 2097152) {
+                //Si es mayor de 2097152, pues devolvemos false.
+                return false;
+
+                //En caso contrario
+            } else {
+
+                //Generamos un nombre único para la imagen
+                //Utilizamos microtime para que nos devuelva la fecha Unix actual con microsegundos
+                //y pasamos como argumento true para que en vez de una cadena, nos devuelva un
+                //float que redondearemos con round.
+                //Concatenamos el numero obtenido con el formato de imagen que obtenemos al 
+                //usar explode con delimitador '.' y utilizar end para sacar el ultimo elemento
+                //del array obtenido del explode
+                $file_name = round(microtime(true)) . "." . end(explode(".", $file["name"]));
+                //Carpeta de destino
+                $file_path = "../imgs/" . $file_name;
+                //Usamos move_uploaded_file para mover el archivo subido a la carpeta indicada
+                //Utilizamos $file["tmp_name] porque es la ubicación temporal donde se encuentra
+                //el archivo subido, el segundo argumento es la ruta al repositorio
+                move_uploaded_file($file["tmp_name"], $file_path);
+                //Devolvemos la url para guardarla en la bd
+                return $file_path;
+            }
+        } else {
+            return false;
         }
     }
 
-    public static function create_dir_img($name_folder)
-    {
 
+    //Funcion para eliminar una imagen
+    public static function delete_img(string $file_path)
+    {
+        //Utilizamos file_exist para comprobar que el archivo existe
+        if (file_exists($file_path)) {
+            //La eliminamos
+            return unlink($file_path);
+        } else {
+            return false;
+        }
     }
 
-    public static function delete_dir_img($name_folder)
-    {
 
-    }
+
+
+
+
 
 
     /***********************************************************************
@@ -104,8 +152,128 @@ class Utils
         //Y por último la ruta del archivo
         error_log(print_r($error . "\xA", true), 3, $path);
     }
+
+
+
+
+
+
+
+
+    /***********************************************************************
+     *                                                                     *
+     *                         CODE ACTIVACIÓN O SALT                      *
+     *                                                                     *
+     ***********************************************************************/
+
+    //Creamos una función que genere un código aleatorio, pasando como parámetro
+    //la cantidad de caracteres que queremos que tenga. Por ejemplo, para el salt
+    //ponemos 16 y para el código de activación, pues 5
+    //Por defecto, la longitud será de 16
+    //Por defecto, ponemos que no queremos que el código sea numerico
+    public static function generate_code(int $lenth = 16, bool $numeric = false)
+    {
+        //Utilizamos la funcion array_merge para crear un array que contenga todas
+        //las letras del abecedario, tanto mayúsculas como minúsculas, y todos los 
+        //números del 0 al 9, 
+        $chars = array_merge(range("a", "z"), range("A", "Z"), range(0, 9));
+        $salt = null;
+
+        //Utilizamos un bucle para generar el salt
+        for ($i = 0; $i < $lenth; $i++) {
+            //Si indicamos que queremos que el salt sea numérico, 
+            if ($numeric) {
+                $salt .= rand(0, 9);
+            } else {
+                //Concatenamos el caracter aleatorio obtenido
+                $salt .= $chars[rand(0, count($chars) - 1)];
+            }
+        }
+        //Devolvemos el código obtenido
+        return $salt;
+    }
+
+
+
+
+
+
+
+
+    /***********************************************************************
+     *                                                                     *
+     *                         PASSWORD                                    *
+     *                                                                     *
+     ***********************************************************************/
+
+    //Funcion que encripta la contraseña en 256 bits
+    public static function to_hash(string $psswd, string $salt = "popeye")
+    {
+        //Llamamos a la función generate_code para generar el salt.
+        //Utilizamos un salt que se añade a la contraseña para que sea más dificil
+        //averiguar la contraseña. Lo mejor es generarlo aleatoriamente y guardarlo
+        //de forma que se pueda recuperar más tarde.
+        ($salt == "popeye") ? $salt = self::generate_code() : $salt;
+        
+
+        //Devolvemos un array con el salt obtenido y la contraseña encriptada
+        return ["salt" => $salt, "hash" => hash("sha256", $salt . $psswd)];
+    }
+
+
+    //Función que comprueba que las contraseñas sean coincidentes
+    public static function psswd_verify(string $psswd, array $hash_array)
+    {
+        $hash = $hash_array["hash"];
+        $salt = $hash_array["salt"];
+        //Si el hash coincide con el resultado obtenido al usar la funcion to_hash
+        //significa que es correcta.
+        //Como to_hash devuelve un array, ponemos ["hash"] para indicar que queremos
+        //el valor de la clave hash
+        return ($hash == self::to_hash($psswd, $salt)["hash"]) ? true : false;
+    }
+
+
+
+
+
+
+
+    /***********************************************************************
+     *                                                                     *
+     *                         EMAIL                                       *
+     *                                                                     *
+     ***********************************************************************/
+    public static function send_activation_code(array $user)
+    {
+        $activation_code = self::generate_code(5, true);
+        $to = $user["correo"]; //Destinatario
+        $subject = "Activación de cuenta"; //Motivo
+        //Cuerpo del mensaje
+        $msg = "<h2>Hola " . $user["nombre"] . ", gracias por registrarte en nuestro sitio web.</h2>";
+        $msg .= "<p>Para activar su cuenta, introduzca el código: [" . $activation_code . "] en el siguiente enlace:</p>";
+        $msg .= "<h4><a href='../view/login.php'>http://www.preuba.com</a></h4>";
+        $header = "From: no-reply@example.com"; //cabecera
+        $header .= "MIME-Version: 1.0\r\n";
+        $header .= "Content-type: text/html\r\n";
+
+        echo $msg;
+
+        return $activation_code;
+        //Si el correo se ha enviado correctamente, devolverá true. En caso contrario, false
+        // if (mail($to, $subject, $msg, $header)) {
+        //     return true;
+        // } else {
+        //     return false;
+        // }
+    }
 }
 
 
+// if (Utils::send_activation_code(["correo" => "thejokerjune@gmail.com", "nombre" => "paula"]));
 
-?>
+// $hash = (Utils::to_hash("kesesoesoeskesokkesoesroquefort"));
+
+// echo "<br>";
+
+// var_dump(Utils::psswd_verify("kesesoesoeskesokkesoesroquefort", $hash));

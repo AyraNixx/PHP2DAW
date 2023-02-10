@@ -82,18 +82,18 @@
                         //Si la página actual no es la primera, activamos previous. Si es la primera
                         //lo desactivamos con la clase disabled
                         if ($actual_page != 1) {
-                            echo "<li class='page-item'><a href='index_rol.php?submit=0&field=id_rol&ord=ASC&num_page=" . ($actual_page - 1) . "' class='page-link'>Previous</a></li>";
+                            echo "<li class='page-item'><a href='index_rol.php?&num_page=" . ($actual_page - 1) . "' class='page-link'>Previous</a></li>";
                         } else {
                             echo "<li class='page-item disabled'><a class='page-link'>Previous</a></li>";
                         }
 
                         for ($i = 1; $i <= $total_page; $i++) {
-                            echo "<li class='page-item".(($i == $actual_page) ? ' active' : '') ."'><a href='index_rol.php?submit=0&field=id_rol&ord=ASC&num_page=$i' class='page-link'>$i</a></li>";
+                            echo "<li class='page-item".(($i == $actual_page) ? ' active' : '') ."'><a href='index_rol.php?num_page=$i' class='page-link'>$i</a></li>";
                         }
 
                         //Hacemos lo mismo que con previous
                         if ($actual_page != $total_page) {
-                            echo "<li class='page-item'><a href='index_rol.php?submit=0&field=id_rol&ord=ASC&num_page=" . ($actual_page + 1) . "' class='page-link'>Next</a></li>";
+                            echo "<li class='page-item'><a href='index_rol.php?num_page=" . ($actual_page + 1) . "' class='page-link'>Next</a></li>";
                         } else {
                             echo "<li class='page-item disabled'><a class='page-link'>Next</a></li>";
                         }
