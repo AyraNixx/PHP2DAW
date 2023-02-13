@@ -82,38 +82,43 @@ class Utils
 
     public static function save_img(array $file)
     {
-        //Comprobamos que el elemento pasado es una imagen, para ello usamos la funcion
-        //getimagesize. Si nos devuelve false, significa que el archivo no es una imagen válida
-        if (getimagesize($file["tmp_name"])) {
+        $url_imgs = [];
+        //Recorremos el array
+        foreach ($file["name"] as $i => $name) {
+            //Comprobamos que el elemento pasado es una imagen, para ello usamos la funcion
+            //getimagesize. Si nos devuelve false, significa que el archivo no es una imagen válida
+            if (getimagesize($file["tmp_name"][$i])) {
+                //Una vez comprobado que el archivo es una imagen, verificamos su tamaño
+                if ($file["size"][$i] > 2097152) {
+                    //Si es mayor de 2097152, pues devolvemos false.
+                    return false;
 
-            //Una vez comprobado que el archivo es una imagen, verificamos su tamaño
-            if ($file["size"] > 2097152) {
-                //Si es mayor de 2097152, pues devolvemos false.
-                return false;
-
-                //En caso contrario
+                    //En caso contrario
+                } else {
+                    //Generamos un nombre único para la imagen
+                    //Utilizamos microtime para que nos devuelva la fecha Unix actual con microsegundos
+                    //y pasamos como argumento true para que en vez de una cadena, nos devuelva un
+                    //float que redondearemos con round.
+                    //Concatenamos el numero obtenido con el formato de imagen que obtenemos al 
+                    //usar explode con delimitador '.' y utilizar end para sacar el ultimo elemento
+                    //del array obtenido del explode
+                    $end = explode(".", $name);
+                    $file_name = round(microtime(true)) . "." . end($end);                    
+                    //Carpeta de destino
+                    $file_path = "../imgs/" . $file_name;
+                    //Usamos move_uploaded_file para mover el archivo subido a la carpeta indicada
+                    //Utilizamos $file["tmp_name] porque es la ubicación temporal donde se encuentra
+                    //el archivo subido, el segundo argumento es la ruta al repositorio
+                    move_uploaded_file($file["tmp_name"][$i], $file_path);
+                    //Devolvemos la url para guardarla en la bd
+                    array_push($url_imgs, $file_path);
+                }
             } else {
-
-                //Generamos un nombre único para la imagen
-                //Utilizamos microtime para que nos devuelva la fecha Unix actual con microsegundos
-                //y pasamos como argumento true para que en vez de una cadena, nos devuelva un
-                //float que redondearemos con round.
-                //Concatenamos el numero obtenido con el formato de imagen que obtenemos al 
-                //usar explode con delimitador '.' y utilizar end para sacar el ultimo elemento
-                //del array obtenido del explode
-                $file_name = round(microtime(true)) . "." . end(explode(".", $file["name"]));
-                //Carpeta de destino
-                $file_path = "../imgs/" . $file_name;
-                //Usamos move_uploaded_file para mover el archivo subido a la carpeta indicada
-                //Utilizamos $file["tmp_name] porque es la ubicación temporal donde se encuentra
-                //el archivo subido, el segundo argumento es la ruta al repositorio
-                move_uploaded_file($file["tmp_name"], $file_path);
-                //Devolvemos la url para guardarla en la bd
-                return $file_path;
+                return false;
             }
-        } else {
-            return false;
         }
+        //Devolvemos el array con las urls
+        return $url_imgs;
     }
 
 
@@ -214,7 +219,7 @@ class Utils
         //averiguar la contraseña. Lo mejor es generarlo aleatoriamente y guardarlo
         //de forma que se pueda recuperar más tarde.
         ($salt == "popeye") ? $salt = self::generate_code() : $salt;
-        
+
 
         //Devolvemos un array con el salt obtenido y la contraseña encriptada
         return ["salt" => $salt, "hash" => hash("sha256", $salt . $psswd)];
