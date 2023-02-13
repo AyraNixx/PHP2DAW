@@ -1,11 +1,11 @@
 <?php
 
-use \model\Category;
+use \model\Supplier;
 
-require_once("../model/Category.php");
+require_once("../model/Supplier.php");
 
 //Creamos una clase controller (lo hago para que luego en el switch no sea tan lioso)
-class CategoryC
+class SupplierC
 {
     //Lo ponemos privado para que solo se pueda acceder desde esta clase y estatico
     //para poder usarlo en funciones estaticas
@@ -19,10 +19,10 @@ class CategoryC
     private $msg;
 
 
-    //Inicializamos object para que se cree un nuevo objeto de Category
+    //Inicializamos object para que se cree un nuevo objeto de Supplier
     function __construct(string $ord, string $field, int $num_page, int $amount)
     {
-        $this->object = new Category();
+        $this->object = new Supplier();
 
         $this->ord = $ord;
         $this->field = $field;
@@ -44,7 +44,7 @@ class CategoryC
         $data = $this->object->pagination($this->ord, $this->field, $this->num_page, $this->amount);
         $total_page = $this->object->get_total_pages($this->amount);
         //Incluimos la vista del index.
-        require_once("../view/index_category.php");
+        require_once("../view/index_supplier.php");
     }
 
     //Funcion que añade o modifica según la opcion elegida
@@ -52,26 +52,28 @@ class CategoryC
     {
         //Si la opcion es 2, almacenamos en $data los valores pasados por POST
         if ($option == 2) {
-            $data["id_categoria"] = $_POST["id_categoria"];
+            $data["id_proveedor"] = $_POST["id_proveedor"];
             $data["nombre"] = $_POST["nombre"];
-            $data["descripcion"] = $_POST["descripcion"];
+            $data["direccion"] = $_POST["direccion"];
+            $data["telefono"] = $_POST["telefono"];
+            $data["correo"] = $_POST["correo"];
         }
         //Incluimos la vista de añadir o modificar
-        require_once("../view/add_or_edit_category.php");
+        require_once("../view/add_or_edit_supplier.php");
     }
 
 
     //Funcion que guarda los datos recibidos en la base de datos
     public function save(array $object)
     {
-        //Si hay una clave id_categoria dentro del array que se ha pasaod
-        if (isset($object["id_categoria"]) && isset($object["new_id"])) {
+        //Si hay una clave id_proveedor dentro del array que se ha pasaod
+        if (isset($object["id_proveedor"]) && isset($object["new_id"])) {
 
             //Comprobamos que es numérica
             if (is_numeric(filter_var($object["new_id"], FILTER_VALIDATE_INT))) {
 
                 //Guardamos su valor
-                $data["id_categoria"] = filter_var($object["id_categoria"], FILTER_VALIDATE_INT);
+                $data["id_proveedor"] = filter_var($object["id_proveedor"], FILTER_VALIDATE_INT);
                 $data["new_id"] = filter_var($object["new_id"], FILTER_VALIDATE_INT);
             } else {
                 $this->msg = "¡ERROR! La nueva clave no es numérica!";
@@ -81,9 +83,11 @@ class CategoryC
         }
         //Guardamos los valores del array
         $data["nombre"] = $object["nombre"];
-        $data["descripcion"] = $object["descripcion"];
+        $data["direccion"] = $object["direccion"];
+        $data["telefono"] = $object["telefono"];
+        $data["correo"] = $object["correo"];
 
-        //Si la opcion es 1, se añade la nueva categoria
+        //Si la opcion es 1, se añade el nuevo proveedor
         if ($object["option"] == 1) {
             //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
             //de datos
@@ -111,10 +115,10 @@ class CategoryC
     }
 
     //Funcion que elimina la categoria seleccionado
-    public function delete($id_category)
+    public function delete(int $id_supplier)
     {
         //Si la funcion delete devuelve como resultado algo distinto de null
-        if ($this->object->delete($id_category) != null) {
+        if ($this->object->delete($id_supplier) != null) {
             //Guardamos el mensaje
             $this->msg = "¡Borrado con éxito!";
             //Llamamos a la funcion index
@@ -125,14 +129,14 @@ class CategoryC
     }
 
     //Funcion que muestra más detalles acerca del elemento seleccionado
-    public function details($id_category)
+    public function details(int $id_supplier)
     {
         //Guardamos en un array el resultado de la funcion get_one
-        $data = $this->object->get_one($id_category);
+        $data = $this->object->get_one($id_supplier);
 
         //Si data no es nulo, incluirá la vista de detalles categoria
         if ($data != null) {
-            include("../view/details_category.php");
+            include("../view/details_supplier.php");
             //En caso contrario, se guarda un mensaje de error
         } else {
             $msg = "¡Error! ¡No se ha podido conectar con la base de datos!";
@@ -159,7 +163,7 @@ if (isset($_REQUEST)) {
     if (isset($_REQUEST["field"])) {
         $field = filter_var($_REQUEST["field"], FILTER_SANITIZE_SPECIAL_CHARS);
     } else {
-        $field = "id_categoria";
+        $field = "id_proveedor";
     }
 
     if (isset($_REQUEST["ord"])) {
@@ -200,8 +204,8 @@ if (isset($_REQUEST)) {
 
 
 
-    //Creamos un nuevo objeto de la clase CategoryC
-    $object = new CategoryC($ord, $field, $num_page, $amount);
+    //Creamos un nuevo objeto de la clase SupplierC
+    $object = new SupplierC($ord, $field, $num_page, $amount);
 
 
 
@@ -225,16 +229,16 @@ if (isset($_REQUEST)) {
             break;
             //Si es 3, llamamos a la funcion delete
         case 3:
-            //Si id_categoria no es nulo y es numerico
-            if (isset($_POST["id_categoria"]) && is_numeric($_POST["id_categoria"])) {
+            //Si id_proveedor no es nulo y es numerico
+            if (isset($_POST["id_proveedor"]) && is_numeric($_POST["id_proveedor"])) {
                 //Se llama a la funcion delete
-                $object->delete($_POST["id_categoria"]);
+                $object->delete($_POST["id_proveedor"]);
             }
             break;
             //Si es 4, llamamos a la funcion details que nos mostrará más detalles acerca
             //del elemento que hayamos pinchado
         case 4:
-            //Si el id_categoria no está vacío y es un número
+            //Si el id_proveedor no está vacío y es un número
             if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
                 //Llamamos a la funcion details
                 $object->details($_POST["id"]);

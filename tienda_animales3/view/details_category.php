@@ -3,8 +3,8 @@
             <thead class="table-dark text-center">
                 <tr>
                     <th scope="col">#</th>
-                    <th scope="col">Rol</th>
-                    <th scope="col">Descripcion</th>
+                    <th scope="col">Categoría</th>
+                    <th scope="col">Descripción</th>
                     <th scope="col"></th>
                 </tr>
             </thead>
@@ -12,8 +12,8 @@
                 <?php
                 //Mostramos la informacion
                 echo "<tr>";
-                echo "<td>" . $data["id_rol"] . "</td>";
-                echo "<td>" . $data["rol"] . "</td>";
+                echo "<td>" . $data["id_categoria"] . "</td>";
+                echo "<td>" . $data["nombre"] . "</td>";
                 echo "<td>" . $data["descripcion"] . "</td>";
                 echo "<td>";
                 echo "</td>";

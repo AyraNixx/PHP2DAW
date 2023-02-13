@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roles</title>
+    <title>Proveedores</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/8d125d2b91.js" crossorigin="anonymous"></script>
 </head>
@@ -15,10 +15,10 @@
             <div class="table-tittle">
                 <div class="row">
                     <div class="col-sm-8">
-                        <h2><b>Roles</b></h2>
+                        <h2><b>Proveedores</b></h2>
                     </div>
                     <div class="col-sm-4 text-end">
-                        <form action="index_rol.php" method="POST">
+                        <form action="index_supplier.php" method="POST">
                             <button name="submit" value="1" class="btn btn-success add-new">
                                 Añadir
                             </button>
@@ -29,8 +29,9 @@
             <table class="table table-striped">
                 <thead class="table-dark text-center">
                     <tr>                    
-                        <th scope="col">#<a class=" p-0 text-white <?=($actual_ord == "ASC") ? "asc" : "desc"?>" href='index_rol.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
-                        <th scope="col">Rol<a class=" p-0 text-white <?=($actual_ord == "ASC") ? "asc" : "desc"?>" href='index_rol.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
+                        <th scope="col">#<a class=" p-0 text-white <?=($actual_ord == "ASC") ? "asc" : "desc"?>" href='index_supplier.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
+                        <th scope="col">Nombre<a class=" p-0 text-white <?=($actual_ord == "ASC") ? "asc" : "desc"?>" href='index_supplier.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
+                        <th scope="col">Correo<a class=" p-0 text-white <?=($actual_ord == "ASC") ? "asc" : "desc"?>" href='index_supplier.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -39,16 +40,19 @@
                     $i = 1;
                     foreach ($data as $element) {
                         $i += 1;
-                        $url = "index_rol.php";
+                        $url = "index_supplier.php";
                         echo "<tr>";
-                        echo "<td id='" . $i . "'>" . $element["id_rol"] . "</td>";
-                        echo "<td><a onclick=details(" . $i . ",'".$url."')>" . $element["rol"] . "</a></td>";
+                        echo "<td id='" . $i . "'>" . $element["id_proveedor"] . "</td>";
+                        echo "<td><a onclick=details(" . $i . ",'".$url."')>" . $element["nombre"] . "</a></td>";
+                        echo "<td>" . $element["correo"] . "</td>";
                         echo "<td class='p-0'>";
                     ?>
-                        <form action="index_rol.php" method="POST" class="d-inline-block">
-                            <input type="hidden" name="id_rol" value='<?= $element["id_rol"] ?>'>
-                            <input type="hidden" name="rol" value='<?= $element["rol"] ?>'>
-                            <input type="hidden" name="descripcion" value='<?= $element["descripcion"] ?>'>
+                        <form action="index_supplier.php" method="POST" class="d-inline-block">
+                            <input type="hidden" name="id_proveedor" value='<?= $element["id_proveedor"] ?>'>
+                            <input type="hidden" name="nombre" value='<?= $element["nombre"] ?>'>
+                            <input type="hidden" name="direccion" value='<?= $element["direccion"] ?>'>
+                            <input type="hidden" name="telefono" value='<?= $element["telefono"] ?>'>
+                            <input type="hidden" name="correo" value='<?= $element["correo"] ?>'>
                             <button value="2" name="submit" class="mt-2 border-0 bg-transparent text-warning">
                                 <i class="fa-solid fa-marker"></i>
                             </button>
@@ -56,8 +60,8 @@
 
                         <i class="text-muted">|</i>
 
-                        <form action="index_rol.php" method="POST" class="d-inline-block">
-                            <input type="hidden" name="id_rol" value='<?= $element["id_rol"] ?>'>
+                        <form action="index_supplier.php" method="POST" class="d-inline-block">
+                            <input type="hidden" name="id_proveedor" value='<?= $element["id_proveedor"] ?>'>
                             <button value="3" name="submit" class="mt-2 border-0 bg-transparent text-danger">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
@@ -80,18 +84,18 @@
                         //Si la página actual no es la primera, activamos previous. Si es la primera
                         //lo desactivamos con la clase disabled
                         if ($actual_page != 1) {
-                            echo "<li class='page-item'><a href='index_rol.php?&num_page=" . ($actual_page - 1) . "' class='page-link'>Previous</a></li>";
+                            echo "<li class='page-item'><a href='index_supplier.php?&num_page=" . ($actual_page - 1) . "' class='page-link'>Previous</a></li>";
                         } else {
                             echo "<li class='page-item disabled'><a class='page-link'>Previous</a></li>";
                         }
 
                         for ($i = 1; $i <= $total_page; $i++) {
-                            echo "<li class='page-item".(($i == $actual_page) ? ' active' : '') ."'><a href='index_rol.php?num_page=$i' class='page-link'>$i</a></li>";
+                            echo "<li class='page-item".(($i == $actual_page) ? ' active' : '') ."'><a href='index_supplier.php?num_page=$i' class='page-link'>$i</a></li>";
                         }
 
                         //Hacemos lo mismo que con previous
                         if ($actual_page != $total_page) {
-                            echo "<li class='page-item'><a href='index_rol.php?num_page=" . ($actual_page + 1) . "' class='page-link'>Next</a></li>";
+                            echo "<li class='page-item'><a href='index_supplier.php?num_page=" . ($actual_page + 1) . "' class='page-link'>Next</a></li>";
                         } else {
                             echo "<li class='page-item disabled'><a class='page-link'>Next</a></li>";
                         }
