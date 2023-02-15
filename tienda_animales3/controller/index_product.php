@@ -10,7 +10,7 @@ class ProductC
 {
     //Lo ponemos privado para que solo se pueda acceder desde esta clase y estatico
     //para poder usarlo en funciones estaticas
-    private $object;
+    private $element;
 
     private $ord;
     private $field;
@@ -20,10 +20,10 @@ class ProductC
     private $msg;
 
 
-    //Inicializamos object para que se cree un nuevo objeto de Product
+    //Inicializamos element para que se cree un nuevo objeto de Product
     function __construct(string $ord, string $field, int $num_page, int $amount)
     {
-        $this->object = new Product();
+        $this->element = new Product();
 
         $this->ord = $ord;
         $this->field = $field;
@@ -33,24 +33,30 @@ class ProductC
         $this->msg = "";
     }
 
+
+
+    /**********************************************************************
+     *                                                                    *
+     *                              MÉTODOS                               *
+     *                                                                    *
+     **********************************************************************/
     //Funcion que guarda los datos paginados y muestra la página principal
     public function index()
     {
         $msg = $this->msg;
-        //Almacenamos el orden y el campo por el que se ha ordenado actual
-        $actual_ord = $this->ord;
-        //Almacenamos la página actual 
-        $actual_page = $this->num_page;
         //Almacenamos los datos
-        $data = $this->object->pagination($this->ord, $this->field, $this->num_page, $this->amount);
-        $total_page = $this->object->get_total_pages($this->amount);
+        $data = $this->element->pagination($this->ord, $this->field, $this->num_page, $this->amount);
+        $total_page = $this->element->get_total_pages($this->amount);
         //Incluimos la vista del index.
         require_once("../view/index_product.php");
     }
 
+
+
+
     //Funcion que añade o modifica según la opcion elegida
     public function add_or_edit(int $option)
-    {        
+    {
         //Si la opcion es 2, almacenamos en $data los valores pasados por POST
         if ($option == 2) {
             $data["id_producto"] = $_POST["id_producto"];
@@ -58,43 +64,70 @@ class ProductC
             $data["precio"] = $_POST["precio"];
             $data["stock"] = $_POST["stock"];
             $data["categoria"] = $_POST["categoria"];
-            $data["foto"] = $_POST["foto"];
+            $data["prev_img"] = $_POST["prev_img"];
         }
         //Incluimos la vista de añadir o modificar
         require_once("../view/add_or_edit_product.php");
     }
 
 
-    //Funcion que guarda los datos recibidos en la base de datos
-    public function save(array $object)
-    {
-        //Si hay una clave id_proveedor dentro del array que se ha pasaod
-        if (isset($object["id_producto"]) && isset($object["new_id"])) {
 
-            //Comprobamos que es numérica
-            if (is_numeric(filter_var($object["new_id"], FILTER_VALIDATE_INT))) {
+
+
+    //Funcion que guarda los datos recibidos en la base de datos
+    public function save(array $element)
+    {
+        //Comprobamos que haya claves id_producto y new_ide dentro del array
+        if (isset($element["id_producto"]) && isset($element["new_id"])) {
+
+            //Primero, comprobamos que la nueva clave es numérica
+            if (is_numeric($element["new_id"])) {
 
                 //Guardamos su valor
-                $data["id_producto"] = filter_var($object["id_producto"], FILTER_VALIDATE_INT);
-                $data["new_id"] = filter_var($object["new_id"], FILTER_VALIDATE_INT);
+                $data["id_producto"] = filter_var($element["id_producto"], FILTER_VALIDATE_INT);
+                $data["new_id"] = filter_var($element["new_id"], FILTER_VALIDATE_INT);
             } else {
                 $this->msg = "¡ERROR! La nueva clave no es numérica!";
                 $this->index();
                 return false;
             }
         }
+
+
+        //Si la clave name del array $_FILES[img] no es nula
+        if (!empty($_FILES["new_img"]["tmp_name"])) {
+            //Guardamos el array
+            $img = $_FILES["new_img"];
+                                 
+            if ($element["option"] == 2) {
+                if(Utils::delete_img($element["prev_img"]) == false)
+                {
+                    $msg = "¡Imagen previamente eliminada!";
+                }
+            }
+            //Guardamos la imagen en la carpeta imgs con el método save_img que nos
+            //devolverá la url   
+            $url_img = Utils::save_img($img);
+            //Le damos el valor $url_immg a la clave img del array data
+            $data["img"] = $url_img;
+
+        } else {
+            //PSi no se ha seleccionado una nueva imagen, la clave name estará vacía, por lo
+            //que guardamos el valor de la clave prev_img del array element
+            $data["img"] = $element["prev_img"];
+        }
+
         //Guardamos los valores del array
-        $data["nombre"] = $object["nombre"];
-        $data["precio"] = $object["precio"];
-        $data["stock"] = $object["stock"];
-        $data["categoria"] = $object["categoria"];
-        $data["foto"] = $object["foto"];
+        $data["nombre"] = $element["nombre"];
+        $data["precio"] = $element["precio"];
+        $data["stock"] = $element["stock"];
+        $data["categoria"] = $element["categoria"];
 
         //Si la opcion es 1, se añade el nuevo proveedor
-        if ($object["option"] == 1) {
+        if ($element["option"] == 1) {
             //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
             //de datos
-            if ($this->object->add($data) != null) {
+            if ($this->element->add($data) != null) {
                 //Mensaje a mostrar
                 $this->msg = "Añadido con éxito!";
             } else {
@@ -104,7 +137,7 @@ class ProductC
         } else {
             //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
             //de datos
-            if ($this->object->update($data) != null) {
+            if ($this->element->update($data) != null) {
                 //Mensaje a mostrar
                 $this->msg = "Modificado con éxito!";
             } else {
@@ -121,7 +154,7 @@ class ProductC
     public function delete(int $id_product)
     {
         //Si la funcion delete devuelve como resultado algo distinto de null
-        if ($this->object->delete($id_product) != null) {
+        if ($this->element->delete($id_product) != null) {
             //Guardamos el mensaje
             $this->msg = "¡Borrado con éxito!";
             //Llamamos a la funcion index
@@ -135,7 +168,7 @@ class ProductC
     public function details(int $id_product)
     {
         //Guardamos en un array el resultado de la funcion get_one
-        $data = $this->object->get_one($id_product);
+        $data = $this->element->get_one($id_product);
 
         //Si data no es nulo, incluirá la vista de detalles categoria
         if ($data != null) {
@@ -205,7 +238,7 @@ if (isset($_REQUEST)) {
 
 
     //Creamos un nuevo objeto de la clase productC
-    $object = new productC($ord, $field, $num_page, $amount);
+    $element = new productC($ord, $field, $num_page, $amount);
 
 
 
@@ -218,21 +251,21 @@ if (isset($_REQUEST)) {
     switch ($option) {
             //Si es 0, llamamos al index
         case 0:
-            $object->index();
+            $element->index();
             break;
             //Si es 1 (añadir) o 2 (modificar)
         case 1:
         case 2:
             //Llamamos a la funcion add_or_edit y le pasamos $option para que dependiendo
             //de la opcion elegida nos salga una cosa u otra
-            $object->add_or_edit($option);
+            $element->add_or_edit($option);
             break;
             //Si es 3, llamamos a la funcion delete
         case 3:
             //Si id_proveedor no es nulo y es numerico
             if (isset($_POST["id_producto"]) && is_numeric($_POST["id_producto"])) {
                 //Se llama a la funcion delete
-                $object->delete($_POST["id_producto"]);
+                $element->delete($_POST["id_producto"]);
             }
             break;
             //Si es 4, llamamos a la funcion details que nos mostrará más detalles acerca
@@ -241,24 +274,13 @@ if (isset($_REQUEST)) {
             //Si el id_proveedor no está vacío y es un número
             if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
                 //Llamamos a la funcion details
-                $object->details($_POST["id"]);
+                $element->details($_POST["id"]);
             }
             break;
             //La opcion 5, la obtenemos al enviar los datos del formulario de modificar
             //o añadir y lo que hará es llamar a la función save, pasándole el array $_POST
             //para su introduccion en la base de datos
         case 5:
-            
-            //Si el array $_FILES no es nulo
-            if (isset($_FILES)) {
-                //Definimos un array para guardar las direcciones de las imagenes
-                //y llamamos a la funcion save_img que guardará las imágenes en la 
-                //carpeta img y nos devolverá un array que contiene las urls de las
-                //imagenes
-                $url_img = Utils::save_img($_FILES["foto"]);
-                
-                $_POST["foto"] = $url_img;
-            }
-            $object->save($_POST);
+            $element->save($_POST);
     }
 }

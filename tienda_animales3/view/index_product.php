@@ -29,10 +29,10 @@
             <table class="table table-striped">
                 <thead class="table-dark text-center">
                     <tr>                    
-                        <th scope="col">#<a class=" p-0 text-white <?=($actual_ord == "ASC") ? "asc" : "desc"?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
-                        <th scope="col">Nombre<a class=" p-0 text-white <?=($actual_ord == "ASC") ? "asc" : "desc"?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
-                        <th scope="col">Precio<a class=" p-0 text-white <?=($actual_ord == "ASC") ? "asc" : "desc"?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
-                        <th scope="col">Stock<a class=" p-0 text-white <?=($actual_ord == "ASC") ? "asc" : "desc"?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
+                        <th scope="col">#<a class=" p-0 text-white <?=($this->ord== "ASC") ? "asc" : "desc"?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
+                        <th scope="col">Nombre<a class=" p-0 text-white <?=($this->ord == "ASC") ? "asc" : "desc"?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
+                        <th scope="col">Precio<a class=" p-0 text-white <?=($this->ord == "ASC") ? "asc" : "desc"?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
+                        <th scope="col">Stock<a class=" p-0 text-white <?=($this->ord == "ASC") ? "asc" : "desc"?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -61,7 +61,7 @@
                             <input type="hidden" name="precio" value='<?= $element["precio"] ?>'>
                             <input type="hidden" name="stock" value='<?= $element["stock"] ?>'>
                             <input type="hidden" name="categoria" value='<?= $element["categoria"] ?>'>
-                            <input type="hidden" name="foto[]" value='<?= $element["foto"] ?>' multiple>
+                            <input type="hidden" name="prev_img" value='<?= $element["foto"] ?>'>
                             <button value="2" name="submit" class="mt-2 border-0 bg-transparent text-warning">
                                 <i class="fa-solid fa-marker"></i>
                             </button>
@@ -95,19 +95,19 @@
 
                         //Si la página actual no es la primera, activamos previous. Si es la primera
                         //lo desactivamos con la clase disabled
-                        if ($actual_page != 1) {
-                            echo "<li class='page-item'><a href='index_product.php?&num_page=" . ($actual_page - 1) . "' class='page-link'>Previous</a></li>";
+                        if ($this->num_page != 1) {
+                            echo "<li class='page-item'><a href='index_product.php?&num_page=" . ($this->num_page - 1) . "' class='page-link'>Previous</a></li>";
                         } else {
                             echo "<li class='page-item disabled'><a class='page-link'>Previous</a></li>";
                         }
 
                         for ($i = 1; $i <= $total_page; $i++) {
-                            echo "<li class='page-item".(($i == $actual_page) ? ' active' : '') ."'><a href='index_product.php?num_page=$i' class='page-link'>$i</a></li>";
+                            echo "<li class='page-item".(($i == $this->num_page) ? ' active' : '') ."'><a href='index_product.php?num_page=$i' class='page-link'>$i</a></li>";
                         }
 
                         //Hacemos lo mismo que con previous
-                        if ($actual_page != $total_page) {
-                            echo "<li class='page-item'><a href='index_product.php?num_page=" . ($actual_page + 1) . "' class='page-link'>Next</a></li>";
+                        if ($this->num_page != $total_page) {
+                            echo "<li class='page-item'><a href='index_product.php?num_page=" . ($this->num_page + 1) . "' class='page-link'>Next</a></li>";
                         } else {
                             echo "<li class='page-item disabled'><a class='page-link'>Next</a></li>";
                         }

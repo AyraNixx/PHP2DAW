@@ -9,7 +9,7 @@ class SupplierC
 {
     //Lo ponemos privado para que solo se pueda acceder desde esta clase y estatico
     //para poder usarlo en funciones estaticas
-    private $object;
+    private $element;
 
     private $ord;
     private $field;
@@ -19,10 +19,10 @@ class SupplierC
     private $msg;
 
 
-    //Inicializamos object para que se cree un nuevo objeto de Supplier
+    //Inicializamos element para que se cree un nuevo objeto de Supplier
     function __construct(string $ord, string $field, int $num_page, int $amount)
     {
-        $this->object = new Supplier();
+        $this->element = new Supplier();
 
         $this->ord = $ord;
         $this->field = $field;
@@ -41,8 +41,8 @@ class SupplierC
         //Almacenamos la página actual 
         $actual_page = $this->num_page;
         //Almacenamos los datos
-        $data = $this->object->pagination($this->ord, $this->field, $this->num_page, $this->amount);
-        $total_page = $this->object->get_total_pages($this->amount);
+        $data = $this->element->pagination($this->ord, $this->field, $this->num_page, $this->amount);
+        $total_page = $this->element->get_total_pages($this->amount);
         //Incluimos la vista del index.
         require_once("../view/index_supplier.php");
     }
@@ -64,17 +64,17 @@ class SupplierC
 
 
     //Funcion que guarda los datos recibidos en la base de datos
-    public function save(array $object)
+    public function save(array $element)
     {
         //Si hay una clave id_proveedor dentro del array que se ha pasaod
-        if (isset($object["id_proveedor"]) && isset($object["new_id"])) {
+        if (isset($element["id_proveedor"]) && isset($element["new_id"])) {
 
             //Comprobamos que es numérica
-            if (is_numeric(filter_var($object["new_id"], FILTER_VALIDATE_INT))) {
+            if (is_numeric(filter_var($element["new_id"], FILTER_VALIDATE_INT))) {
 
                 //Guardamos su valor
-                $data["id_proveedor"] = filter_var($object["id_proveedor"], FILTER_VALIDATE_INT);
-                $data["new_id"] = filter_var($object["new_id"], FILTER_VALIDATE_INT);
+                $data["id_proveedor"] = filter_var($element["id_proveedor"], FILTER_VALIDATE_INT);
+                $data["new_id"] = filter_var($element["new_id"], FILTER_VALIDATE_INT);
             } else {
                 $this->msg = "¡ERROR! La nueva clave no es numérica!";
                 $this->index();
@@ -82,16 +82,16 @@ class SupplierC
             }
         }
         //Guardamos los valores del array
-        $data["nombre"] = $object["nombre"];
-        $data["direccion"] = $object["direccion"];
-        $data["telefono"] = $object["telefono"];
-        $data["correo"] = $object["correo"];
+        $data["nombre"] = $element["nombre"];
+        $data["direccion"] = $element["direccion"];
+        $data["telefono"] = $element["telefono"];
+        $data["correo"] = $element["correo"];
 
         //Si la opcion es 1, se añade el nuevo proveedor
-        if ($object["option"] == 1) {
+        if ($element["option"] == 1) {
             //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
             //de datos
-            if ($this->object->add($data) != null) {
+            if ($this->element->add($data) != null) {
                 //Mensaje a mostrar
                 $this->msg = "Añadido con éxito!";
             }else{
@@ -101,7 +101,7 @@ class SupplierC
         } else {
             //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
             //de datos
-            if ($this->object->update($data) != null) {
+            if ($this->element->update($data) != null) {
                 //Mensaje a mostrar
                 $this->msg = "Modificado con éxito!";
             } else {
@@ -118,7 +118,7 @@ class SupplierC
     public function delete(int $id_supplier)
     {
         //Si la funcion delete devuelve como resultado algo distinto de null
-        if ($this->object->delete($id_supplier) != null) {
+        if ($this->element->delete($id_supplier) != null) {
             //Guardamos el mensaje
             $this->msg = "¡Borrado con éxito!";
             //Llamamos a la funcion index
@@ -132,7 +132,7 @@ class SupplierC
     public function details(int $id_supplier)
     {
         //Guardamos en un array el resultado de la funcion get_one
-        $data = $this->object->get_one($id_supplier);
+        $data = $this->element->get_one($id_supplier);
 
         //Si data no es nulo, incluirá la vista de detalles categoria
         if ($data != null) {
@@ -205,7 +205,7 @@ if (isset($_REQUEST)) {
 
 
     //Creamos un nuevo objeto de la clase SupplierC
-    $object = new SupplierC($ord, $field, $num_page, $amount);
+    $element = new SupplierC($ord, $field, $num_page, $amount);
 
 
 
@@ -218,21 +218,21 @@ if (isset($_REQUEST)) {
     switch ($option) {
             //Si es 0, llamamos al index
         case 0:
-            $object->index();
+            $element->index();
             break;
             //Si es 1 (añadir) o 2 (modificar)
         case 1:
         case 2:
             //Llamamos a la funcion add_or_edit y le pasamos $option para que dependiendo
             //de la opcion elegida nos salga una cosa u otra
-            $object->add_or_edit($option);
+            $element->add_or_edit($option);
             break;
             //Si es 3, llamamos a la funcion delete
         case 3:
             //Si id_proveedor no es nulo y es numerico
             if (isset($_POST["id_proveedor"]) && is_numeric($_POST["id_proveedor"])) {
                 //Se llama a la funcion delete
-                $object->delete($_POST["id_proveedor"]);
+                $element->delete($_POST["id_proveedor"]);
             }
             break;
             //Si es 4, llamamos a la funcion details que nos mostrará más detalles acerca
@@ -241,13 +241,13 @@ if (isset($_REQUEST)) {
             //Si el id_proveedor no está vacío y es un número
             if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
                 //Llamamos a la funcion details
-                $object->details($_POST["id"]);
+                $element->details($_POST["id"]);
             }
             break;
             //La opcion 5, la obtenemos al enviar los datos del formulario de modificar
             //o añadir y lo que hará es llamar a la función save, pasándole el array $_POST
             //para su introduccion en la base de datos
         case 5:
-            $object->save($_POST);
+            $element->save($_POST);
     }
 }

@@ -111,10 +111,7 @@ class Utils
         //Utilizamos $file["tmp_name] porque es la ubicación temporal donde se encuentra
         //el archivo subido, el segundo argumento es la ruta al repositorio
         move_uploaded_file($file["tmp_name"], $file_path);
-        //Agregamos la url al array de urls
-
-        echo $file_path;
-        //Devolvemos el array con las urls
+        //Devolvemos la url
         return $file_path;
     }
 

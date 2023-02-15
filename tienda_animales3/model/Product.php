@@ -38,11 +38,11 @@ class Product
             //Definimos la consulta
             $query = "SELECT * FROM tienda_animales.productos;";
             //Preparamos la consulta para su ejecución
-            $sentence = $this->conBD->prepare($query);
+            $statement = $this->conBD->prepare($query);
             //Ejecutamos la consulta
-            $sentence->execute();
+            $statement->execute();
             //Devolvemos el resultado obtenido
-            return $sentence->fetchAll();
+            return $statement->fetchAll();
         } catch (PDOException $e) {
             Utils::save_log($e->getMessage());
         }
@@ -59,13 +59,13 @@ class Product
                 //Definimos la consulta
                 $query = "SELECT * FROM tienda_animales.productos WHERE id_producto = :id_producto";
                 //Preparamos la sentencia
-                $sentence = $this->conBD->prepare($query);
+                $statement = $this->conBD->prepare($query);
                 //Vinculamos los parametros al nombre de la variable especificada
-                $sentence->bindParam(":id_producto", $id_producto, PDO::PARAM_INT);
+                $statement->bindParam(":id_producto", $id_producto, PDO::PARAM_INT);
                 //Ejecutamos la consulta
-                $sentence->execute();
+                $statement->execute();
                 //Devolvemos el resultado obtenido
-                return $sentence->fetch();
+                return $statement->fetch();
             } catch (PDOException $e) {
                 Utils::save_log($e->getMessage());
             }
@@ -77,20 +77,20 @@ class Product
     function add(array $product)
     {
         //Si $product no es nulo, así como ningunao de sus valores
-        if (isset($product) && isset($product["nombre"]) && isset($product["precio"]) && isset($product["stock"]) && isset($product["categoria"]) && isset($product["foto"])) {
+        if (isset($product) && isset($product["nombre"]) && isset($product["precio"]) && isset($product["stock"]) && isset($product["categoria"]) && isset($product["img"])) {
             try {                
                 //Definimos la consulta
-                $query = "INSERT INTO tienda_animales.productos (nombre, precio, stock, categoria, foto) VALUES (:nombre, :precio, :stock, :categoria, :foto)";
+                $query = "INSERT INTO tienda_animales.productos (nombre, precio, stock, categoria, foto) VALUES (:nombre, :precio, :stock, :categoria, :img)";
                 //Preparamos la sentencia
-                $sentence = $this->conBD->prepare($query);
+                $statement = $this->conBD->prepare($query);
                 //Vinculamos los parametros al nombre de variable especificado
-                $sentence->bindParam(":nombre", $product["nombre"], PDO::PARAM_STR);
-                $sentence->bindParam(":precio", $product["precio"], PDO::PARAM_INT);
-                $sentence->bindParam(":stock", $product["stock"], PDO::PARAM_INT);
-                $sentence->bindParam(":categoria", $product["categoria"], PDO::PARAM_INT);                
-                $sentence->bindParam(":foto", $product["foto"], PDO::PARAM_STR);
+                $statement->bindParam(":nombre", $product["nombre"], PDO::PARAM_STR);
+                $statement->bindParam(":precio", $product["precio"], PDO::PARAM_INT);
+                $statement->bindParam(":stock", $product["stock"], PDO::PARAM_INT);
+                $statement->bindParam(":categoria", $product["categoria"], PDO::PARAM_INT);                
+                $statement->bindParam(":img", $product["img"], PDO::PARAM_STR);
                 //Devolvemos el resultado de la ejecucion (será un boolean true si todo ha ido bien)
-                return $sentence->execute();
+                return $statement->execute();
             } catch (PDOException $e) {
                 print("¡Error! : " . $e->getMessage() . "<bd/>");
             }
@@ -104,26 +104,27 @@ class Product
     function update(array $product)
     {
         //Comprobamos que no sea nulo
-        if (isset($product) && isset($product["id_producto"]) && isset($product["new_id"]) && isset($product["nombre"]) && isset($product["precio"]) && isset($product["stock"]) && isset($product["categoria"]) && isset($product["foto"])) {
+        if (isset($product["id_producto"]) && isset($product["new_id"]) && isset($product["nombre"]) && isset($product["precio"]) && isset($product["stock"]) && isset($product["categoria"]) && isset($product["img"])) {
             try {
                 //Definimos la consulta
-                $query = "UPDATE tienda_animales.productos SET id_producto=:new_id, nombre=:nombre, precio=:precio, stock=:stock, categoria=:categoria WHERE id_producto=:id_producto";
+                $query = "UPDATE tienda_animales.productos SET id_producto=:new_id, nombre=:nombre, precio=:precio, stock=:stock, categoria=:categoria, foto=:img WHERE id_producto=:id_producto";
                 //Preparamos la sentencia
-                $sentence = $this->conBD->prepare($query);
+                $statement = $this->conBD->prepare($query);
                 //Vinculamos los parametros al nombre de variable especificado
-                $sentence->bindParam(":id_producto", $product["id_producto"], PDO::PARAM_INT);
-                $sentence->bindParam(":new_id", $product["new_id"], PDO::PARAM_INT);
-                $sentence->bindParam(":nombre", $product["nombre"], PDO::PARAM_STR);
-                $sentence->bindParam(":precio", $product["precio"], PDO::PARAM_INT);
-                $sentence->bindParam(":stock", $product["stock"], PDO::PARAM_INT);
-                $sentence->bindParam(":categoria", $product["categoria"], PDO::PARAM_INT);
-                $sentence->bindParam(":foto", $product["foto"]);
+                $statement->bindParam(":id_producto", $product["id_producto"], PDO::PARAM_INT);
+                $statement->bindParam(":new_id", $product["new_id"], PDO::PARAM_INT);
+                $statement->bindParam(":nombre", $product["nombre"], PDO::PARAM_STR);
+                $statement->bindParam(":precio", $product["precio"], PDO::PARAM_INT);
+                $statement->bindParam(":stock", $product["stock"], PDO::PARAM_INT);
+                $statement->bindParam(":categoria", $product["categoria"], PDO::PARAM_INT);
+                $statement->bindParam(":img", $product["img"], PDO::PARAM_STR);
                 //Devolvemos el resultado de la ejecucion (será un boolean true si todo ha ido bien)
-                return $sentence->execute();
+                $result = $statement->execute();
+                return $result;
             } catch (PDOException $e) {
                 Utils::save_log($e->getMessage());
+                return null;
             }
-            return null;
         }
     }
 
@@ -138,11 +139,11 @@ class Product
                 //Definimos la consulta
                 $query = "DELETE FROM tienda_animales.productos WHERE id_producto=:id_producto";
                 //Preparamos la sentencia
-                $sentence = $this->conBD->prepare($query);
+                $statement = $this->conBD->prepare($query);
                 //Vinculamos los parametros al nombre de variable especificado
-                $sentence->bindParam(":id_producto", $id_producto, PDO::PARAM_INT);
+                $statement->bindParam(":id_producto", $id_producto, PDO::PARAM_INT);
                 //Devolvemos el resultado de la ejecucion (será un boolean true si todo ha ido bien)
-                return $sentence->execute();
+                return $statement->execute();
             } catch (PDOException $e) {
                 Utils::save_log($e->getMessage());
             }
@@ -161,22 +162,22 @@ class Product
             $query = "SELECT * FROM tienda_animales.productos ORDER BY $field $ordAsc LIMIT :amount OFFSET :offset";
             
             //Preparamos la consulta
-            $sentence = $this->conBD->prepare($query);
+            $statement = $this->conBD->prepare($query);
             //Por alguna razón que desconozco con mis escasos conocimientos, el bindparam 
             // Vinculamos los parámetros al nombre de la variable especificada
             // Utilizamos PDO::PARAM_INT para indicar que se trata de un número entero
             // ya que en ocasiones puede contarlo como una cadena.
-            $sentence->bindValue(":amount", $amount, PDO::PARAM_INT);
-            $sentence->bindValue(":offset", $offset, PDO::PARAM_INT);
+            $statement->bindValue(":amount", $amount, PDO::PARAM_INT);
+            $statement->bindValue(":offset", $offset, PDO::PARAM_INT);
 
             //No quito lo de debugDumpParams porque es algo interesante
             // echo "<pre>";
-            // var_dump($sentence->debugDumpParams());
+            // var_dump($statement->debugDumpParams());
             // echo "</pre>";
           
-            $sentence->execute();
+            $statement->execute();
             //Devolvemos las filas resultantes
-            return $sentence->fetchAll();
+            return $statement->fetchAll();
         } catch (PDOException $e) {
             print("¡Error! : " . $e->getMessage() . "<bd/>");
         }
@@ -194,14 +195,14 @@ class Product
             //round para que nos redondee el resultado obtenido)
             $query = "SELECT CEILING(COUNT(*)/:amount) AS pages FROM tienda_animales.productos";
             //Preparamos la sentencia
-            $sentence = $this->conBD->prepare($query);
+            $statement = $this->conBD->prepare($query);
             //Vinculamos los parámetros al nombre de la variable especificada
-            $sentence->bindParam(":amount", $amount, PDO::PARAM_INT);
+            $statement->bindParam(":amount", $amount, PDO::PARAM_INT);
             //Ejecutamos la consulta
-            $sentence->execute();
+            $statement->execute();
             //Devolvemos el total de páginas (como la funcion fetch nos devuelve un array
             //asociativo, pongo pages para que me devuelva el valor de la clave pages)
-            return $sentence->fetch()["pages"];
+            return $statement->fetch()["pages"];
         } catch (PDOException $e) {
             print("¡Error! : " . $e->getMessage() . "<bd/>");
         }

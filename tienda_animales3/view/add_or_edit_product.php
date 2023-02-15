@@ -14,16 +14,16 @@
     <div class="container mt-5">
         <div class="d-flex align-items-center justify-content-center">
             <form action="index_product.php" method="POST" enctype="multipart/form-data" class="bg-dark text-white p-4" style="width: 370px;">
-            <!-- Si option es 1, ponermos Add Product, si no lo es, edit Product -->
+                <!-- Si option es 1, ponermos Add Product, si no lo es, edit Product -->
                 <h2 class="text-center my-4"><b><?= ($option == 1) ? "Add Product" : "Edit Product" ?></b></h2>
                 <!--Si option es 1, no aparecerá el recuadro de id_product-->
                 <?php
                 //Si option es 2, nos aparece un input para modificar el identificador
-                if ($option == 2) {
+                if ($option == 2) {                    
                     echo "<div class='form-group col-md-12'>";
                     echo "<label for='id_producto' class='mb-3'>Id</label>";
                     echo "<input type=text name=new_id class=form-control value=" . $data["id_producto"] . ">";
-                    echo "<input type=hidden name=id_producto value=". $data["id_producto"] . ">";
+                    echo "<input type=hidden name=id_producto value=" . $data["id_producto"] . ">";
                     echo "</div>";
                 }
                 ?>
@@ -45,10 +45,20 @@
                     <input type="text" name="categoria" class="form-control" value=<?= ($option == 2) ? $data["categoria"] : "" ?>>
                 </div>
                 <div class="form-group col-md-12">
-                    <label for="foto" class="mt-2 mb-1">Foto/s</label>
-                    <input type="file" name="foto" class="form-control">
+                    <label for="img" class="mt-2 mb-1">Foto/s</label>
+                    <?php
+                    //Si la opcion es 2, significa que queremos modificar el elemento
+                    //Sin embargo, puede ser que no queramos cambiar la foto ya subida
+                    //así que guardamos su url
+                    if($option == 2)
+                    {
+                        echo "<input type='hidden' name='prev_img' value='".$data["prev_img"]."'>";
+                    }
+                    ?>
+
+                    <input type="file" name="new_img" class="form-control">
                 </div>
-                <input type="hidden" name="option" value="<?=$option?>">
+                <input type="hidden" name="option" value="<?= $option ?>">
                 <div class="form-group col-md-12 text-center">
                     <button type="submit" value="5" name="submit" class="mt-3 btn btn-secondary">Guardar</button>
                 </div>
