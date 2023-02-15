@@ -82,43 +82,40 @@ class Utils
 
     public static function save_img(array $file)
     {
-        $url_imgs = [];
-        //Recorremos el array
-        foreach ($file["name"] as $i => $name) {
-            //Comprobamos que el elemento pasado es una imagen, para ello usamos la funcion
-            //getimagesize. Si nos devuelve false, significa que el archivo no es una imagen válida
-            if (getimagesize($file["tmp_name"][$i])) {
-                //Una vez comprobado que el archivo es una imagen, verificamos su tamaño
-                if ($file["size"][$i] > 2097152) {
-                    //Si es mayor de 2097152, pues devolvemos false.
-                    return false;
-
-                    //En caso contrario
-                } else {
-                    //Generamos un nombre único para la imagen
-                    //Utilizamos microtime para que nos devuelva la fecha Unix actual con microsegundos
-                    //y pasamos como argumento true para que en vez de una cadena, nos devuelva un
-                    //float que redondearemos con round.
-                    //Concatenamos el numero obtenido con el formato de imagen que obtenemos al 
-                    //usar explode con delimitador '.' y utilizar end para sacar el ultimo elemento
-                    //del array obtenido del explode
-                    $end = explode(".", $name);
-                    $file_name = round(microtime(true)) . "." . end($end);                    
-                    //Carpeta de destino
-                    $file_path = "../imgs/" . $file_name;
-                    //Usamos move_uploaded_file para mover el archivo subido a la carpeta indicada
-                    //Utilizamos $file["tmp_name] porque es la ubicación temporal donde se encuentra
-                    //el archivo subido, el segundo argumento es la ruta al repositorio
-                    move_uploaded_file($file["tmp_name"][$i], $file_path);
-                    //Devolvemos la url para guardarla en la bd
-                    array_push($url_imgs, $file_path);
-                }
-            } else {
-                return false;
-            }
+        //Creamos una constante que es para el tamaño máximo permitido
+        define("MAX_FILE_SIZE", 2097152);
+        //Definimos un array con posibles extensiones válidas para una imagen
+        $extension = ["img/png", "img/jpeg", "img/gif"];
+        //Comprobamos si es una imagen.
+        if (!getimagesize($file["tmp_name"]) && !in_array($file["type"], $extension)) {
+            return false;
         }
+
+        //Comprobamos que el tamaño sea menor al tamaño máximo permitido
+        if ($file["size"] > MAX_FILE_SIZE) {
+            return false;
+        }
+        //Generamos un nombre único para la imagen
+        //Utilizamos microtime para que nos devuelva la fecha Unix actual con microsegundos
+        //y pasamos como argumento true para que en vez de una cadena, nos devuelva un
+        //float que redondearemos con round.
+        //Concatenamos el numero obtenido con el formato de imagen que obtenemos al 
+        //usar explode con delimitador '.' y utilizar end para sacar el ultimo elemento
+        //del array obtenido del explode
+        $end = explode(".", $file["name"]);
+        $file_name = round(microtime(true)) . "." . end($end);
+        //Carpeta de destino
+        $file_path = "../imgs/" . $file_name;
+
+        //Usamos move_uploaded_file para mover el archivo subido a la carpeta indicada
+        //Utilizamos $file["tmp_name] porque es la ubicación temporal donde se encuentra
+        //el archivo subido, el segundo argumento es la ruta al repositorio
+        move_uploaded_file($file["tmp_name"], $file_path);
+        //Agregamos la url al array de urls
+
+        echo $file_path;
         //Devolvemos el array con las urls
-        return $url_imgs;
+        return $file_path;
     }
 
 

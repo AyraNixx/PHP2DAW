@@ -50,7 +50,7 @@ class ProductC
 
     //Funcion que añade o modifica según la opcion elegida
     public function add_or_edit(int $option)
-    {
+    {        
         //Si la opcion es 2, almacenamos en $data los valores pasados por POST
         if ($option == 2) {
             $data["id_producto"] = $_POST["id_producto"];
@@ -248,14 +248,16 @@ if (isset($_REQUEST)) {
             //o añadir y lo que hará es llamar a la función save, pasándole el array $_POST
             //para su introduccion en la base de datos
         case 5:
+            
             //Si el array $_FILES no es nulo
             if (isset($_FILES)) {
                 //Definimos un array para guardar las direcciones de las imagenes
                 //y llamamos a la funcion save_img que guardará las imágenes en la 
                 //carpeta img y nos devolverá un array que contiene las urls de las
                 //imagenes
-                $urls_img = Utils::save_img($_FILES["foto"]);
-                $_POST["foto"] = $urls_img;
+                $url_img = Utils::save_img($_FILES["foto"]);
+                
+                $_POST["foto"] = $url_img;
             }
             $object->save($_POST);
     }

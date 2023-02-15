@@ -78,8 +78,7 @@ class Product
     {
         //Si $product no es nulo, así como ningunao de sus valores
         if (isset($product) && isset($product["nombre"]) && isset($product["precio"]) && isset($product["stock"]) && isset($product["categoria"]) && isset($product["foto"])) {
-            try {
-                $imgs = serialize($product["foto"]);
+            try {                
                 //Definimos la consulta
                 $query = "INSERT INTO tienda_animales.productos (nombre, precio, stock, categoria, foto) VALUES (:nombre, :precio, :stock, :categoria, :foto)";
                 //Preparamos la sentencia
@@ -89,7 +88,7 @@ class Product
                 $sentence->bindParam(":precio", $product["precio"], PDO::PARAM_INT);
                 $sentence->bindParam(":stock", $product["stock"], PDO::PARAM_INT);
                 $sentence->bindParam(":categoria", $product["categoria"], PDO::PARAM_INT);                
-                $sentence->bindParam(":foto", $imgs, PDO::PARAM_STR);
+                $sentence->bindParam(":foto", $product["foto"], PDO::PARAM_STR);
                 //Devolvemos el resultado de la ejecucion (será un boolean true si todo ha ido bien)
                 return $sentence->execute();
             } catch (PDOException $e) {

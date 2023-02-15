@@ -234,6 +234,8 @@ if (isset($_REQUEST)) {
             //Si es 4, llamamos a la funcion details que nos mostrará más detalles acerca
             //del elemento que hayamos pinchado
         case 4:
+            echo "tu";
+            var_dump($_POST);
             //Si el id_categoria no está vacío y es un número
             if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
                 //Llamamos a la funcion details

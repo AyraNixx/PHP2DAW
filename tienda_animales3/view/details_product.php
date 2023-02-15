@@ -1,37 +1,33 @@
-    <div class="table-wrapper pl-0 my-3">
-        <table class="table table-striped">
-            <thead class="table-dark text-center">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Precio</th>
-                    <th scope="col">Stock</th>
-                    <th scope="col">Categoría</th>
-                    <th scope="col">Foto/s</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody class="text-center">
-                <?php
-                //Mostramos la informacion
-                echo "<tr>";
-                echo "<td>" . $data["id_producto"] . "</td>";
-                echo "<td>" . $data["nombre"] . "</td>";
-                echo "<td>" . $data["precio"] . "</td>";
-                echo "<td>" . $data["stock"] . "</td>";
-                echo "<td>" . $data["categoria"] . "</td>";
-                echo "<td>";
-
-                $imgs = unserialize($data["foto"]);
-
-                for ($i = 0; $i < count($imgs); $i++) {
-                    echo "<img src='".$imgs[$i]."' alt='foto' width=100px height=50px>";
-                }
-
-                echo "</td>";
-                echo "<td></td>";
-                echo "</tr>";
-                ?>
-            </tbody>
-        </table>
-    </div>
+</br>
+<div class="table-wrapper pl-0 my-3">
+    <table class="table table-striped">
+        <tr>
+            <th class="table-dark text-center">#</th>
+            <td scope="col"><?= $data["id_producto"] ?></td>
+        </tr>
+        <tr>
+            <th class="table-dark text-center">Nombre</th>
+            <td scope="col"><?= $data["nombre"] ?></td>
+        </tr>
+        <tr>
+            <th class="table-dark text-center">Precio</th>
+            <td scope="col"><?= $data["precio"] ?></td>
+        </tr>
+        <tr>
+            <th class="table-dark text-center">Stock</th>
+            <td scope="col"><?= $data["stock"] ?></td>
+        </tr>
+        <tr>
+            <th class="table-dark text-center">Categoría</th>
+            <td scope="col" id="more_details"><?= $data["categoria"] ?></td>
+        </tr>
+        <tr>
+            <?php
+            echo "<th class='table-dark text-center'>Foto/s</th>";
+            echo "<td scope='col' class='text-center'>";
+            echo "<img src='" . $data["foto"] . "' alt='foto' width=350px height=250px>";
+            echo "</td>";
+            ?>
+        </tr>
+    </table>
+</div>

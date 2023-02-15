@@ -46,7 +46,7 @@
                 </div>
                 <div class="form-group col-md-12">
                     <label for="foto" class="mt-2 mb-1">Foto/s</label>
-                    <input type="file" name="foto[]" class="form-control" multiple>
+                    <input type="file" name="foto" class="form-control">
                 </div>
                 <input type="hidden" name="option" value="<?=$option?>">
                 <div class="form-group col-md-12 text-center">
