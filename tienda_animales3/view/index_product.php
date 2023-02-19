@@ -11,6 +11,20 @@
 
 <body>
     <div class="container mt-5">
+        <div id="aviso" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Aviso</h5>
+                        <button type="button" class="btn-close" id="cerrarModalBtn" aria-label="Close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><?= $this->msg ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="table-wrapper">
             <div class="table-tittle">
                 <div class="row">
@@ -28,11 +42,10 @@
             </div>
             <table class="table table-striped">
                 <thead class="table-dark text-center">
-                    <tr>                    
-                        <th scope="col">#<a class=" p-0 text-white <?=($this->ord== "ASC") ? "asc" : "desc"?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
-                        <th scope="col">Nombre<a class=" p-0 text-white <?=($this->ord == "ASC") ? "asc" : "desc"?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
-                        <th scope="col">Precio<a class=" p-0 text-white <?=($this->ord == "ASC") ? "asc" : "desc"?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
-                        <th scope="col">Stock<a class=" p-0 text-white <?=($this->ord == "ASC") ? "asc" : "desc"?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
+                    <tr>
+                        <th scope="col">Nombre<a class=" p-1 text-white <?= ($this->ord == "ASC") ? "asc" : "desc" ?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
+                        <th scope="col">Precio<a class=" p-1 text-white <?= ($this->ord == "ASC") ? "asc" : "desc" ?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
+                        <th scope="col">Stock<a class=" p-1 text-white <?= ($this->ord == "ASC") ? "asc" : "desc" ?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -47,9 +60,8 @@
 
                         echo "<tr>";
                         //Mostramos los datos de cada elemento
-                        echo "<td id='" . $i . "'>" . $element["id_producto"] . "</td>";
                         //Llamamos a la funcion details para mostrar más datos del elemento seleccionado
-                        echo "<td><a onclick=details(" . $i . ",'".$url."')>" . $element["nombre"] . "</a></td>";
+                        echo "<td><a onclick=details(" . $element["id_producto"] . ",'" . $url . "')>" . $element["nombre"] . "</a></td>";
                         echo "<td>" . $element["precio"] . "</td>";
                         echo "<td>" . $element["stock"] . "</td>";
                         echo "<td class='p-0'>";
@@ -71,6 +83,7 @@
 
                         <form action="index_product.php" method="POST" class="d-inline-block">
                             <input type="hidden" name="id_producto" value='<?= $element["id_producto"] ?>'>
+                            <input type="hidden" name="img" value='<?= $element["foto"] ?>'>
                             <button value="3" name="submit" class="mt-2 border-0 bg-transparent text-danger">
                                 <i class="fa-solid fa-trash-can"></i>
                             </button>
@@ -86,7 +99,6 @@
                 </tbody>
             </table>
             <div id="info_content">
-                <?=$msg;?>
             </div>
             <div>
                 <nav>
@@ -95,19 +107,19 @@
 
                         //Si la página actual no es la primera, activamos previous. Si es la primera
                         //lo desactivamos con la clase disabled
-                        if ($this->num_page != 1) {
-                            echo "<li class='page-item'><a href='index_product.php?&num_page=" . ($this->num_page - 1) . "' class='page-link'>Previous</a></li>";
+                        if ($this->page != 1) {
+                            echo "<li class='page-item'><a href='index_product.php?page=" . ($this->page - 1) . "' class='page-link'>Previous</a></li>";
                         } else {
                             echo "<li class='page-item disabled'><a class='page-link'>Previous</a></li>";
                         }
 
                         for ($i = 1; $i <= $total_page; $i++) {
-                            echo "<li class='page-item".(($i == $this->num_page) ? ' active' : '') ."'><a href='index_product.php?num_page=$i' class='page-link'>$i</a></li>";
+                            echo "<li class='page-item" . (($i == $this->page) ? ' active' : '') . "'><a href='index_product.php?page=$i' class='page-link'>$i</a></li>";
                         }
 
                         //Hacemos lo mismo que con previous
-                        if ($this->num_page != $total_page) {
-                            echo "<li class='page-item'><a href='index_product.php?num_page=" . ($this->num_page + 1) . "' class='page-link'>Next</a></li>";
+                        if ($this->page != $total_page) {
+                            echo "<li class='page-item'><a href='index_product.php?page=" . ($this->page + 1) . "' class='page-link'>Next</a></li>";
                         } else {
                             echo "<li class='page-item disabled'><a class='page-link'>Next</a></li>";
                         }
@@ -119,6 +131,17 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <?php
+    if ($this->msg != "") { ?>
+
+        <script>
+            $(document).on("ready", function() {
+                $("#aviso").modal("show");
+            })
+        </script>
+    <?php
+    }
+    ?>
     <script language="JavaScript" type="text/javascript" src="../view/js/index.js"></script>
 </body>
 

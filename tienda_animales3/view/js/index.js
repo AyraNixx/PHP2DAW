@@ -1,10 +1,6 @@
 //Funcion que muestra más detalles de un elemento seleccionado de la tabla
-function details(id_td, url) {
-
-    //Obtenemos el id
-    let id_cell = document.getElementById(id_td).innerHTML;
-
-
+function details(id, url) {
+     
     //Creamos objeto xmlhttprequest
     let xhr = new XMLHttpRequest();
 
@@ -25,7 +21,7 @@ function details(id_td, url) {
     let data = new FormData();
     //Añadimos nuevos valores con sus claves
     data.append("submit", 4);
-    data.append("id", id_cell);
+    data.append("id", id);
 
 
     // //Para poder ver el contenido de un formdata(por si tenemos algun problema)
@@ -42,17 +38,6 @@ function details(id_td, url) {
 }
 
 
-function new_img() {
-
-    //Creamos un nuevo elemento de tipo input
-    let input = document.createElement('input');
-
-    input.type = "file";
-
-    //
-
-}
-
 $(document).on("click", function (e) {
 
     // //Si el elemento al que le hacemos click tiene la clase pag
@@ -67,17 +52,18 @@ $(document).on("click", function (e) {
         if ($(e.target).parent().hasClass("asc")) {
 
             //concatenamos la url
-            url = url + ("&ord=DESC&num_page=" + page);
+            url = url + ("&ord=DESC&page=" + page);
             //Le pasamos la nueva url
             $(e.target).parent().attr("href", url);
 
         } else if ($(e.target).parent().hasClass("desc")) {
             //concatenamos la url
-            url = url + ("&ord=ASC&num_page=" + page);
+            url = url + ("&ord=ASC&page=" + page);
             //Le pasamos la nueva url
             $(e.target).parent().attr("href", url);
         }
     }
 })
+
 
 

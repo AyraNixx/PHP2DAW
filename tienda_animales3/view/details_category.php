@@ -1,24 +1,17 @@
+    <br>    
     <div class="table-wrapper pl-0 my-3">
         <table class="table table-striped">
-            <thead class="table-dark text-center">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Categoría</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody class="text-center">
-                <?php
-                //Mostramos la informacion
-                echo "<tr>";
-                echo "<td>" . $data["id_categoria"] . "</td>";
-                echo "<td>" . $data["nombre"] . "</td>";
-                echo "<td>" . $data["descripcion"] . "</td>";
-                echo "<td>";
-                echo "</td>";
-                echo "</tr>";
-                ?>
-            </tbody>
+            <tr>
+                <th class="table-dark text-center col-1" >#</th>
+                <td scope="col"><?= $data["id_categoria"] ?></td>
+            </tr>
+            <tr>
+                <th class="table-dark text-center col-1">Nombre</th>
+                <td scope="col"><?= $data["nombre"] ?></td>
+            </tr>
+            <tr>
+                <th class="table-dark text-center col-1">Descripción</th>
+                <td scope="col"><?= $data["descripcion"] ?></td>
+            </tr>
         </table>
     </div>

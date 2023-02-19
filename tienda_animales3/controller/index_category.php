@@ -13,20 +13,20 @@ class CategoryC
 
     private $ord;
     private $field;
-    private $num_page;
+    private $page;
     private $amount;
 
     private $msg;
 
 
     //Inicializamos element para que se cree un nuevo objeto de Category
-    function __construct(string $ord, string $field, int $num_page, int $amount)
+    function __construct(string $ord, string $field, int $page, int $amount)
     {
         $this->element = new Category();
 
         $this->ord = $ord;
         $this->field = $field;
-        $this->num_page = $num_page;
+        $this->page = $page;
         $this->amount = $amount;
 
         $this->msg = "";
@@ -35,13 +35,8 @@ class CategoryC
     //Funcion que guarda los datos paginados y muestra la página principal
     public function index()
     {
-        $msg = $this->msg;
-        //Almacenamos el orden y el campo por el que se ha ordenado actual
-        $actual_ord = $this->ord;
-        //Almacenamos la página actual 
-        $actual_page = $this->num_page;
         //Almacenamos los datos
-        $data = $this->element->pagination($this->ord, $this->field, $this->num_page, $this->amount);
+        $data = $this->element->pagination($this->ord, $this->field, $this->page, $this->amount);
         $total_page = $this->element->get_total_pages($this->amount);
         //Incluimos la vista del index.
         require_once("../view/index_category.php");
@@ -62,29 +57,10 @@ class CategoryC
 
 
     //Funcion que guarda los datos recibidos en la base de datos
-    public function save(array $element)
+    public function save(array $data)
     {
-        //Si hay una clave id_categoria dentro del array que se ha pasaod
-        if (isset($element["id_categoria"]) && isset($element["new_id"])) {
-
-            //Comprobamos que es numérica
-            if (is_numeric(filter_var($element["new_id"], FILTER_VALIDATE_INT))) {
-
-                //Guardamos su valor
-                $data["id_categoria"] = filter_var($element["id_categoria"], FILTER_VALIDATE_INT);
-                $data["new_id"] = filter_var($element["new_id"], FILTER_VALIDATE_INT);
-            } else {
-                $this->msg = "¡ERROR! La nueva clave no es numérica!";
-                $this->index();
-                return false;
-            }
-        }
-        //Guardamos los valores del array
-        $data["nombre"] = $element["nombre"];
-        $data["descripcion"] = $element["descripcion"];
-
         //Si la opcion es 1, se añade la nueva categoria
-        if ($element["option"] == 1) {
+        if ($data["option"] == 1) {
             //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
             //de datos
             if ($this->element->add($data) != null) {
@@ -111,7 +87,7 @@ class CategoryC
     }
 
     //Funcion que elimina la categoria seleccionado
-    public function delete($id_category)
+    public function delete(int $id_category)
     {
         //Si la funcion delete devuelve como resultado algo distinto de null
         if ($this->element->delete($id_category) != null) {
@@ -125,7 +101,7 @@ class CategoryC
     }
 
     //Funcion que muestra más detalles acerca del elemento seleccionado
-    public function details($id_category)
+    public function details(int $id_category)
     {
         //Guardamos en un array el resultado de la funcion get_one
         $data = $this->element->get_one($id_category);
@@ -168,10 +144,10 @@ if (isset($_REQUEST)) {
         $ord = "ASC";
     }
 
-    if (isset($_REQUEST["num_page"])) {
-        $num_page = filter_var($_REQUEST["num_page"], FILTER_VALIDATE_INT);
+    if (isset($_REQUEST["page"])) {
+        $page = filter_var($_REQUEST["page"], FILTER_VALIDATE_INT);
     } else {
-        $num_page = 1;
+        $page = 1;
     }
 
     //Cantidad que queremos que salga
@@ -201,7 +177,7 @@ if (isset($_REQUEST)) {
 
 
     //Creamos un nuevo objeto de la clase CategoryC
-    $element = new CategoryC($ord, $field, $num_page, $amount);
+    $element = new CategoryC($ord, $field, $page, $amount);
 
 
 

@@ -54,15 +54,6 @@ class Utils
 
 
 
-    public static function limpiar_datos($data)
-    {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-
-        return $data;
-    }
-
 
 
 
@@ -120,12 +111,13 @@ class Utils
     public static function delete_img(string $file_path)
     {
         //Utilizamos file_exist para comprobar que el archivo existe
-        if (file_exists($file_path)) {
-            //La eliminamos
-            return unlink($file_path);
-        } else {
-            return false;
+        if (!file_exists($file_path)) 
+        {
+            return false;          
         }
+
+        //Eliminamos la imagen
+        return unlink($file_path);
     }
 
 
@@ -151,6 +143,35 @@ class Utils
         //Y por último la ruta del archivo
         error_log(print_r($error . "\xA", true), 3, $path);
     }
+
+
+
+
+
+
+
+
+
+    
+    /***********************************************************************
+     *                                                                     *
+     *                         EN PLANTEAMIENTO                            *
+     *                                                                     *
+     ***********************************************************************/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -191,6 +212,11 @@ class Utils
         //Devolvemos el código obtenido
         return $salt;
     }
+
+
+
+
+
 
 
 
@@ -267,12 +293,3 @@ class Utils
         // }
     }
 }
-
-
-// if (Utils::send_activation_code(["correo" => "thejokerjune@gmail.com", "nombre" => "paula"]));
-
-// $hash = (Utils::to_hash("kesesoesoeskesokkesoesroquefort"));
-
-// echo "<br>";
-
-// var_dump(Utils::psswd_verify("kesesoesoeskesokkesoesroquefort", $hash));

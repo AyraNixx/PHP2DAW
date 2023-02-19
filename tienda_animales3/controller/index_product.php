@@ -14,20 +14,20 @@ class ProductC
 
     private $ord;
     private $field;
-    private $num_page;
+    private $page;
     private $amount;
 
     private $msg;
 
 
     //Inicializamos element para que se cree un nuevo objeto de Product
-    function __construct(string $ord, string $field, int $num_page, int $amount)
+    function __construct(string $ord, string $field, int $page, int $amount)
     {
         $this->element = new Product();
 
         $this->ord = $ord;
         $this->field = $field;
-        $this->num_page = $num_page;
+        $this->page = $page;
         $this->amount = $amount;
 
         $this->msg = "";
@@ -43,9 +43,8 @@ class ProductC
     //Funcion que guarda los datos paginados y muestra la página principal
     public function index()
     {
-        $msg = $this->msg;
         //Almacenamos los datos
-        $data = $this->element->pagination($this->ord, $this->field, $this->num_page, $this->amount);
+        $data = $this->element->pagination($this->ord, $this->field, $this->page, $this->amount);
         $total_page = $this->element->get_total_pages($this->amount);
         //Incluimos la vista del index.
         require_once("../view/index_product.php");
@@ -75,56 +74,29 @@ class ProductC
 
 
     //Funcion que guarda los datos recibidos en la base de datos
-    public function save(array $element)
+    public function save(array $data)
     {
-        //Comprobamos que haya claves id_producto y new_ide dentro del array
-        if (isset($element["id_producto"]) && isset($element["new_id"])) {
-
-            //Primero, comprobamos que la nueva clave es numérica
-            if (is_numeric($element["new_id"])) {
-
-                //Guardamos su valor
-                $data["id_producto"] = filter_var($element["id_producto"], FILTER_VALIDATE_INT);
-                $data["new_id"] = filter_var($element["new_id"], FILTER_VALIDATE_INT);
-            } else {
-                $this->msg = "¡ERROR! La nueva clave no es numérica!";
-                $this->index();
-                return false;
-            }
-        }
-
-
         //Si la clave name del array $_FILES[img] no es nula
         if (!empty($_FILES["new_img"]["tmp_name"])) {
             //Guardamos el array
             $img = $_FILES["new_img"];
-                                 
-            if ($element["option"] == 2) {
-                if(Utils::delete_img($element["prev_img"]) == false)
-                {
-                    $msg = "¡Imagen previamente eliminada!";
-                }
+
+            //Si option es 2, significa que estamos modificando la imagen ya guardada
+            //Por lo que borramos la anterior imagen para luego guardar la nueva            
+            if ($data["option"] == 2) {
+                $this->msg = Utils::delete_img($data["prev_img"]) ? "" : "¡Imagen previamente eliminada!";
             }
             //Guardamos la imagen en la carpeta imgs con el método save_img que nos
             //devolverá la url   
-            $url_img = Utils::save_img($img);
-            //Le damos el valor $url_immg a la clave img del array data
-            $data["img"] = $url_img;
-
+            $data["img"] = Utils::save_img($img);
         } else {
             //PSi no se ha seleccionado una nueva imagen, la clave name estará vacía, por lo
             //que guardamos el valor de la clave prev_img del array element
-            $data["img"] = $element["prev_img"];
+            $data["img"] = $data["prev_img"];
         }
 
-        //Guardamos los valores del array
-        $data["nombre"] = $element["nombre"];
-        $data["precio"] = $element["precio"];
-        $data["stock"] = $element["stock"];
-        $data["categoria"] = $element["categoria"];
-
         //Si la opcion es 1, se añade el nuevo proveedor
-        if ($element["option"] == 1) {
+        if ($data["option"] == 1) {
             //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
             //de datos
             if ($this->element->add($data) != null) {
@@ -150,19 +122,27 @@ class ProductC
         $this->index();
     }
 
+
+
+
     //Funcion que elimina la categoria seleccionado
-    public function delete(int $id_product)
+    public function delete(int $id_product, string $url_img)
     {
         //Si la funcion delete devuelve como resultado algo distinto de null
         if ($this->element->delete($id_product) != null) {
+            Utils::delete_img($url_img);
             //Guardamos el mensaje
             $this->msg = "¡Borrado con éxito!";
-            //Llamamos a la funcion index
-            $this->index();
         } else {
             $this->msg = "¡Error! ¡No se ha podido conectar con la base de datos!";
         }
+        //Llamamos a la funcion index
+        $this->index();
     }
+
+
+
+
 
     //Funcion que muestra más detalles acerca del elemento seleccionado
     public function details(int $id_product)
@@ -208,10 +188,10 @@ if (isset($_REQUEST)) {
         $ord = "ASC";
     }
 
-    if (isset($_REQUEST["num_page"])) {
-        $num_page = filter_var($_REQUEST["num_page"], FILTER_VALIDATE_INT);
+    if (isset($_REQUEST["page"])) {
+        $page = filter_var($_REQUEST["page"], FILTER_VALIDATE_INT);
     } else {
-        $num_page = 1;
+        $page = 1;
     }
 
     //Cantidad que queremos que salga
@@ -238,7 +218,7 @@ if (isset($_REQUEST)) {
 
 
     //Creamos un nuevo objeto de la clase productC
-    $element = new productC($ord, $field, $num_page, $amount);
+    $element = new productC($ord, $field, $page, $amount);
 
 
 
@@ -265,7 +245,7 @@ if (isset($_REQUEST)) {
             //Si id_proveedor no es nulo y es numerico
             if (isset($_POST["id_producto"]) && is_numeric($_POST["id_producto"])) {
                 //Se llama a la funcion delete
-                $element->delete($_POST["id_producto"]);
+                $element->delete($_POST["id_producto"], $_POST["img"]);
             }
             break;
             //Si es 4, llamamos a la funcion details que nos mostrará más detalles acerca

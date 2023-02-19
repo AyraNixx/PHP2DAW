@@ -13,20 +13,20 @@ class RolC
 
     private $ord;
     private $field;
-    private $num_page;
+    private $page;
     private $amount;
 
     private $msg;
 
 
     //Inicializamos rol para que se cree un nuevo objeto de Rol
-    function __construct(string $ord, string $field, int $num_page, int $amount)
+    function __construct(string $ord, string $field, int $page, int $amount)
     {
         $this->element = new Rol();
 
         $this->ord = $ord;
         $this->field = $field;
-        $this->num_page = $num_page;
+        $this->page = $page;
         $this->amount = $amount;
 
         $this->msg = "";
@@ -39,9 +39,9 @@ class RolC
         //Almacenamos el orden y el campo por el que se ha ordenado actual
         $actual_ord = $this->ord;
         //Almacenamos la página actual 
-        $actual_page = $this->num_page;
+        $actual_page = $this->page;
         //Almacenamos los datos
-        $data = $this->element->pagination($this->ord, $this->field, $this->num_page, $this->amount);
+        $data = $this->element->pagination($this->ord, $this->field, $this->page, $this->amount);
         $total_page = $this->element->get_total_pages($this->amount);
         //Incluimos la vista del index.
         require_once("../view/index_rol.php");
@@ -62,35 +62,16 @@ class RolC
 
 
     //Funcion que guarda los datos recibidos en la base de datos
-    public function save(array $element)
+    public function save(array $data)
     {
-        //Si hay una clave id_rol dentro del array que se ha pasaod
-        if (isset($element["id_rol"]) && isset($element["new_id"])) {
-
-            //Comprobamos que es numérica
-            if (is_numeric(filter_var($element["new_id"], FILTER_VALIDATE_INT))) {
-
-                //Guardamos su valor
-                $data["id_rol"] = filter_var($element["id_rol"], FILTER_VALIDATE_INT);
-                $data["new_id"] = filter_var($element["new_id"], FILTER_VALIDATE_INT);
-            } else {
-                $this->msg = "¡ERROR! La nueva clave no es numérica!";
-                $this->index();
-                return false;
-            }
-        }
-        //Guardamos los valores del array
-        $data["rol"] = $element["rol"];
-        $data["descripcion"] = $element["descripcion"];
-
         //Si la opcion es 1, se añade el nuevo rol
-        if ($element["option"] == 1) {
+        if ($data["option"] == 1) {
             //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
             //de datos
             if ($this->element->add($data) != null) {
                 //Mensaje a mostrar
                 $this->msg = "Añadido con éxito!";
-            }else{
+            } else {
                 //Mensaje a mostrar
                 $this->msg = "¡ERROR! Posible error de conexión";
             }
@@ -168,10 +149,10 @@ if (isset($_REQUEST)) {
         $ord = "ASC";
     }
 
-    if (isset($_REQUEST["num_page"])) {
-        $num_page = filter_var($_REQUEST["num_page"], FILTER_VALIDATE_INT);
+    if (isset($_REQUEST["page"])) {
+        $page = filter_var($_REQUEST["page"], FILTER_VALIDATE_INT);
     } else {
-        $num_page = 1;
+        $page = 1;
     }
 
     //Cantidad que queremos que salga
@@ -201,7 +182,7 @@ if (isset($_REQUEST)) {
 
 
     //Creamos un nuevo objeto de la clase RolC
-    $element = new RolC($ord, $field, $num_page, $amount);
+    $element = new RolC($ord, $field, $page, $amount);
 
 
 
