@@ -70,8 +70,17 @@ class Utils
 
     public static function clean($data)
     {
+        //Usamos trim para quitar los espacios en blanco del principio y del final
         $data = trim($data);
+        //Usamos stripslashes que sirve para quitar las barras de un string con comillas
+        //escapadas. Ejemplo:
+        //$str = "Is your name O\'reilly?";
+        // Salida: Is your name O'reilly?
         $data = stripslashes($data);
+        //Empleamos htmlspecialchars para convertir caracteres especiales en entidades HTML
+        //Ejemplo:
+        //$new = htmlspecialchars("<a href='test'>Test</a>", ENT_QUOTES);
+        //echo $new;  &lt;a href=&#039;test&#039;&gt;Test&lt;/a&gt;
         $data = htmlspecialchars($data);
         $data = strip_tags($data);
         return $data;
@@ -81,38 +90,58 @@ class Utils
     //Funcion que valida los valores de un array
     public static function clean_array(array $data)
     {
+        $alert = "";
+        $success = true;
         //Recorremos el array
         foreach ($data as $key => $value) {
-            try {
-                //Si la llave contiene id, sea categoria o stock
-                if (strpos($key, "id") != false || $key == "categoria" || $key == "stock" || $key == "option") {
-                    // Validamos que sea un entero positivo
-                    if (is_numeric($value) && $value >= 0) {
-                        $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_INT);
-                    } else {
-                        throw new Exception("El valor de la llave \"$key\" debe ser un número entero positivo.");
-                    }
-                    //En caso de que la llave coincida con 'precio'
-                } elseif ($key == "precio") {
-                    // Validamos que sea un float positivo
-                    if (is_numeric($value) && $value >= 0) {
-                        $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_FLOAT);
-                    }
-                }
-                //Si la llave corresponde con correo
-                if ($key == "correo") {
-                    //Validamos el correo
-                    $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_EMAIL);
+            //Si la llave contiene id, sea categoria o stock
+            if (strpos($key, "id") != false || $key == "categoria" || $key == "stock" || $key == "option") {
+                // Validamos que sea un entero positivo
+                if (is_numeric($value) && $value >= 0) {
+                    $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_INT);
                 } else {
-                    //Si no es ninguna de las claves anteriores, limpiamos la cadena
-                    $data[$key] = self::clean($value);
+                    $success = false;
+                    $alert = "El valor de la llave \"$key\" debe ser un número entero positivo.";
                 }
-            } catch (Exception $e) {
-                self::save_log($e->getMessage());
-                return false;
+                //En caso de que la llave coincida con 'precio'
+            } elseif ($key == "precio") {
+                // Validamos que sea un float positivo
+                if (is_numeric($value) && $value >= 0) {
+                    $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_FLOAT);
+                } else {
+                    $success = false;
+                    $alert = "El valor de la llave \"$key\" debe ser un número decimal positivo.";
+                }
+            }
+            //Si la llave corresponde con correo
+            if ($key == "correo") {
+                //Validamos el correo
+                $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_EMAIL);
+
+                if ($data[$key] == false) {
+                    $success = false;
+                    $alert = "El valor de la llave \"$key\" debe ser un correo válido.";
+                }
+            } else {
+                //Si no es ninguna de las claves anteriores, limpiamos la cadena
+                $data[$key] = self::clean($value);
             }
         }
 
+        try {
+            //Si success es false
+            if (!$success) {
+                //Lanzamos una nueva excepcion 
+                throw new Exception($alert);
+            }
+        } catch (Exception $e) {
+            //Y mandamos el error a nuestro log
+            self::save_log($e->getMessage());
+            //Devolvemos false
+            return false;
+        }
+
+        //Si todo está correcto, devolvemos data validada
         return $data;
     }
 

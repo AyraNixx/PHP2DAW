@@ -1,2 +1,0 @@
-SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`tienda_animales`.`productos`, CONSTRAINT `fk_Productos_Categoria1` FOREIGN KEY (`categoria`) REFERENCES `categoria` (`id_categoria`) ON DELETE NO ACTION ON UPDATE NO ACTION)
-El valor de la llave "new_id" debe ser un número entero positivo.
