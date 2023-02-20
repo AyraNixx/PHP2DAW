@@ -72,6 +72,9 @@ class Utils
     {
         //Usamos trim para quitar los espacios en blanco del principio y del final
         $data = trim($data);
+        //Además, usamos preg_replace para sustituir cualquier secuencia de uno o más
+        //espacios en blanco consecutivos por uno solo
+        $data = preg_replace('/\s+/', '/\s/', $data);
         //Usamos stripslashes que sirve para quitar las barras de un string con comillas
         //escapadas. Ejemplo:
         //$str = "Is your name O\'reilly?";
@@ -84,6 +87,12 @@ class Utils
         $data = htmlspecialchars($data, ENT_QUOTES);
         $data = strip_tags($data);
         return $data;
+    }
+
+
+    public static function format_tel(string $data)
+    {
+        return preg_replace('/([\s-])/', '', $data);
     }
 
 
@@ -118,7 +127,7 @@ class Utils
             //Si la llave corresponde con correo
             if ($key == "correo") {
                 //Validamos el correo
-                $value = filter_var(self::clean($value), FILTER_VALIDATE_EMAIL);
+                $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_EMAIL);
 
                 if ($data[$key] == false) {
                     $success = false;
@@ -127,6 +136,12 @@ class Utils
             } else {
                 //Si no es ninguna de las claves anteriores, limpiamos la cadena
                 $data[$key] = self::clean($value);
+            }
+
+            //Si la llave corresponde con telefono 
+            if($key == "telefono")
+            {
+                $data[$key] = self::clean(self::format_tel($value));
             }
         }
 

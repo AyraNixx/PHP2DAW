@@ -68,6 +68,7 @@ $(document).on("click", function (e) {
 
 $(document).on("ready", function(){
 
+    //Se añadirán más a medida que se necesiten
     $("#form").on("submit",  function () 
     {
         let inputs = $(this).find(":input");
@@ -110,6 +111,16 @@ $(document).on("ready", function(){
             //Si type es igual a tel
             if(type == "tel")
             {
+                //Creamos la expresión regular (EXPLICADA ABAJO CON TODOS LOS DETALLES)
+                //^-> Inicio
+                //$-> Final
+                //\d-> dígito (0-9)
+                //{}-> El número de veces que queremos que se repita
+                //() -> agrupaciones                
+                //[] -> set de posibles caracteres
+                //\s -> espacio en blanco
+                //- -> guión
+                //? -> Puede aparecer una vez o ninguna el caracter o agrupación anterior
                 if(!/^\d{3}(([\s-])?\d{2}){3}$/.test(val))
                 {
                     alert("Formato de teléfono no válido!");
