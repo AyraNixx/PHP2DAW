@@ -1,6 +1,7 @@
 <?php
 
 use \model\Rol;
+use \utils\Utils;
 
 require_once("../model/Rol.php");
 
@@ -35,11 +36,6 @@ class RolC
     //Funcion que guarda los datos paginados y muestra la página principal
     public function index()
     {
-        $msg = $this->msg;
-        //Almacenamos el orden y el campo por el que se ha ordenado actual
-        $actual_ord = $this->ord;
-        //Almacenamos la página actual 
-        $actual_page = $this->page;
         //Almacenamos los datos
         $data = $this->element->pagination($this->ord, $this->field, $this->page, $this->amount);
         $total_page = $this->element->get_total_pages($this->amount);
@@ -55,6 +51,9 @@ class RolC
             $data["id_rol"] = $_POST["id_rol"];
             $data["rol"] = $_POST["rol"];
             $data["descripcion"] = $_POST["descripcion"];
+
+            //Validamos los campos
+            $data = Utils::clean_array($data);
         }
         //Incluimos la vista de añadir o modificar
         require_once("../view/add_or_edit_rol.php");
@@ -64,27 +63,36 @@ class RolC
     //Funcion que guarda los datos recibidos en la base de datos
     public function save(array $data)
     {
-        //Si la opcion es 1, se añade el nuevo rol
-        if ($data["option"] == 1) {
-            //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
-            //de datos
-            if ($this->element->add($data) != null) {
-                //Mensaje a mostrar
-                $this->msg = "Añadido con éxito!";
+        //Validamos los campos
+        $data = Utils::clean_array($data);
+
+        //Si data es distinta de false
+        if ($data != false) {
+
+            //Si la opcion es 1, se añade el nuevo rol
+            if ($data["option"] == 1) {
+                //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
+                //de datos
+                if ($this->element->add($data) != null) {
+                    //Mensaje a mostrar
+                    $this->msg = "Añadido con éxito!";
+                } else {
+                    //Mensaje a mostrar
+                    $this->msg = "¡ERROR! Posible error de conexión";
+                }
             } else {
-                //Mensaje a mostrar
-                $this->msg = "¡ERROR! Posible error de conexión";
+                //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
+                //de datos
+                if ($this->element->update($data) != null) {
+                    //Mensaje a mostrar
+                    $this->msg = "Modificado con éxito!";
+                } else {
+                    //Mensaje a mostrar
+                    $this->msg = "¡ERROR! Posible error de conexión o clave repetida";
+                }
             }
-        } else {
-            //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
-            //de datos
-            if ($this->element->update($data) != null) {
-                //Mensaje a mostrar
-                $this->msg = "Modificado con éxito!";
-            } else {
-                //Mensaje a mostrar
-                $this->msg = "¡ERROR! Posible error de conexión o clave repetida";
-            }
+        }else{
+            $this->msg = "¡ERROR! ¡Modificación sin éxito!";
         }
         //Llamamos a la funcion index() para que nos lleve de vuelta a la página
         //principal
@@ -92,10 +100,10 @@ class RolC
     }
 
     //Funcion que elimina el rol seleccionado
-    public function delete($id_rol)
+    public function delete(int $id_rol)
     {
         //Si la funcion delete devuelve como resultado algo distinto de null
-        if ($this->element->delete($id_rol) != null) {
+        if ($this->element->delete(filter_var(Utils::clean($id_rol)), FILTER_VALIDATE_INT) != null) {
             //Guardamos el mensaje
             $this->msg = "¡Borrado con éxito!";
             //Llamamos a la funcion index
@@ -106,10 +114,10 @@ class RolC
     }
 
     //Funcion que muestra más detalles acerca del elemento seleccionado
-    public function details($id_rol)
+    public function details(int $id_rol)
     {
         //Guardamos en un array el resultado de la funcion get_one
-        $data = $this->element->get_one($id_rol);
+        $data = $this->element->get_one(filter_var(Utils::clean($id_rol)), FILTER_VALIDATE_INT);
 
         //Si data no es nulo, incluirá la vista de detalles rol
         if ($data != null) {

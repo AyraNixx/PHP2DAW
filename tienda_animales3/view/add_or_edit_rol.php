@@ -14,7 +14,7 @@
     <div class="container mt-5">
         <div class="d-flex align-items-center justify-content-center">
             <form action="index_rol.php" method="POST" class="bg-dark text-white p-4" style="width: 370px;">
-            <!-- Si option es 1, ponermos Add rol, si no lo es, edit rol -->
+                <!-- Si option es 1, ponermos Add rol, si no lo es, edit rol -->
                 <h2 class="text-center my-4"><b><?= ($option == 1) ? "Add Rol" : "Edit Rol" ?></b></h2>
                 <!--Si option es 1, no aparecerá el recuadro de id_rol-->
                 <?php
@@ -23,7 +23,7 @@
                     echo "<div class='form-group col-md-12'>";
                     echo "<label for='rol' class='mb-3'>Id</label>";
                     echo "<input type=text name=new_id class=form-control value=" . $data["id_rol"] . ">";
-                    echo "<input type=hidden name=id_rol value=". $data["id_rol"] . ">";
+                    echo "<input type=hidden name=id_rol value=" . $data["id_rol"] . ">";
                     echo "</div>";
                 }
                 ?>
@@ -36,14 +36,16 @@
                     <label for="descripcion" class="mt-2 mb-1">Descripcion</label>
                     <input type="text" name="descripcion" class="form-control" value=<?= ($option == 2) ? $data["descripcion"] : "" ?>>
                 </div>
-                <input type="hidden" name="option" value="<?=$option?>">
+                <input type="hidden" name="option" value="<?= $option ?>">
                 <div class="form-group col-md-12 text-center">
                     <button type="submit" value="5" name="submit" class="mt-3 btn btn-secondary">Guardar</button>
                 </div>
             </form>
         </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="../view/js/validation.js"></script>
 </body>
 
 </html>

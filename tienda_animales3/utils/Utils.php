@@ -4,6 +4,7 @@ namespace utils;
 
 use \PDO;
 use \PDOException;
+use \Exception;
 
 class Utils
 {
@@ -49,6 +50,71 @@ class Utils
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+    /***********************************************************************
+     *                                                                     *
+     *                         LIMPIEZA                                    *
+     *                                                                     *
+     ***********************************************************************/
+
+    public static function clean($data)
+    {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        $data = strip_tags($data);
+        return $data;
+    }
+
+
+    //Funcion que valida los valores de un array
+    public static function clean_array(array $data)
+    {
+        //Recorremos el array
+        foreach ($data as $key => $value) {
+            try {
+                //Si la llave contiene id, sea categoria o stock
+                if (strpos($key, "id") != false || $key == "categoria" || $key == "stock" || $key == "option") {
+                    // Validamos que sea un entero positivo
+                    if (is_numeric($value) && $value >= 0) {
+                        $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_INT);
+                    } else {
+                        throw new Exception("El valor de la llave \"$key\" debe ser un número entero positivo.");
+                    }
+                    //En caso de que la llave coincida con 'precio'
+                } elseif ($key == "precio") {
+                    // Validamos que sea un float positivo
+                    if (is_numeric($value) && $value >= 0) {
+                        $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_FLOAT);
+                    }
+                }
+                //Si la llave corresponde con correo
+                if ($key == "correo") {
+                    //Validamos el correo
+                    $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_EMAIL);
+                } else {
+                    //Si no es ninguna de las claves anteriores, limpiamos la cadena
+                    $data[$key] = self::clean($value);
+                }
+            } catch (Exception $e) {
+                self::save_log($e->getMessage());
+                return false;
+            }
+        }
+
+        return $data;
+    }
 
 
 
@@ -111,9 +177,8 @@ class Utils
     public static function delete_img(string $file_path)
     {
         //Utilizamos file_exist para comprobar que el archivo existe
-        if (!file_exists($file_path)) 
-        {
-            return false;          
+        if (!file_exists($file_path)) {
+            return false;
         }
 
         //Eliminamos la imagen
@@ -152,7 +217,7 @@ class Utils
 
 
 
-    
+
     /***********************************************************************
      *                                                                     *
      *                         EN PLANTEAMIENTO                            *
