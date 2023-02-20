@@ -64,6 +64,15 @@ class ProductC
             $data["stock"] = $_POST["stock"];
             $data["categoria"] = $_POST["categoria"];
             $data["prev_img"] = $_POST["prev_img"];
+
+            //Validamos los campos
+            $data = Utils::clean_array($data);
+
+            //En caso de que haya un problema con la validación
+            if ($data == false) {
+                $this->msg = "¡ERROR! ¡Hay un problema con los datos!";
+                $this->index();
+            }
         }
         //Incluimos la vista de añadir o modificar
         require_once("../view/add_or_edit_product.php");
@@ -76,46 +85,55 @@ class ProductC
     //Funcion que guarda los datos recibidos en la base de datos
     public function save(array $data)
     {
-        //Si la clave name del array $_FILES[img] no es nula
-        if (!empty($_FILES["new_img"]["tmp_name"])) {
-            //Guardamos el array
-            $img = $_FILES["new_img"];
 
-            //Si option es 2, significa que estamos modificando la imagen ya guardada
-            //Por lo que borramos la anterior imagen para luego guardar la nueva            
-            if ($data["option"] == 2) {
-                $this->msg = Utils::delete_img($data["prev_img"]) ? "" : "¡Imagen previamente eliminada!";
-            }
-            //Guardamos la imagen en la carpeta imgs con el método save_img que nos
-            //devolverá la url   
-            $data["img"] = Utils::save_img($img);
-        } else {
-            //PSi no se ha seleccionado una nueva imagen, la clave name estará vacía, por lo
-            //que guardamos el valor de la clave prev_img del array element
-            $data["img"] = $data["prev_img"];
-        }
+        //Validamos los campos
+        $data = Utils::clean_array($data);
 
-        //Si la opcion es 1, se añade el nuevo proveedor
-        if ($data["option"] == 1) {
-            //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
-            //de datos
-            if ($this->element->add($data) != null) {
-                //Mensaje a mostrar
-                $this->msg = "Añadido con éxito!";
+        //Si data es distinta de false
+        if ($data != false) {
+            //Si la clave name del array $_FILES[img] no es nula
+            if (!empty($_FILES["new_img"]["tmp_name"])) {
+                //Guardamos el array
+                $img = $_FILES["new_img"];
+
+                //Si option es 2, significa que estamos modificando la imagen ya guardada
+                //Por lo que borramos la anterior imagen para luego guardar la nueva            
+                if ($data["option"] == 2) {
+                    $this->msg = Utils::delete_img($data["prev_img"]) ? "" : "¡Imagen previamente eliminada!";
+                }
+                //Guardamos la imagen en la carpeta imgs con el método save_img que nos
+                //devolverá la url   
+                $data["img"] = Utils::save_img($img);
             } else {
-                //Mensaje a mostrar
-                $this->msg = "¡ERROR! Posible error de conexión";
+                //PSi no se ha seleccionado una nueva imagen, la clave name estará vacía, por lo
+                //que guardamos el valor de la clave prev_img del array element
+                $data["img"] = $data["prev_img"];
+            }
+
+            //Si la opcion es 1, se añade el nuevo proveedor
+            if ($data["option"] == 1) {
+                //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
+                //de datos
+                if ($this->element->add($data) != null) {
+                    //Mensaje a mostrar
+                    $this->msg = "Añadido con éxito!";
+                } else {
+                    //Mensaje a mostrar
+                    $this->msg = "¡ERROR! Posible error de conexión";
+                }
+            } else {
+                //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
+                //de datos
+                if ($this->element->update($data) != null) {
+                    //Mensaje a mostrar
+                    $this->msg = "Modificado con éxito!";
+                } else {
+                    //Mensaje a mostrar
+                    $this->msg = "¡ERROR! Posible error de conexión o clave repetida";
+                }
             }
         } else {
-            //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
-            //de datos
-            if ($this->element->update($data) != null) {
-                //Mensaje a mostrar
-                $this->msg = "Modificado con éxito!";
-            } else {
-                //Mensaje a mostrar
-                $this->msg = "¡ERROR! Posible error de conexión o clave repetida";
-            }
+            $this->msg = "¡ERROR! ¡Modificación sin éxito!";
         }
         //Llamamos a la funcion index() para que nos lleve de vuelta a la página
         //principal
@@ -129,7 +147,7 @@ class ProductC
     public function delete(int $id_product, string $url_img)
     {
         //Si la funcion delete devuelve como resultado algo distinto de null
-        if ($this->element->delete($id_product) != null) {
+        if ($this->element->delete(filter_var(Utils::clean($id_product)), FILTER_VALIDATE_INT) != null) {
             Utils::delete_img($url_img);
             //Guardamos el mensaje
             $this->msg = "¡Borrado con éxito!";
@@ -148,7 +166,7 @@ class ProductC
     public function details(int $id_product)
     {
         //Guardamos en un array el resultado de la funcion get_one
-        $data = $this->element->get_one($id_product);
+        $data = $this->element->get_one(filter_var(Utils::clean($id_product)), FILTER_VALIDATE_INT);
 
         //Si data no es nulo, incluirá la vista de detalles categoria
         if ($data != null) {
@@ -246,6 +264,9 @@ if (isset($_REQUEST)) {
             if (isset($_POST["id_producto"]) && is_numeric($_POST["id_producto"])) {
                 //Se llama a la funcion delete
                 $element->delete($_POST["id_producto"], $_POST["img"]);
+            } else {
+                $this->msg = "Clave no numérica!";
+                $element->index();
             }
             break;
             //Si es 4, llamamos a la funcion details que nos mostrará más detalles acerca
@@ -255,6 +276,9 @@ if (isset($_REQUEST)) {
             if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
                 //Llamamos a la funcion details
                 $element->details($_POST["id"]);
+            } else {
+                $this->msg = "Clave no numérica!";
+                $element->index();
             }
             break;
             //La opcion 5, la obtenemos al enviar los datos del formulario de modificar

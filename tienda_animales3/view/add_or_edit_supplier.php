@@ -13,7 +13,7 @@
 <body class="bg-secondary">
     <div class="container mt-5">
         <div class="d-flex align-items-center justify-content-center">
-            <form action="index_supplier.php" method="POST" class="bg-dark text-white p-4" style="width: 370px;">
+            <form action="index_supplier.php" method="POST" class="bg-dark text-white p-4" style="width: 370px;" id="form">
             <!-- Si option es 1, ponermos Add supplier, si no lo es, edit supplier -->
                 <h2 class="text-center my-4"><b><?= ($option == 1) ? "Add Supplier" : "Edit Supplier" ?></b></h2>
                 <!--Si option es 1, no aparecerá el recuadro de id_supplier-->
@@ -51,7 +51,9 @@
             </form>
         </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="./js/index.js"></script>
 </body>
 
 </html>

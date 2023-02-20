@@ -1,6 +1,7 @@
 <?php
 
 use \model\Supplier;
+use \utils\Utils;
 
 require_once("../model/Supplier.php");
 
@@ -32,6 +33,10 @@ class SupplierC
         $this->msg = "";
     }
 
+
+
+
+
     //Funcion que guarda los datos paginados y muestra la página principal
     public function index()
     {
@@ -41,6 +46,13 @@ class SupplierC
         //Incluimos la vista del index.
         require_once("../view/index_supplier.php");
     }
+
+
+
+
+
+
+
 
     //Funcion que añade o modifica según la opcion elegida
     public function add_or_edit(int $option)
@@ -52,47 +64,75 @@ class SupplierC
             $data["direccion"] = $_POST["direccion"];
             $data["telefono"] = $_POST["telefono"];
             $data["correo"] = $_POST["correo"];
+
+            //Validamos los campos
+            $data = Utils::clean_array($data);
+
+            //En caso de que haya un problema con la validación
+            if ($data == false) {
+                $this->msg = "¡ERROR! ¡Hay un problema con los datos!";
+                $this->index();
+            }
         }
         //Incluimos la vista de añadir o modificar
         require_once("../view/add_or_edit_supplier.php");
     }
 
 
+
+
+
+
+
     //Funcion que guarda los datos recibidos en la base de datos
     public function save(array $data)
     {
-        //Si la opcion es 1, se añade el nuevo proveedor
-        if ($data["option"] == 1) {
-            //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
-            //de datos
-            if ($this->element->add($data) != null) {
-                //Mensaje a mostrar
-                $this->msg = "Añadido con éxito!";
-            }else{
-                //Mensaje a mostrar
-                $this->msg = "¡ERROR! Posible error de conexión";
+
+        //Validamos los campos
+        $data = Utils::clean_array($data);
+
+        //Si data es distinta de false
+        if ($data != false) {
+
+            //Si la opcion es 1, se añade el nuevo proveedor
+            if ($data["option"] == 1) {
+                //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
+                //de datos
+                if ($this->element->add($data) != null) {
+                    //Mensaje a mostrar
+                    $this->msg = "Añadido con éxito!";
+                } else {
+                    //Mensaje a mostrar
+                    $this->msg = "¡ERROR! Posible error de conexión";
+                }
+            } else {
+                //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
+                //de datos
+                if ($this->element->update($data) != null) {
+                    //Mensaje a mostrar
+                    $this->msg = "Modificado con éxito!";
+                } else {
+                    //Mensaje a mostrar
+                    $this->msg = "¡ERROR! Posible error de conexión o clave repetida";
+                }
             }
         } else {
-            //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
-            //de datos
-            if ($this->element->update($data) != null) {
-                //Mensaje a mostrar
-                $this->msg = "Modificado con éxito!";
-            } else {
-                //Mensaje a mostrar
-                $this->msg = "¡ERROR! Posible error de conexión o clave repetida";
-            }
+            $this->msg = "¡ERROR! ¡Modificación sin éxito!";
         }
         //Llamamos a la funcion index() para que nos lleve de vuelta a la página
         //principal
         $this->index();
     }
 
+
+
+
+
     //Funcion que elimina la categoria seleccionado
     public function delete(int $id_supplier)
     {
         //Si la funcion delete devuelve como resultado algo distinto de null
-        if ($this->element->delete($id_supplier) != null) {
+        if ($this->element->delete(filter_var(Utils::clean($id_supplier)), FILTER_VALIDATE_INT) != null) {
             //Guardamos el mensaje
             $this->msg = "¡Borrado con éxito!";
             //Llamamos a la funcion index
@@ -106,7 +146,7 @@ class SupplierC
     public function details(int $id_supplier)
     {
         //Guardamos en un array el resultado de la funcion get_one
-        $data = $this->element->get_one($id_supplier);
+        $data = $this->element->get_one(filter_var(Utils::clean($id_supplier)), FILTER_VALIDATE_INT);
 
         //Si data no es nulo, incluirá la vista de detalles categoria
         if ($data != null) {
@@ -207,6 +247,9 @@ if (isset($_REQUEST)) {
             if (isset($_POST["id_proveedor"]) && is_numeric($_POST["id_proveedor"])) {
                 //Se llama a la funcion delete
                 $element->delete($_POST["id_proveedor"]);
+            } else {
+                $this->msg = "Clave no numérica!";
+                $element->index();
             }
             break;
             //Si es 4, llamamos a la funcion details que nos mostrará más detalles acerca
@@ -216,6 +259,9 @@ if (isset($_REQUEST)) {
             if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
                 //Llamamos a la funcion details
                 $element->details($_POST["id"]);
+            } else {
+                $this->msg = "Clave no numérica!";
+                $element->index();
             }
             break;
             //La opcion 5, la obtenemos al enviar los datos del formulario de modificar

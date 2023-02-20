@@ -33,6 +33,8 @@ class RolC
         $this->msg = "";
     }
 
+    
+
     //Funcion que guarda los datos paginados y muestra la página principal
     public function index()
     {
@@ -43,22 +45,36 @@ class RolC
         require_once("../view/index_rol.php");
     }
 
+
+
+
     //Funcion que añade o modifica según la opcion elegida
     public function add_or_edit(int $option)
     {
         //Si la opcion es 2, almacenamos en $data los valores pasados por POST
-        if ($option == 2) {
+        if ($option == 2) 
+        {
             $data["id_rol"] = $_POST["id_rol"];
             $data["rol"] = $_POST["rol"];
             $data["descripcion"] = $_POST["descripcion"];
 
             //Validamos los campos
             $data = Utils::clean_array($data);
+
+            //En caso de que haya un problema con la validación
+            if($data == false)
+            {
+                $this->msg = "¡ERROR! ¡Hay un problema con los datos!";
+                $this->index();
+            }
         }
         //Incluimos la vista de añadir o modificar
         require_once("../view/add_or_edit_rol.php");
     }
 
+
+
+    
 
     //Funcion que guarda los datos recibidos en la base de datos
     public function save(array $data)
@@ -99,6 +115,10 @@ class RolC
         $this->index();
     }
 
+
+
+
+
     //Funcion que elimina el rol seleccionado
     public function delete(int $id_rol)
     {
@@ -113,6 +133,10 @@ class RolC
         }
     }
 
+
+
+
+    
     //Funcion que muestra más detalles acerca del elemento seleccionado
     public function details(int $id_rol)
     {
@@ -218,6 +242,9 @@ if (isset($_REQUEST)) {
             if (isset($_POST["id_rol"]) && is_numeric($_POST["id_rol"])) {
                 //Se llama a la funcion delete
                 $element->delete($_POST["id_rol"]);
+            }else{
+                $this->msg = "Clave no numérica!";
+                $element->index();
             }
             break;
             //Si es 4, llamamos a la funcion details que nos mostrará más detalles acerca
@@ -227,6 +254,9 @@ if (isset($_REQUEST)) {
             if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
                 //Llamamos a la funcion details
                 $element->details($_POST["id"]);
+            }else{
+                $this->msg = "Clave no numérica!";
+                $element->index();
             }
             break;
             //La opcion 5, la obtenemos al enviar los datos del formulario de modificar

@@ -1,6 +1,7 @@
 <?php
 
 use \model\Category;
+use \utils\Utils;
 
 require_once("../model/Category.php");
 
@@ -32,6 +33,9 @@ class CategoryC
         $this->msg = "";
     }
 
+
+
+
     //Funcion que guarda los datos paginados y muestra la página principal
     public function index()
     {
@@ -42,6 +46,9 @@ class CategoryC
         require_once("../view/index_category.php");
     }
 
+
+
+
     //Funcion que añade o modifica según la opcion elegida
     public function add_or_edit(int $option)
     {
@@ -50,6 +57,16 @@ class CategoryC
             $data["id_categoria"] = $_POST["id_categoria"];
             $data["nombre"] = $_POST["nombre"];
             $data["descripcion"] = $_POST["descripcion"];
+
+
+            //Validamos los campos
+            $data = Utils::clean_array($data);
+
+            //En caso de que haya un problema con la validación
+            if ($data == false) {
+                $this->msg = "¡ERROR! ¡Hay un problema con los datos!";
+                $this->index();
+            }
         }
         //Incluimos la vista de añadir o modificar
         require_once("../view/add_or_edit_category.php");
@@ -59,27 +76,35 @@ class CategoryC
     //Funcion que guarda los datos recibidos en la base de datos
     public function save(array $data)
     {
-        //Si la opcion es 1, se añade la nueva categoria
-        if ($data["option"] == 1) {
-            //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
-            //de datos
-            if ($this->element->add($data) != null) {
-                //Mensaje a mostrar
-                $this->msg = "Añadido con éxito!";
-            }else{
-                //Mensaje a mostrar
-                $this->msg = "¡ERROR! Posible error de conexión";
+        //Validamos los campos
+        $data = Utils::clean_array($data);
+
+        //Si data es distinta de false
+        if ($data != false) {
+            //Si la opcion es 1, se añade la nueva categoria
+            if ($data["option"] == 1) {
+                //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
+                //de datos
+                if ($this->element->add($data) != null) {
+                    //Mensaje a mostrar
+                    $this->msg = "Añadido con éxito!";
+                } else {
+                    //Mensaje a mostrar
+                    $this->msg = "¡ERROR! Posible error de conexión";
+                }
+            } else {
+                //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
+                //de datos
+                if ($this->element->update($data) != null) {
+                    //Mensaje a mostrar
+                    $this->msg = "Modificado con éxito!";
+                } else {
+                    //Mensaje a mostrar
+                    $this->msg = "¡ERROR! Posible error de conexión o clave repetida";
+                }
             }
         } else {
-            //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
-            //de datos
-            if ($this->element->update($data) != null) {
-                //Mensaje a mostrar
-                $this->msg = "Modificado con éxito!";
-            } else {
-                //Mensaje a mostrar
-                $this->msg = "¡ERROR! Posible error de conexión o clave repetida";
-            }
+            $this->msg = "¡ERROR! ¡Modificación sin éxito!";
         }
         //Llamamos a la funcion index() para que nos lleve de vuelta a la página
         //principal
@@ -90,7 +115,7 @@ class CategoryC
     public function delete(int $id_category)
     {
         //Si la funcion delete devuelve como resultado algo distinto de null
-        if ($this->element->delete($id_category) != null) {
+        if ($this->element->delete(filter_var(Utils::clean($id_category)), FILTER_VALIDATE_INT) != null) {
             //Guardamos el mensaje
             $this->msg = "¡Borrado con éxito!";
             //Llamamos a la funcion index
@@ -104,7 +129,7 @@ class CategoryC
     public function details(int $id_category)
     {
         //Guardamos en un array el resultado de la funcion get_one
-        $data = $this->element->get_one($id_category);
+        $data = $this->element->get_one(filter_var(Utils::clean($id_category)), FILTER_VALIDATE_INT);
 
         //Si data no es nulo, incluirá la vista de detalles categoria
         if ($data != null) {
@@ -205,6 +230,9 @@ if (isset($_REQUEST)) {
             if (isset($_POST["id_categoria"]) && is_numeric($_POST["id_categoria"])) {
                 //Se llama a la funcion delete
                 $element->delete($_POST["id_categoria"]);
+            } else {
+                $this->msg = "Clave no numérica!";
+                $element->index();
             }
             break;
             //Si es 4, llamamos a la funcion details que nos mostrará más detalles acerca
@@ -214,6 +242,9 @@ if (isset($_REQUEST)) {
             if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
                 //Llamamos a la funcion details
                 $element->details($_POST["id"]);
+            } else {
+                $this->msg = "Clave no numérica!";
+                $element->index();
             }
             break;
             //La opcion 5, la obtenemos al enviar los datos del formulario de modificar

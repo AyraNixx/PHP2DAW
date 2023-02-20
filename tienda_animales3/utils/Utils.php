@@ -81,7 +81,7 @@ class Utils
         //Ejemplo:
         //$new = htmlspecialchars("<a href='test'>Test</a>", ENT_QUOTES);
         //echo $new;  &lt;a href=&#039;test&#039;&gt;Test&lt;/a&gt;
-        $data = htmlspecialchars($data);
+        $data = htmlspecialchars($data, ENT_QUOTES);
         $data = strip_tags($data);
         return $data;
     }
@@ -105,9 +105,11 @@ class Utils
                 }
                 //En caso de que la llave coincida con 'precio'
             } elseif ($key == "precio") {
+                
                 // Validamos que sea un float positivo
                 if (is_numeric($value) && $value >= 0) {
                     $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_FLOAT);
+                    
                 } else {
                     $success = false;
                     $alert = "El valor de la llave \"$key\" debe ser un número decimal positivo.";
@@ -116,7 +118,7 @@ class Utils
             //Si la llave corresponde con correo
             if ($key == "correo") {
                 //Validamos el correo
-                $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_EMAIL);
+                $value = filter_var(self::clean($value), FILTER_VALIDATE_EMAIL);
 
                 if ($data[$key] == false) {
                     $success = false;
@@ -140,7 +142,6 @@ class Utils
             //Devolvemos false
             return false;
         }
-
         //Si todo está correcto, devolvemos data validada
         return $data;
     }

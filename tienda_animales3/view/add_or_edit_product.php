@@ -13,13 +13,13 @@
 <body class="bg-secondary">
     <div class="container mt-5">
         <div class="d-flex align-items-center justify-content-center">
-            <form action="index_product.php" method="POST" enctype="multipart/form-data" class="bg-dark text-white p-4" style="width: 370px;">
+            <form action="index_product.php" method="POST" enctype="multipart/form-data" class="bg-dark text-white p-4" style="width: 370px;" id="form">
                 <!-- Si option es 1, ponermos Add Product, si no lo es, edit Product -->
                 <h2 class="text-center my-4"><b><?= ($option == 1) ? "Add Product" : "Edit Product" ?></b></h2>
                 <!--Si option es 1, no aparecerá el recuadro de id_product-->
                 <?php
                 //Si option es 2, nos aparece un input para modificar el identificador
-                if ($option == 2) {                    
+                if ($option == 2) {
                     echo "<div class='form-group col-md-12'>";
                     echo "<label for='id_producto' class='mb-3'>Id</label>";
                     echo "<input type=text name=new_id class=form-control value=" . $data["id_producto"] . ">";
@@ -50,9 +50,8 @@
                     //Si la opcion es 2, significa que queremos modificar el elemento
                     //Sin embargo, puede ser que no queramos cambiar la foto ya subida
                     //así que guardamos su url
-                    if($option == 2)
-                    {
-                        echo "<input type='hidden' name='prev_img' value='".$data["prev_img"]."'>";
+                    if ($option == 2) {
+                        echo "<input type='hidden' name='prev_img' value='" . $data["prev_img"] . "'>";
                     }
                     ?>
 
@@ -65,7 +64,9 @@
             </form>
         </div>
     </div>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="./js/index.js"></script>
 </body>
 
 </html>
