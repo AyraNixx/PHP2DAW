@@ -12,7 +12,7 @@ function details(id, url) {
             //Mostramos la respuesta a la peticion en el elemento info_content
             $("#info_content").html(xhr.response);
         }
-    }
+    } 
 
     //Preparemos la peticion, indicando el metodo y la url
     xhr.open("POST", url, true);

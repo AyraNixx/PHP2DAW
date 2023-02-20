@@ -43,9 +43,9 @@
             <table class="table table-striped">
                 <thead class="table-dark text-center">
                     <tr>
-                        <th scope="col">Nombre<a class=" p-1 text-white <?= ($this->ord == "ASC") ? "asc" : "desc" ?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
-                        <th scope="col">Precio<a class=" p-1 text-white <?= ($this->ord == "ASC") ? "asc" : "desc" ?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
-                        <th scope="col">Stock<a class=" p-1 text-white <?= ($this->ord == "ASC") ? "asc" : "desc" ?>" href='index_product.php?'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
+                        <th scope="col">Nombre<a class=" p-1 text-white <?= ($this->ord == "ASC") ? "asc" : "desc" ?>" href='index_product.php?field=nombre'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
+                        <th scope="col">Precio<a class=" p-1 text-white <?= ($this->ord == "ASC") ? "asc" : "desc" ?>" href='index_product.php?field=precio'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
+                        <th scope="col">Stock<a class=" p-1 text-white <?= ($this->ord == "ASC") ? "asc" : "desc" ?>" href='index_product.php?field=stock'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
@@ -61,7 +61,7 @@
                         echo "<tr>";
                         //Mostramos los datos de cada elemento
                         //Llamamos a la funcion details para mostrar más datos del elemento seleccionado
-                        echo "<td><a onclick=details(" . $element["id_producto"] . ",'" . $url . "')>" . $element["nombre"] . "</a></td>";
+                        echo "<td><a style='cursor:pointer;' onclick=details(" . $element["id_producto"] . ",'" . $url . "')>" . $element["nombre"] . "</a></td>";
                         echo "<td>" . $element["precio"] . "</td>";
                         echo "<td>" . $element["stock"] . "</td>";
                         echo "<td class='p-0'>";
@@ -108,18 +108,18 @@
                         //Si la página actual no es la primera, activamos previous. Si es la primera
                         //lo desactivamos con la clase disabled
                         if ($this->page != 1) {
-                            echo "<li class='page-item'><a href='index_product.php?page=" . ($this->page - 1) . "' class='page-link'>Previous</a></li>";
+                            echo "<li class='page-item'><a href='index_product.php?field=".($this->field)."&ord=".($this->ord)."&page=" . ($this->page - 1) . "' class='page-link'>Previous</a></li>";
                         } else {
                             echo "<li class='page-item disabled'><a class='page-link'>Previous</a></li>";
                         }
 
                         for ($i = 1; $i <= $total_page; $i++) {
-                            echo "<li class='page-item" . (($i == $this->page) ? ' active' : '') . "'><a href='index_product.php?page=$i' class='page-link'>$i</a></li>";
+                            echo "<li class='page-item" . (($i == $this->page) ? ' active' : '') . "'><a href='index_product.php?field=".($this->field)."&ord=".($this->ord)."&page=$i' class='page-link'>$i</a></li>";
                         }
 
                         //Hacemos lo mismo que con previous
                         if ($this->page != $total_page) {
-                            echo "<li class='page-item'><a href='index_product.php?page=" . ($this->page + 1) . "' class='page-link'>Next</a></li>";
+                            echo "<li class='page-item'><a href='index_product.php?field=".($this->field)."&ord=".($this->ord)."&page=" . ($this->page + 1) . "' class='page-link'>Next</a></li>";
                         } else {
                             echo "<li class='page-item disabled'><a class='page-link'>Next</a></li>";
                         }
