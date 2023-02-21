@@ -89,7 +89,7 @@ class Category
                 //Devolvemos el resultado de la ejecucion (será un boolean true si todo ha ido bien)
                 return $sentence->execute();
             } catch (PDOException $e) {
-                print("¡Error! : " . $e->getMessage() . "<bd/>");
+                Utils::save_log($e->getMessage());
             }
 
             return null;
@@ -172,7 +172,7 @@ class Category
             //Devolvemos las filas resultantes
             return $sentence->fetchAll();
         } catch (PDOException $e) {
-            print("¡Error! : " . $e->getMessage() . "<bd/>");
+            Utils::save_log($e->getMessage());
         }
         return null;
     }
@@ -197,7 +197,7 @@ class Category
             //asociativo, pongo pages para que me devuelva el valor de la clave pages)
             return $sentence->fetch()["pages"];
         } catch (PDOException $e) {
-            print("¡Error! : " . $e->getMessage() . "<bd/>");
+            Utils::save_log($e->getMessage());
         }
         return null;
     }

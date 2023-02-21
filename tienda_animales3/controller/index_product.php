@@ -133,7 +133,7 @@ class ProductC
                 }
             }
         } else {
-            $this->msg = "¡ERROR! ¡Modificación sin éxito!";
+            $this->msg = "¡ERROR! ¡Revise los datos!";
         }
         //Llamamos a la funcion index() para que nos lleve de vuelta a la página
         //principal

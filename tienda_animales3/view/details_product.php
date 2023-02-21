@@ -25,7 +25,7 @@
             <?php
             echo "<th class='table-dark text-center'>Foto/s</th>";
             echo "<td scope='col' class='text-center'>";
-            echo "<img src='" . $data["foto"] . "' alt='img' width=350px height=250px>";
+            echo "<img src='" . $data["foto"] . "' alt='img' width=350px >";
             echo "</td>";
             ?>
         </tr>

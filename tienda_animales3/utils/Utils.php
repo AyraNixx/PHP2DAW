@@ -74,7 +74,7 @@ class Utils
         $data = trim($data);
         //Además, usamos preg_replace para sustituir cualquier secuencia de uno o más
         //espacios en blanco consecutivos por uno solo
-        $data = preg_replace('/\s+/', '/\s/', $data);
+        $data = preg_replace('/\s+/', ' ', $data);
         //Usamos stripslashes que sirve para quitar las barras de un string con comillas
         //escapadas. Ejemplo:
         //$str = "Is your name O\'reilly?";
@@ -90,13 +90,22 @@ class Utils
     }
 
 
+
+
+
+    //Función que devuelve el telefono añadido con el formato que queremos para la
+    //BD
     public static function format_tel(string $data)
     {
         return preg_replace('/([\s-])/', '', $data);
     }
 
 
-    //Funcion que valida los valores de un array
+
+
+
+
+    //Funcion que valida los valores de un array (y así no tener que hacerlo uno a uno)
     public static function clean_array(array $data)
     {
         $alert = "";

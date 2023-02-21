@@ -50,7 +50,7 @@ class Product
     }
 
 
-    //Función que devuelve el proveedor indicado
+    //Función que devuelve el producto indicado
     function get_one(int $id_producto)
     {
         //Si id no es nulo y es numerico
@@ -73,7 +73,7 @@ class Product
         }
     }
 
-    //Funcion que añade un nuevo proveedor
+    //Funcion que añade un nuevo producto
     function add(array $product)
     {
         //Si $product no es nulo, así como ningunao de sus valores
@@ -92,7 +92,7 @@ class Product
                 //Devolvemos el resultado de la ejecucion (será un boolean true si todo ha ido bien)
                 return $statement->execute();
             } catch (PDOException $e) {
-                print("¡Error! : " . $e->getMessage() . "<bd/>");
+                Utils::save_log($e->getMessage());
             }
 
             return null;
@@ -179,7 +179,7 @@ class Product
             //Devolvemos las filas resultantes
             return $statement->fetchAll();
         } catch (PDOException $e) {
-            print("¡Error! : " . $e->getMessage() . "<bd/>");
+            Utils::save_log($e->getMessage());
         }
         return null;
     }
@@ -204,7 +204,7 @@ class Product
             //asociativo, pongo pages para que me devuelva el valor de la clave pages)
             return $statement->fetch()["pages"];
         } catch (PDOException $e) {
-            print("¡Error! : " . $e->getMessage() . "<bd/>");
+            Utils::save_log($e->getMessage());
         }
         return null;
     }
