@@ -46,7 +46,7 @@
                         <th scope="col"></th>
                     </tr>
                 </thead>
-                <tbody class="text-center">
+                <tbody>
                     <?php
                     $i = 1;
                     foreach ($data as $element) {
@@ -54,7 +54,7 @@
                         $url = "index_rol.php";
                         echo "<tr>";
                         echo "<td><a style='cursor:pointer;' onclick=details(" . $element["id_rol"] . ",'" . $url . "')>" . $element["rol"] . "</a></td>";
-                        echo "<td class='p-0'>";
+                        echo "<td class='p-0 text-center'>";
                     ?>
                         <form action="index_rol.php" method="POST" class="d-inline-block">
                             <input type="hidden" name="id_rol" value='<?= $element["id_rol"] ?>'>

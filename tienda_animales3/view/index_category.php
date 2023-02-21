@@ -47,7 +47,7 @@
                         <th scope="col"></th>
                     </tr>
                 </thead>
-                <tbody class="text-center">
+                <tbody>
                     <?php
                     //Contador
                     $i = 1;
@@ -61,7 +61,7 @@
                         //Si hace click sobre el nombre, se llamará a la función details que dará más información acerca del
                         //elemento seleccionado
                         echo "<td><a style='cursor:pointer;' onclick=details(" . $element["id_categoria"] . ",'" . $url . "')>" . $element["nombre"] . "</a></td>";
-                        echo "<td class='p-0'>";
+                        echo "<td class='p-0 text-center'>";
                     ?>
                         <!-- Enviamos los datos del elemento seleccionado y creamos un boton para su modificacion -->
                         <!-- Pasamos los datos como hidden -->

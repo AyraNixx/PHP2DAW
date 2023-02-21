@@ -47,7 +47,7 @@
                         <th scope="col"></th>
                     </tr>
                 </thead>
-                <tbody class="text-center">
+                <tbody>
                     <?php
                     $i = 1;
                     foreach ($data as $element) {
@@ -56,7 +56,7 @@
                         echo "<tr>";
                         echo "<td><a style='cursor:pointer;' onclick=details(" . $element["id_proveedor"] . ",'" . $url . "')>" . $element["nombre"] . "</a></td>";
                         echo "<td>" . $element["correo"] . "</td>";
-                        echo "<td class='p-0'>";
+                        echo "<td class='p-0 text-center'>";
                     ?>
                         <form action="index_supplier.php" method="POST" class="d-inline-block">
                             <input type="hidden" name="id_proveedor" value='<?= $element["id_proveedor"] ?>'>

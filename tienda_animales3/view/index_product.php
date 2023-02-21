@@ -49,7 +49,7 @@
                         <th scope="col"></th>
                     </tr>
                 </thead>
-                <tbody class="text-center">
+                <tbody>
                     <?php
                     //Contador
                     $i = 1;
@@ -62,8 +62,8 @@
                         //Mostramos los datos de cada elemento
                         //Llamamos a la funcion details para mostrar más datos del elemento seleccionado
                         echo "<td><a style='cursor:pointer;' onclick=details(" . $element["id_producto"] . ",'" . $url . "')>" . $element["nombre"] . "</a></td>";
-                        echo "<td>" . $element["precio"] . "</td>";
-                        echo "<td>" . $element["stock"] . "</td>";
+                        echo "<td class='text-center'>" . $element["precio"] . "</td>";
+                        echo "<td class='text-center'>" . $element["stock"] . "</td>";
                         echo "<td class='p-0'>";
                     ?>
                         <!-- Creamos dos botones para modificar o eliminar y pasamos los datos con input hidden -->

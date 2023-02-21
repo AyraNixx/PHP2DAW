@@ -1,27 +1,25 @@
+    <br>    
     <div class="table-wrapper pl-0 my-3">
         <table class="table table-striped">
-            <thead class="table-dark text-center">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Dirección</th>
-                    <th scope="col">Teléfono</th>
-                    <th scope="col">Correo</th>
-                    <th scope="col"></th>
-                </tr>
-            </thead>
-            <tbody class="text-center">
-                <?php
-                //Mostramos la informacion
-                echo "<tr>";
-                    echo "<td>" . $data["id_proveedor"] . "</td>";
-                    echo "<td>" . $data["nombre"] . "</td>";
-                    echo "<td>" . $data["direccion"] . "</td>";
-                    echo "<td>" . $data["telefono"] . "</td>";
-                    echo "<td>" . $data["correo"] . "</td>";
-                    echo "<td></td>";
-                echo "</tr>";
-                ?>
-            </tbody>
+            <tr>
+                <th class="table-dark text-center col-1" >#</th>
+                <td scope="col"><?= $data["id_proveedor"] ?></td>
+            </tr>
+            <tr>
+                <th class="table-dark text-center col-1">Nombre</th>
+                <td scope="col"><?= $data["nombre"] ?></td>
+            </tr>
+            <tr>
+                <th class="table-dark text-center col-1">Dirección</th>
+                <td scope="col"><?= $data["direccion"] ?></td>
+            </tr>
+            <tr>
+                <th class="table-dark text-center col-1">Teléfono</th>
+                <td scope="col"><?= $data["telefono"] ?></td>
+            </tr>
+            <tr>
+                <th class="table-dark text-center col-1">Correo</th>
+                <td scope="col"><?= $data["correo"] ?></td>
+            </tr>
         </table>
     </div>
