@@ -11,6 +11,7 @@
 
 <body>
     <div class="container mt-5">
+        <!-- MODAL -->
         <div id="aviso" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -43,6 +44,8 @@
             <table class="table table-striped">
                 <thead class="table-dark text-center">
                     <tr>
+                        <!-- Si $this->ord es ASC, tendrá la clase desc, si NO lo es, la clase será ASC -->
+                        <!-- Se puede mejorar pero ya si eso en otra vida porque yo no puedo más -->
                         <th scope="col">Nombre<a class=" p-1 text-white <?= ($this->ord == "ASC") ? "asc" : "desc" ?>" href='index_product.php?field=nombre'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
                         <th scope="col">Precio<a class=" p-1 text-white <?= ($this->ord == "ASC") ? "asc" : "desc" ?>" href='index_product.php?field=precio'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
                         <th scope="col">Stock<a class=" p-1 text-white <?= ($this->ord == "ASC") ? "asc" : "desc" ?>" href='index_product.php?field=stock'><i class="fa-sharp fa-solid fa-arrow-down-short-wide filter"></i></a></th>
@@ -51,8 +54,6 @@
                 </thead>
                 <tbody>
                     <?php
-                    //Contador
-                    $i = 1;
                     //Recorremos el array data
                     foreach ($data as $element) {
                         //Url destino
@@ -91,9 +92,6 @@
                     <?php
                         echo "</td>";
                         echo "</tr>";
-
-                        //Aumentamos el contador
-                        $i += 1;
                     }
                     ?>
                 </tbody>

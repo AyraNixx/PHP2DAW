@@ -1,6 +1,6 @@
 //Funcion que muestra más detalles de un elemento seleccionado de la tabla
 function details(id, url) {
-     
+
     //Creamos objeto xmlhttprequest
     let xhr = new XMLHttpRequest();
 
@@ -12,7 +12,7 @@ function details(id, url) {
             //Mostramos la respuesta a la peticion en el elemento info_content
             $("#info_content").html(xhr.response);
         }
-    } 
+    }
 
     //Preparemos la peticion, indicando el metodo y la url
     xhr.open("POST", url, true);
@@ -66,27 +66,24 @@ $(document).on("click", function (e) {
 });
 
 
-$(document).on("ready", function(){
+$(document).on("ready", function () {
 
     //Se añadirán más a medida que se necesiten
-    $("#form").on("submit",  function () 
-    {
+    $("#form").on("submit", function () {
         let inputs = $(this).find(":input");
-        
+
         //Recorremos el array
-        for(let i = 0; i < inputs.length; i++)
-        {
+        for (let i = 0; i < inputs.length; i++) {
             //Guardamos el valor
             let val = $(inputs[i]).val();
-            
+
             //Guardamos el tipo de input
             let type = $(inputs[i]).attr("type");
 
-            
+
 
             //Si type es igual a email
-            if(type == "email")
-            {
+            if (type == "email") {
                 //Creamos la expresión regular (EXPLICADA ABAJO CON TODOS LOS DETALLES)
                 //^-> Inicio
                 //$-> Final
@@ -100,17 +97,15 @@ $(document).on("ready", function(){
                 //* -> Cero o más de una vez.
                 //{2,4} el rango de veces que puede salir el caracter, símbolo o agrupación
                 //anterior
-                if(!/^\w+([\.-_]?\w+)*@\w+([\.-_]?\w+)*(\.\w{2,4})+$/.test(val))
-                {
+                if (!/^\w+([\.-_]?\w+)*@\w+([\.-_]?\w+)*(\.\w{2,4})+$/.test(val)) {
                     alert("Correo no válido. Ejemplo: example@server.com");
                     return false;
                 }
-                
+
             }
 
             //Si type es igual a tel
-            if(type == "tel")
-            {
+            if (type == "tel") {
                 //Creamos la expresión regular (EXPLICADA ABAJO CON TODOS LOS DETALLES)
                 //^-> Inicio
                 //$-> Final
@@ -121,9 +116,21 @@ $(document).on("ready", function(){
                 //\s -> espacio en blanco
                 //- -> guión
                 //? -> Puede aparecer una vez o ninguna el caracter o agrupación anterior
-                if(!/^\d{3}(([\s-])?\d{2}){3}$/.test(val))
-                {
+                if (!/^\d{3}(([\s-])?\d{2}){3}$/.test(val)) {
                     alert("Formato de teléfono no válido!");
+                    return false;
+                }
+            }
+
+            //Si type es igual a file
+            if (type == "file") {
+                // Obtener el valor del campo de entrada de tipo file
+                let fileInput = $(inputs[i]).get(0);
+                let file = fileInput.files[0];
+
+                // Verificar si el archivo está vacío
+                if (!file) {
+                    alert("Seleccione un archivo antes de enviar el formulario.");
                     return false;
                 }
             }

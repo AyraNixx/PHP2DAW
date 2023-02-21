@@ -49,9 +49,7 @@
                 </thead>
                 <tbody>
                     <?php
-                    $i = 1;
                     foreach ($data as $element) {
-                        $i += 1;
                         $url = "index_supplier.php";
                         echo "<tr>";
                         echo "<td><a style='cursor:pointer;' onclick=details(" . $element["id_proveedor"] . ",'" . $url . "')>" . $element["nombre"] . "</a></td>";

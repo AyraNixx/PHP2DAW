@@ -8,8 +8,7 @@ require_once("../model/Product.php");
 //Creamos una clase controller (lo hago para que luego en el switch no sea tan lioso)
 class ProductC
 {
-    //Lo ponemos privado para que solo se pueda acceder desde esta clase y estatico
-    //para poder usarlo en funciones estaticas
+    //Lo ponemos privado para que solo se pueda acceder desde esta clase
     private $element;
 
     private $ord;
@@ -62,7 +61,7 @@ class ProductC
             $data["nombre"] = $_POST["nombre"];
             $data["precio"] = $_POST["precio"];
             $data["stock"] = $_POST["stock"];
-            $data["categoria"] = $_POST["categoria"];
+            $data["producto"] = $_POST["producto"];
             $data["prev_img"] = $_POST["prev_img"];
 
             //Validamos los campos
@@ -91,6 +90,9 @@ class ProductC
 
         //Si data es distinta de false
         if ($data != false) {
+
+
+
             //Si la clave name del array $_FILES[img] no es nula
             if (!empty($_FILES["new_img"]["tmp_name"])) {
                 //Guardamos el array
@@ -109,6 +111,8 @@ class ProductC
                 //que guardamos el valor de la clave prev_img del array element
                 $data["img"] = $data["prev_img"];
             }
+
+
 
             //Si la opcion es 1, se añade el nuevo proveedor
             if ($data["option"] == 1) {
@@ -143,7 +147,7 @@ class ProductC
 
 
 
-    //Funcion que elimina la categoria seleccionado
+    //Funcion que elimina el producto seleccionado
     public function delete(int $id_product, string $url_img)
     {
         //Si la funcion delete devuelve como resultado algo distinto de null
@@ -168,7 +172,7 @@ class ProductC
         //Guardamos en un array el resultado de la funcion get_one
         $data = $this->element->get_one(filter_var(Utils::clean($id_product)), FILTER_VALIDATE_INT);
 
-        //Si data no es nulo, incluirá la vista de detalles categoria
+        //Si data no es nulo, incluirá la vista de detalles producto
         if ($data != null) {
             include("../view/details_product.php");
             //En caso contrario, se guarda un mensaje de error

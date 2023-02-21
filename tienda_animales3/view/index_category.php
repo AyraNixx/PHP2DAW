@@ -49,11 +49,7 @@
                 </thead>
                 <tbody>
                     <?php
-                    //Contador
-                    $i = 1;
                     foreach ($data as $element) {
-                        //Sumamos contador
-                        $i += 1;
                         //Url a la que se le van a pasar los datos
                         $url = "index_category.php";
 

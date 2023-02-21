@@ -48,9 +48,7 @@
                 </thead>
                 <tbody>
                     <?php
-                    $i = 1;
                     foreach ($data as $element) {
-                        $i += 1;
                         $url = "index_rol.php";
                         echo "<tr>";
                         echo "<td><a style='cursor:pointer;' onclick=details(" . $element["id_rol"] . ",'" . $url . "')>" . $element["rol"] . "</a></td>";
