@@ -122,18 +122,18 @@ $(document).on("ready", function () {
                 }
             }
 
-            //Si type es igual a file
-            if (type == "file") {
-                // Obtener el valor del campo de entrada de tipo file
-                let fileInput = $(inputs[i]).get(0);
-                let file = fileInput.files[0];
+            // //Si type es igual a file
+            // if (type == "file") {
+            //     // Obtener el valor del campo de entrada de tipo file
+            //     let fileInput = $(inputs[i]).get(0);
+            //     let file = fileInput.files[0];
 
-                // Verificar si el archivo está vacío
-                if (!file) {
-                    alert("Seleccione un archivo antes de enviar el formulario.");
-                    return false;
-                }
-            }
+            //     // Verificar si el archivo está vacío
+            //     if (!file) {
+            //         alert("Seleccione un archivo antes de enviar el formulario.");
+            //         return false;
+            //     }
+            // }
         }
 
         //En caso de que esté todo correcto

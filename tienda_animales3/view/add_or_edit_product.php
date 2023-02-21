@@ -13,7 +13,7 @@
 <body class="bg-secondary">
     <div class="container mt-5">
         <div class="d-flex align-items-center justify-content-center">
-            <form action="index_product.php" method="POST" enctype="multipart/form-data" class="bg-dark text-white p-4" style="width: 370px;" id="form">
+            <form action="index_product.php" method="POST" enctype="multipart/form-data" class="bg-dark text-white p-4" style="width: 370px;">
                 <!-- Si option es 1, ponermos Add Product, si no lo es, edit Product -->
                 <h2 class="text-center my-4"><b><?= ($option == 1) ? "Add Product" : "Edit Product" ?></b></h2>
                 <!--Si option es 1, no aparecerá el recuadro de id_product-->

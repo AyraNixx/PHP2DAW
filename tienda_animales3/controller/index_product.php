@@ -61,7 +61,7 @@ class ProductC
             $data["nombre"] = $_POST["nombre"];
             $data["precio"] = $_POST["precio"];
             $data["stock"] = $_POST["stock"];
-            $data["producto"] = $_POST["producto"];
+            $data["categoria"] = $_POST["categoria"];
             $data["prev_img"] = $_POST["prev_img"];
 
             //Validamos los campos
@@ -107,9 +107,16 @@ class ProductC
                 //devolverá la url   
                 $data["img"] = Utils::save_img($img);
             } else {
-                //PSi no se ha seleccionado una nueva imagen, la clave name estará vacía, por lo
-                //que guardamos el valor de la clave prev_img del array element
-                $data["img"] = $data["prev_img"];
+                //Si option es igual a 2;
+                if ($data["option"] == 2) {
+                    //PSi no se ha seleccionado una nueva imagen, la clave name estará vacía, por lo
+                    //que guardamos el valor de la clave prev_img del array element
+                    $data["img"] = $data["prev_img"];
+                } else {
+                    //En caso contrario, significa que la opcion es añadir y que no han
+                    //metido ninguna imagen así que le ponemos una imagen por defecto
+                    $data["img"] = "../imgs/default.jpeg";
+                }
             }
 
 
