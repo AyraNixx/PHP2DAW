@@ -1,13 +1,18 @@
 <?php
+// "Apodo" para el directorio
+namespace pexamen\utils;
 
-namespace utils;
-
+// Usamos use para heredar las clases de PDO, PDOException y Exception
 use \PDO;
 use \PDOException;
 use \Exception;
 
+
+//Creamos la clase
 class Utils
 {
+
+
 
     /***********************************************************************
      *                                                                     *
@@ -15,16 +20,16 @@ class Utils
      *                                                                     *
      ***********************************************************************/
     /**
-     * Funcion para conectar con la base de datos y nos devuelve una conexion PDO 
-     * activa
+     * Funcion utilizada para iniciar conexión con una base de datos.
+     * @return PDO Devuelve una conexion PDO
      */
-    public static function conectar()
+    public static function connect()
     {
         //Utilizamos require_once para importar las constantes de global.php
         //Utilizamos require porque estas constantes son necesarias para que vaya
         //la aplicacion, ya que sin ellas no podríamos establecer conexión con la 
         //base de datos
-        require_once("global.php");
+        require_once "global.php";
 
         //Definimos conBD
         $conBD = null;
@@ -36,14 +41,14 @@ class Utils
             //Se le pasarán como argumentos el host, el nombre de la base de datos, 
             //el usuario y su contraseña en caso de que tuviese una.
             //En mi caso, no he especificado contrasenia porque no tengo.
+            //Si usase contraseá, la añadiría después de $DB_USER
             return $conBD = new PDO("mysql:host=$DB_HOST;dbname=$DB_SCHEMA", $DB_USER);
         } catch (PDOException $e) {
-            print("¡Error! : " . $e->getMessage() . "<br/>");
+            self::save_log_error($e->getMessage());
             //Devolvemos $conBD, que será null si no se pudo realizar la conexion 
             //correctamente.
             return $conBD;
             //Alias de exit(), finaliza el script. 
-            //DUDA?????????
             die();
         }
     }
@@ -53,6 +58,28 @@ class Utils
 
 
 
+
+
+
+    /***********************************************************************
+     *                                                                     *
+     *                         EXCEPCIONES - LOG                           *
+     *                                                                     *
+     ***********************************************************************/
+
+    /*
+     * Funcion para guardar las excepciones en un log
+     */
+    public static function save_log_error($error, $path = "../log/log.log")
+    {
+        //Utilizamos error_log que envia un mensaje de error según lo indicado
+        //Le pasamos el error (que pasamos con print_r para que se vea más claro)
+        //Indicamos que el tipo de registro es 3, lo que indica que el mensaje
+        //se adjuntará al archivo de destino
+        //Y por último la ruta del archivo
+        //Utilizamos date para que saque la fecha y hora actual
+        error_log(print_r(date("Y-m-d H:i:s") . ": " . $error . "\xA", true), 3, $path);
+    }
 
 
 
@@ -68,13 +95,19 @@ class Utils
      *                                                                     *
      ***********************************************************************/
 
+    /**
+     * Función que "limpia" una variable para evitar vulnerabilidades en la
+     * seguridad de la aplicación
+     * 
+     * @return string 
+     */
     public static function clean($data)
     {
         //Usamos trim para quitar los espacios en blanco del principio y del final
         $data = trim($data);
-        //Además, usamos preg_replace para sustituir cualquier secuencia de uno o más
-        //espacios en blanco consecutivos por uno solo
-        $data = preg_replace('/\s+/', ' ', $data);
+        //Además, llamamos a la funcion just_one_space para sustituir los espacios
+        //entre las palabras por solo uno
+        $data = self::just_one_space($data);
         //Usamos stripslashes que sirve para quitar las barras de un string con comillas
         //escapadas. Ejemplo:
         //$str = "Is your name O\'reilly?";
@@ -85,7 +118,9 @@ class Utils
         //$new = htmlspecialchars("<a href='test'>Test</a>", ENT_QUOTES);
         //echo $new;  &lt;a href=&#039;test&#039;&gt;Test&lt;/a&gt;
         $data = htmlspecialchars($data, ENT_QUOTES);
+        //Elimina todas las etiquetas HTML y PHP de una cadena
         $data = strip_tags($data);
+        //Devolvemos $data
         return $data;
     }
 
@@ -93,10 +128,17 @@ class Utils
 
 
 
-    //Función que devuelve el telefono añadido con el formato que queremos para la
-    //BD
+    /**
+     * Función que devuelve el número de telefono sin
+     * ningún espacio ni guiónç
+     * 
+     * @param string $data
+     * @return string Devuelve la cadena pasada como argumento sin espacios ni guiones
+     */
     public static function format_tel(string $data)
     {
+        //Usamos preg_replace para que si encuentra un espacio o 
+        //un guión lo cambie por ''.
         return preg_replace('/([\s-])/', '', $data);
     }
 
@@ -104,59 +146,103 @@ class Utils
 
 
 
+    /**
+     * Función que elimina los espacios (ya sea uno o más) y los 
+     * sustituyen por uno solo
+     * 
+     * @param string $data Cadena pasada como argumento
+     * @return string Cadena sin más de un espacio seguido
+     * @AyraNixx
+     */
+    public static function just_one_space(string $data)
+    {
+        //Usamos preg_replace para que si encuentra un espacio o 
+        //más de uno por ''
+        return preg_replace('/([\s+])/', ' ', $data);
+    }
 
-    //Funcion que valida los valores de un array (y así no tener que hacerlo uno a uno)
+
+
+
+
+
+    /**
+     * Funcion que valida los valores de un array (y así no tener que hacerlo uno a uno)
+     * 
+     * @param array $data Array que queremos validar y limpiar
+     * @return array Array ya validado y limpiado
+     * 
+     * @AyraNixx
+     */
     public static function clean_array(array $data)
     {
+        //Definimos variable para guardar el mensaje de error
         $alert = "";
+        //Definimos una variable llamada succes que valdrá true,
+        //si hay un error, pasará a valer false
         $success = true;
+
         //Recorremos el array
         foreach ($data as $key => $value) {
-            // Si la llave contiene id o es categoria, stock, option
-            if (strpos($key, "id") != false || $key == "categoria" || $key == "stock" || $key == "option") {
-                // Vemos si el valor de la clave es numérica y mayor o igual que 0
-                if (is_numeric($value) && $value >= 0) {
-                    //Si lo es, 'limpiamos' el valor y lo filtramos con filter_var con 
-                    //el filtro FILTER_VALIDATE_INT
-                    $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_INT);
+
+            //Si el valor es numérico
+            if (is_numeric($value)) {
+
+                // Comprobamos el tipo de dato
+                // Ponemos $key + 0, porque si el valor es una cadena aunque 
+                // sea 30.23 va a decir que el tipo es string, al sumar 0,
+                // lo considerará como un número
+                if (gettype($value + 0) == "integer") {
+                    // Vemos si el valor de la clave es numérica y mayor o igual que 0
+                    if ($value >= 0) {
+                        //Si lo es, 'limpiamos' el valor y lo filtramos con filter_var con 
+                        //el filtro FILTER_VALIDATE_INT
+                        $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_INT);
+                    } else {
+                        //En caso contrario, success pasa a valer false e indicamos
+                        //el mensaje de error que queremos guardar en el log
+                        $success = false;
+                        $alert = "El valor de la llave \"$key\" debe ser un número entero positivo.";
+                    }
+                    // Si no lo es, miramos si el tipo de dato es double
+                } elseif (gettype($value + 0) == "double") {
+                    // Validamos que sea un float positivo
+                    if ($value >= 0) {
+                        //Limpiamos el valor y lo filtramos con filter_var con el filtro 
+                        //FILTER_VALIDATE_FLOAT
+                        $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_FLOAT);
+                    } else {
+                        //En caso contrario, success pasa a valer false e indicamos
+                        //el mensaje de error que queremos guardar en el log
+                        $success = false;
+                        $alert = "El valor de la llave \"$key\" debe ser un número decimal positivo.";
+                    }
+                }
+                // Si el valor es un string
+            } elseif (is_string($value)) {
+                // Vemos si la clave es "correo" o "email"
+                if ($key == "correo" || $key == "email") {
+                    //Si lo es, limpiamos y filtramos el correo
+                    $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_EMAIL);
+
+                    //Si tras filtrarlo nos devuelve false
+                    if ($data[$key] == false) {
+                        // Success pasa a valer false e indicamos el mensaje de error
+                        // que queremos guardar en el log
+                        $success = false;
+                        $alert = "El valor de la llave \"$key\" debe ser un correo válido.";
+                    }
+
+                    // Si la clave es telefono
+                } elseif ($key == "telefono" || $key == "phone" || $key == "tel") {
+                    //Limpiamos y ponemos el formato que deseamos que tengan todos
+                    //los teléfonos en nuestra BD llamando a la funcion format_tel
+                    $data[$key] = self::clean(self::format_tel($value));
+                    // En caso contrario, simplemente limpiamos la cadena
                 } else {
-                    //En caso contrario, success pasa a valer false e indicamos
-                    //el mensaje de error que queremos guardar en el log
-                    $success = false;
-                    $alert = "El valor de la llave \"$key\" debe ser un número entero positivo.";
+                    //Si no es ninguna de las claves anteriores, limpiamos la cadena
+                    $data[$key] = filter_var(self::clean($value));
                 }
-                //En caso de que la llave coincida con 'precio'
-            } elseif ($key == "precio") {
-
-                // Validamos que sea un float positivo
-                if (is_numeric($value) && $value >= 0) {
-                    //Limpiamos el valor y lo filtramos con filter_var con el filtro 
-                    //FILTER_VALIDATE_FLOAT
-                    $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_FLOAT);
-                } else {
-                    //En caso contrario, success pasa a valer false e indicamos
-                    //el mensaje de error que queremos guardar en el log
-                    $success = false;
-                    $alert = "El valor de la llave \"$key\" debe ser un número decimal positivo.";
-                }
-            }
-            //Si la llave corresponde con correo
-            if ($key == "correo" || $key = "email") {
-                //Validamos el correo
-                $data[$key] = filter_var(self::clean($value), FILTER_VALIDATE_EMAIL);
-
-                if ($data[$key] == false) {
-                    $success = false;
-                    $alert = "El valor de la llave \"$key\" debe ser un correo válido.";
-                }
-            } else {
-                //Si no es ninguna de las claves anteriores, limpiamos la cadena
-                $data[$key] = self::clean($value);
-            }
-
-            //Si la llave corresponde con telefono 
-            if ($key == "telefono") {
-                $data[$key] = self::clean(self::format_tel($value));
             }
         }
 
@@ -168,16 +254,13 @@ class Utils
             }
         } catch (Exception $e) {
             //Y mandamos el error a nuestro log
-            self::save_log($e->getMessage());
+            self::save_log_error($e->getMessage());
             //Devolvemos false
             return false;
         }
         //Si todo está correcto, devolvemos data validada
         return $data;
     }
-
-
-
 
 
 
@@ -195,8 +278,8 @@ class Utils
     /**
      * Funcion para conectar con la base de datos y nos devuelve una conexion PDO 
      * activa
+     * @AyraNixx
      */
-
     public static function save_img(array $file)
     {
         //Creamos una constante que es para el tamaño máximo permitido
@@ -254,69 +337,25 @@ class Utils
 
     /***********************************************************************
      *                                                                     *
-     *                         EXCEPCIONES - LOG                           *
-     *                                                                     *
-     ***********************************************************************/
-
-    //Funcion para guardar las excepciones en un log
-    public static function save_log($error, $path = "../log/log.log")
-    {
-        //Utilizamos error_log que envia un mensaje de error según lo indicado
-        //Le pasamos el error (que pasamos con print_r para que se vea más claro)
-        //Indicamos que el tipo de registro es 3, lo que indica que el mensaje
-        //se adjuntará al archivo de destino
-        //Y por último la ruta del archivo
-        error_log(print_r($error . "\xA", true), 3, $path);
-    }
-
-
-
-
-
-
-
-
-
-
-    /***********************************************************************
-     *                                                                     *
-     *                         EN PLANTEAMIENTO                            *
-     *                                                                     *
-     ***********************************************************************/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /***********************************************************************
-     *                                                                     *
      *                         CODE ACTIVACIÓN O SALT                      *
      *                                                                     *
      ***********************************************************************/
-
+    /**
+     * Función que genera un código aleatorio. Por defecto, está configurado
+     * para que te salga una cadena de 16 caracteres en la que se mezclen 
+     * caracteres alfanuméricos, perfecto para un SALT.
+     * 
+     * @param int $length Indica la longitud deseada de la cadena a generar.
+     * @param bool $numeric Indica si queremos que la cadena sea solo numérica o no.
+     * 
+     * @return mixed Devuelve la cadena generada
+     */
     //Creamos una función que genere un código aleatorio, pasando como parámetro
     //la cantidad de caracteres que queremos que tenga. Por ejemplo, para el salt
     //ponemos 16 y para el código de activación, pues 5
     //Por defecto, la longitud será de 16
     //Por defecto, ponemos que no queremos que el código sea numerico
-    public static function generate_code(int $lenth = 16, bool $numeric = false)
+    public static function generate_code(int $length = 16, bool $numeric = false)
     {
         //Utilizamos la funcion array_merge para crear un array que contenga todas
         //las letras del abecedario, tanto mayúsculas como minúsculas, y todos los 
@@ -325,9 +364,10 @@ class Utils
         $salt = null;
 
         //Utilizamos un bucle para generar el salt
-        for ($i = 0; $i < $lenth; $i++) {
+        for ($i = 0; $i < $length; $i++) {
             //Si indicamos que queremos que el salt sea numérico, 
             if ($numeric) {
+                //Concatenamos dígitos aleatorios hasta la longitud deseada
                 $salt .= rand(0, 9);
             } else {
                 //Concatenamos el caracter aleatorio obtenido
@@ -336,85 +376,5 @@ class Utils
         }
         //Devolvemos el código obtenido
         return $salt;
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    /***********************************************************************
-     *                                                                     *
-     *                         PASSWORD                                    *
-     *                                                                     *
-     ***********************************************************************/
-
-    //Funcion que encripta la contraseña en 256 bits
-    public static function to_hash(string $psswd, string $salt = "popeye")
-    {
-        //Llamamos a la función generate_code para generar el salt.
-        //Utilizamos un salt que se añade a la contraseña para que sea más dificil
-        //averiguar la contraseña. Lo mejor es generarlo aleatoriamente y guardarlo
-        //de forma que se pueda recuperar más tarde.
-        ($salt == "popeye") ? $salt = self::generate_code() : $salt;
-
-
-        //Devolvemos un array con el salt obtenido y la contraseña encriptada
-        return ["salt" => $salt, "hash" => hash("sha256", $salt . $psswd)];
-    }
-
-
-    //Función que comprueba que las contraseñas sean coincidentes
-    public static function psswd_verify(string $psswd, array $hash_array)
-    {
-        $hash = $hash_array["hash"];
-        $salt = $hash_array["salt"];
-        //Si el hash coincide con el resultado obtenido al usar la funcion to_hash
-        //significa que es correcta.
-        //Como to_hash devuelve un array, ponemos ["hash"] para indicar que queremos
-        //el valor de la clave hash
-        return ($hash == self::to_hash($psswd, $salt)["hash"]) ? true : false;
-    }
-
-
-
-
-
-
-
-    /***********************************************************************
-     *                                                                     *
-     *                         EMAIL                                       *
-     *                                                                     *
-     ***********************************************************************/
-    public static function send_activation_code(array $user)
-    {
-        $activation_code = self::generate_code(5, true);
-        $to = $user["correo"]; //Destinatario
-        $subject = "Activación de cuenta"; //Motivo
-        //Cuerpo del mensaje
-        $msg = "<h2>Hola " . $user["nombre"] . ", gracias por registrarte en nuestro sitio web.</h2>";
-        $msg .= "<p>Para activar su cuenta, introduzca el código: [" . $activation_code . "] en el siguiente enlace:</p>";
-        $msg .= "<h4><a href='../view/login.php'>http://www.preuba.com</a></h4>";
-        $header = "From: no-reply@example.com"; //cabecera
-        $header .= "MIME-Version: 1.0\r\n";
-        $header .= "Content-type: text/html\r\n";
-
-        echo $msg;
-
-        return $activation_code;
-        //Si el correo se ha enviado correctamente, devolverá true. En caso contrario, false
-        // if (mail($to, $subject, $msg, $header)) {
-        //     return true;
-        // } else {
-        //     return false;
-        // }
     }
 }

@@ -46,3 +46,15 @@
 
 //     })
 // });
+
+
+let income = 1500;
+
+if(income > 2500)
+{
+    let tax = 1;
+}else{
+    let tax = 2;
+}
+
+console.log(tax);
