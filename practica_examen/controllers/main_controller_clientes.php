@@ -1,6 +1,7 @@
 <?php 
 
 use \pexamen\models\Cliente;
+use pexamen\utils\Utils;
 
 require_once("../models/Cliente.php");
 
@@ -10,10 +11,11 @@ $msg = null;
 $client = new Cliente();
 
 //Si en $_REQUEST, la clave page no es nula
-if(isset($_REQUEST["page"]))
+if(isset($_REQUEST["page"]) && is_numeric($_REQUEST["page"]))
 {
-    // Guardamos la página
-    $page = $_REQUEST["page"];
+    // Guardamos la página (primero validamos y limpiamos)
+    $page = filter_var(Utils::clean($_REQUEST["page"]), FILTER_VALIDATE_INT);
+    echo $page;
 }else{
     // Si no, ponemos la primera página
     $page = 1;
@@ -21,7 +23,7 @@ if(isset($_REQUEST["page"]))
 
 //Obtenemos todos los elementos de la tabla cliente paginados llamando a la 
 //función pagination
-$data_clients = $client->pagination("ASC", "idClientes", $page, 10);
+$data_clients = $client->pagination("ASC", "nombre", $page, 10);
 
 //Obtenemos el total de páginas que hay para la tabla
 $pages = $client->total_pages(10);

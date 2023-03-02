@@ -11,7 +11,7 @@ $client = new Cliente();
 $msg = null;
 
 // Si las claves de $_POST no son nulas
-if (isset($_POST["idClientes"]) && is_numeric($_POST["idClientes"]) && isset($_POST["nombre"]) && isset($_POST["email"]) && isset($_POST["edad"]) && isset($_POST["sexo"])) {
+if (isset($_POST["nombre"]) && isset($_POST["email"]) && isset($_POST["edad"]) && isset($_POST["sexo"])) {
 
     // Creamos un nuevo array
     $data_client = [];
@@ -22,14 +22,24 @@ if (isset($_POST["idClientes"]) && is_numeric($_POST["idClientes"]) && isset($_P
     $data_client["edad"] = $_POST["edad"];
     $data_client["sexo"] = $_POST["sexo"];
 
-    // Insertamos el nuevo registro llamando a la funcion add
-    // Se mostrará un mesaje u otro dependiendo de si 
-    // la función add nos devuelve nulo o no
-    if ($client->add(Utils::clean_array($data_client)) != null) {
-        $msg = "¡Cliente añadido correctamente!";
-    } else {
+    // Limpiamos y validamos los valores
+    $data_client = Utils::clean_array($data_client);
+
+    // Si $data_client es distinto de nulo
+    if ($data_client != null) {
+        // Insertamos el nuevo registro llamando a la funcion add
+        // Se mostrará un mesaje u otro dependiendo de si 
+        // la función add nos devuelve nulo o no
+        if ($client->add($data_client) != null) {
+            $msg = "¡Cliente añadido correctamente!";
+        } else {
+            $msg = "¡Error! No se ha podido acceder correctamente";
+        }
+    }else{
         $msg = "¡Error! No se ha podido acceder correctamente";
     }
+
+
 
     // Igualamos page a uno
     $page = 1;
@@ -50,4 +60,3 @@ if (isset($_POST["idClientes"]) && is_numeric($_POST["idClientes"]) && isset($_P
     // Cargamos la vista
     include("../views/add_or_edit_client.php");
 }
-?>

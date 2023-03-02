@@ -83,7 +83,7 @@ class Producto
             //  Ejecutamos la consulta
             $statement->execute();
             // Devolvemos todos los datos obtenidos
-            return $statement->fetchAll();
+            return $statement->fetch();
         } catch (PDOException $e) {
             // Guardamos el error en el log
             Utils::just_one_space($e->getMessage());

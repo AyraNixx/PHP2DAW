@@ -12,8 +12,6 @@ use \Exception;
 class Utils
 {
 
-
-
     /***********************************************************************
      *                                                                     *
      *                         CONEXIÓN BD                                 *
@@ -256,7 +254,7 @@ class Utils
             //Y mandamos el error a nuestro log
             self::save_log_error($e->getMessage());
             //Devolvemos false
-            return false;
+            return null;
         }
         //Si todo está correcto, devolvemos data validada
         return $data;
@@ -424,3 +422,4 @@ class Utils
         }
     }
 }
+?>

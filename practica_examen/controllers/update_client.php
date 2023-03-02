@@ -23,10 +23,10 @@ if (isset($_POST["idClientes"]) && isset($_POST["nombre"]) && isset($_POST["emai
     $data_client["edad"] = $_POST["edad"];
     $data_client["sexo"] = $_POST["sexo"];
 
-    
+
     // Si la clave update es nula y false
     if (isset($_POST["update"]) && $_POST["update"] == "false") {
-       
+
         // Indicamos que la acción a realizar es modificar (update)
         // y cargamos la vista
         $action = "update";
@@ -35,11 +35,20 @@ if (isset($_POST["idClientes"]) && isset($_POST["nombre"]) && isset($_POST["emai
 
         // En caso contrario
     } else {
-        // Modificamos el registro llamando al método update.
-        // Se mostrará un mesaje u otro dependiendo de si 
-        // la función update nos devuelve nulo o no
-        if ($client->update(Utils::clean_array($_POST)) != null) {
-            $msg = "¡Cliente modificado correctamente!";
+
+        // Validamso y limpiamos los datos
+        $info_client = Utils::clean_array($_POST);
+
+        // Si $data_client es distinto de nulo
+        if ($info_client != null) {
+            // Modificamos el registro llamando al método update.
+            // Se mostrará un mesaje u otro dependiendo de si 
+            // la función update nos devuelve nulo o no
+            if ($client->update($info_client) != null) {
+                $msg = "¡Cliente añadido correctamente!";
+            } else {
+                $msg = "¡Error! No se ha podido acceder correctamente";
+            }
         } else {
             $msg = "¡Error! No se ha podido acceder correctamente";
         }
