@@ -1,0 +1,84 @@
+-- CONFI ORIGINAL DE MAIL PHP.INI
+
+[mail function]
+; For Win32 only.
+; https://php.net/smtp
+SMTP=localhost
+; https://php.net/smtp-port
+smtp_port=25
+
+; For Win32 only.
+; https://php.net/sendmail-from
+;sendmail_from = me@example.com
+
+; For Unix only.  You may supply arguments as well (default: "sendmail -t -i").
+; https://php.net/sendmail-path
+; sendmail_path = 
+
+
+-- CAMBIAMOS LO SIGUIENTE:
+
+SMTP=localhost    -----------> SMTP=smtp.gmail.com
+
+smtp_port=25   	  -----------> smtp_port=587
+
+sendmail_path	  -----------> (IMPORTANTE: QUITAMOSS ; DE DELANTE) sendmail_path = "C:\xampp\sendmail\sendmail.exe -t"
+
+
+
+-- CONFI ORIGINAL DE MAIL SENDMAIL.INI
+
+smtp_server=mail.mydomain.com
+
+smtp_port=25
+
+smtp_ssl=auto
+
+;debug_logfile=debug.log
+
+auth_username=
+auth_password=
+
+force_recipient=
+
+
+
+
+-- CAMBIAMOS LO SIGUIENTE:
+
+smtp_server=mail.mydomain.com    -----------> smtp_server=smtp.gmail.com
+
+smtp_port=25   	  -----------> smtp_port=587
+
+smtp_ssl=auto 	  -----------> smtp_ssl=TLS
+
+;debug_logfile=debug.log    -----------> debug_logfile=debug.log
+
+auth_username= 	  -----------> auth_username=(EL CORREO QUE USES PARA MANDAR LOS MENSAJES)
+
+auth_password= 	  -----------> auth_password=(CONTRASEÑA DE APLICACIÓN **** MÁS ABAJO)
+
+force_recipient=  -----------> force_recipient=(EL CORREO QUE USES PARA MANDAR LOS MENSAJES)
+
+
+
+
+-- CONTRASEÑA DE APLICACIÓN!!!!!!!!!
+
+Gmail ha cambiado su configuración de privacidad y por ello no es posible utilizar
+la contraseña de tu gmail para enviar correos desde otra aplicación. 
+
+Se necesita una CONTRASEÑA DE APLICACIÓN. 
+
+Para generar una contraseña de aplicación, realizaremos los siguientes pasos:
+
+	1. Gestionar tu cuenta de Google.
+	2. Buscar 'Verificación en dos pasos'.
+	3. Acceder con tu contraseña y otorgar un número telefónico.
+	4. Volver a 'Gestionar tu cuenta de Google'.
+	5. Buscar 'Contraseña de Aplicación'.
+	6. Indicamos el tipo de aplicación que la usará (Yo puse, otros y
+	   ahí escribí Visual Studio Code, no sé si es correcto, pero fun-
+	   ciona).
+	7. Indicamos el tipo de dispositivo (Yo he puesto Ordenador Windows).
+

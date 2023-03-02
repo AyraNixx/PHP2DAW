@@ -85,7 +85,7 @@ class Product
                 $statement = $this->conBD->prepare($query);
                 //Vinculamos los parametros al nombre de variable especificado
                 $statement->bindParam(":nombre", $product["nombre"], PDO::PARAM_STR);
-                $statement->bindParam(":precio", $product["precio"], PDO::PARAM_INT);
+                $statement->bindParam(":precio", $product["precio"], PDO::PARAM_STR);
                 $statement->bindParam(":stock", $product["stock"], PDO::PARAM_INT);
                 $statement->bindParam(":categoria", $product["categoria"], PDO::PARAM_INT);                
                 $statement->bindParam(":img", $product["img"], PDO::PARAM_STR);

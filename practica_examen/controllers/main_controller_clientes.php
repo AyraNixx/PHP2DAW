@@ -21,7 +21,7 @@ if(isset($_REQUEST["page"]))
 
 //Obtenemos todos los elementos de la tabla cliente paginados llamando a la 
 //función pagination
-$data_clients = $client->pagination("ASC", "nombre", $page, 10);
+$data_clients = $client->pagination("ASC", "idClientes", $page, 10);
 
 //Obtenemos el total de páginas que hay para la tabla
 $pages = $client->total_pages(10);
