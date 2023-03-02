@@ -10,7 +10,7 @@ $client = new Cliente();
 $msg = null;
 
 // Si las claves de $_POST no son nulas
-if (isset($_POST["idClientes"]) && isset($_POST["nombre"]) && isset($_POST["email"]) && isset($_POST["edad"]) && isset($_POST["sexo"])) {
+if (isset($_POST["idClientes"]) && is_numeric($_POST["idClientes"]) && isset($_POST["nombre"]) && isset($_POST["email"]) && isset($_POST["edad"]) && isset($_POST["sexo"])) {
 
 
     // Creamos un nuevo array
