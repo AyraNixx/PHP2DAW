@@ -458,6 +458,46 @@ INSERT INTO clientes (nombre, email, edad, sexo) VALUES ('alvaro8', 'alvaro8@gma
 INSERT INTO clientes (nombre, email, edad, sexo) VALUES ('alvaro9', 'alvaro9@gmail.com', 16, 'M');
 INSERT INTO clientes (nombre, email, edad, sexo) VALUES ('Maximo', 'max@gemail.com', 19, 'H');
 
+
+/*	INSERT INTO PAIS	*/
+/*	En el enunciado no dice nada de que el id sea incremental, así que lo escribo a mano*/
+INSERT INTO pais (id, codigo, nombre, descripcion, num_habit, idioma) VALUES (1, 125374, 'Corea del Sur', ' - ', 16872678, 'Coreano');
+INSERT INTO pais (id, codigo, nombre, descripcion, num_habit, idioma) VALUES (2, 628742, 'Rusia', ' - ', 1371328, 'Ruso');
+INSERT INTO pais (id, codigo, nombre, descripcion, num_habit, idioma) VALUES (3, 897284, 'Francia',' - ', 8727832, 'Francés');
+INSERT INTO pais (id, codigo, nombre, descripcion, num_habit, idioma) VALUES (4, 562424, 'Noruega', ' - ', 87232338, 'Noruego');
+INSERT INTO pais (id, codigo, nombre, descripcion, num_habit, idioma) VALUES (5, 125673, 'España', ' - ', 781563198, 'Español');
+
+
+
+/*	INSERT INTO PROVINCIA	*/
+/*	En el enunciado no dice nada de que el codProv sea incremental, así que lo escribo a mano*/
+INSERT INTO provincia (codProv, comunidad, nombre, descripcion) VALUES (1, 'Andalucía', 'Jaen', ' - ');
+INSERT INTO provincia (codProv, comunidad, nombre, descripcion) VALUES (2, 'Andalucía', 'Sevilla', ' - ');
+INSERT INTO provincia (codProv, comunidad, nombre, descripcion) VALUES (3, 'Andalucía', 'Cádiz',' - ');
+INSERT INTO provincia (codProv, comunidad, nombre, descripcion) VALUES (4, 'Andalucía', 'Huelga', ' - ');
+INSERT INTO provincia (codProv, comunidad, nombre, descripcion) VALUES (5, 'Andalucía', 'Granada', ' - ');
+
+
+
+/*	INSERT INTO DIRECCION	*/
+/*	En el enunciado no dice nada de que el codProv sea incremental, así que lo escribo a mano*/
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (1, 'Nardos', 1, 11500,  1, 1);
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (2, 'Luna', 3, 12300, 5, 3);
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (3, 'Cielo', 3, 11510, 3, 3);
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (4, 'Ángel', 3, 11000, 1, 3);
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (5, 'Colón', 3, 18100, 5, 1);
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (6, 'Chiquito', 9, 12300, 3, 2);
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (7, 'Libertad', 11, 16000, 5, 2);
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (8, 'Jarra', 45, 12300, 1, 4);
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (9, 'Manchega', 1, 18000, 2, 1);
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (10, 'Padstora', 2, 11500, 2, 4);
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (11, 'Dulce de Cielo', 2, 11100, 4, 5);
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (12, 'Oscura', 56, 13000, 1, 5);
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (13, 'Virgen María', 12, 16099, 3, 1);
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (14, 'Cupido', 6, 11200, 2, 1);
+INSERT INTO direccion (idDireccion, calle, numero, codigoPostal, idPais, codProvincia) VALUES (15, 'Agua mineral', 6, 13000, 1, 5);
+
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

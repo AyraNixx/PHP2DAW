@@ -57,7 +57,7 @@ class Direccion
             return $statement->fetchAll();
         } catch (PDOException $e) {
             // Guardamos el error en el log
-            Utils::just_one_space($e->getMessage());
+            Utils::save_log_error($e->getMessage());
         }
         return null;
     }
@@ -86,7 +86,7 @@ class Direccion
             return $statement->fetch();
         } catch (PDOException $e) {
             // Guardamos el error en el log
-            Utils::just_one_space($e->getMessage());
+            Utils::save_log_error($e->getMessage());
         }
         return null;
     }
@@ -150,7 +150,7 @@ class Direccion
             return $statement->execute();
         } catch (PDOException $e) {
             // Guardamos el error en el log
-            Utils::just_one_space($e->getMessage());
+            Utils::save_log_error($e->getMessage());
         }
         return null;
     }
@@ -177,7 +177,7 @@ class Direccion
             return $statement->execute();
         } catch (PDOException $e) {
             // Guardamos el error en el log
-            Utils::just_one_space($e->getMessage());
+            Utils::save_log_error($e->getMessage());
         }
         return null;
     }
