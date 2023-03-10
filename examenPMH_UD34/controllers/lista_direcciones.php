@@ -2,22 +2,30 @@
 
 use \examenPMH\models\Pais;
 use \examenPMH\models\Provincia;
+use \examenPMH\models\Direccion;
 
 use examenPMH\utils\Utils;
 
 require_once("../models/Pais.php");
 require_once("../models/Provincia.php");
+require_once("../models/Direccion.php");
 
 //Definimos la variable msg para almacenar el mensaje resultante de las acciones
 $msg = null;
+
 //Definimos un array para guardar direcciones
 $data_direcciones = null;
+
 //Intanciamos un objeto de la clase Pais
 $pais = new Pais();
 //Intanciamos un objeto de la clase Provincia
 $provincia = new Provincia();
+//Intanciamos un objeto de la clase Direccion
+$direccion = new Direccion();
+
 //Nos conectamos a la Bd
 $conBD = Utils::connect();
+
 //Obtenemos todos los elementos de la tabla pais
 $data_pais = $pais->getPaises($conBD);
 //Obtenemos todos los elementos de la tabla provincia
@@ -31,10 +39,9 @@ if (isset($_POST["opcion"])) {
             // Si es pais
         case "pais":
             // Obtenemos todas las direcciones del país seleccionado
-            $data_direcciones = $pais->getDireccionesPais($conBD, $_POST["pais"]);
+            $data_direcciones = $direccion->getDireccionesPais($conBD, $_POST["pais"]);
             // Si es distinto de nulo
-            if ($data_direcciones == null) {
-                echo "no";
+            if ($data_direcciones == null) {                
                 // Guardamos el mensaje de error
                 $msg = "¡Error! No se ha podido acceder a la base de datos.";
             }
@@ -43,7 +50,7 @@ if (isset($_POST["opcion"])) {
             // Si es provincia
         case "prov":
             // Obtenemos todas las direcciones del país seleccionado
-            $data_direcciones = $provincia->getDireccionesProv($conBD, $_POST["prov"]);
+            $data_direcciones = $direccion->getDireccionesProv($conBD, $_POST["prov"]);
 
             // Si es distinto de nulo
             if ($data_direcciones == null) {

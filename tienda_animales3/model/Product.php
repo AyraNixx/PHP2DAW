@@ -19,7 +19,7 @@ class Product
             //Iniciamos conexion con la base de datos
             $this->conBD = Utils::conectar();
         } catch (PDOException $e) {
-            Utils::save_log($e->getMessage());
+            Utils::save_log_error($e->getMessage());
         }
     }
 
@@ -44,7 +44,7 @@ class Product
             //Devolvemos el resultado obtenido
             return $statement->fetchAll();
         } catch (PDOException $e) {
-            Utils::save_log($e->getMessage());
+            Utils::save_log_error($e->getMessage());
         }
         return null;
     }
@@ -67,7 +67,7 @@ class Product
                 //Devolvemos el resultado obtenido
                 return $statement->fetch();
             } catch (PDOException $e) {
-                Utils::save_log($e->getMessage());
+                Utils::save_log_error($e->getMessage());
             }
             return null;
         }
@@ -92,7 +92,7 @@ class Product
                 //Devolvemos el resultado de la ejecucion (será un boolean true si todo ha ido bien)
                 return $statement->execute();
             } catch (PDOException $e) {
-                Utils::save_log($e->getMessage());
+                Utils::save_log_error($e->getMessage());
             }
 
             return null;
@@ -122,7 +122,7 @@ class Product
                 $result = $statement->execute();
                 return $result;
             } catch (PDOException $e) {
-                Utils::save_log($e->getMessage());
+                Utils::save_log_error($e->getMessage());
                 return null;
             }
         }
@@ -145,7 +145,7 @@ class Product
                 //Devolvemos el resultado de la ejecucion (será un boolean true si todo ha ido bien)
                 return $statement->execute();
             } catch (PDOException $e) {
-                Utils::save_log($e->getMessage());
+                Utils::save_log_error($e->getMessage());
             }
             return null;
         }
@@ -179,7 +179,7 @@ class Product
             //Devolvemos las filas resultantes
             return $statement->fetchAll();
         } catch (PDOException $e) {
-            Utils::save_log($e->getMessage());
+            Utils::save_log_error($e->getMessage());
         }
         return null;
     }
@@ -204,7 +204,7 @@ class Product
             //asociativo, pongo pages para que me devuelva el valor de la clave pages)
             return $statement->fetch()["pages"];
         } catch (PDOException $e) {
-            Utils::save_log($e->getMessage());
+            Utils::save_log_error($e->getMessage());
         }
         return null;
     }

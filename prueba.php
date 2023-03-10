@@ -9,14 +9,16 @@
     <script src="https://kit.fontawesome.com/8d125d2b91.js" crossorigin="anonymous"></script>
 </head>
 
+
 <body>
-    <div class="container mt-5">
-        <h1>Formulario con Bootstrap</h1>
+
+    <!-- <div class="container mt-5"> -->
+        <!-- <h1>Formulario con Bootstrap</h1>
         <form id="form" method="POST" action="#">
             <div class="form-group">
                 <label for="nombre">Nombre:</label>
                 <input type="text" class="form-control" id="nombre" name="nombre" required>
-            </div>
+            </div> -->
             <!-- <div class="form-group">
                 <label for="email">Email:</label>
                 <input type="email" class="form-control" id="email" name="email" required>
@@ -37,9 +39,9 @@
                 <label for="tel">Tel:</label>
                 <input type="tel" class="form-control" id="tel" name="tel" required>
             </div> -->
-            <button type="submit" class="btn btn-primary" name="submit">Enviar</button>
-        </form>
-    </div>
+            <!-- <button type="submit" class="btn btn-primary" name="submit">Enviar</button> -->
+        <!-- </form>
+    </div> -->
     <?php
     
     if(isset($_POST["submit"]))
@@ -53,7 +55,7 @@
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-    <script src="./prueba.js"></script>
+    
 </body>
 
 </html>

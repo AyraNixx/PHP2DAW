@@ -42,7 +42,7 @@ class Utils
             //Si usase contraseá, la añadiría después de $DB_USER
             return $conBD = new PDO("mysql:host=$DB_HOST;dbname=$DB_SCHEMA", $DB_USER);
         } catch (PDOException $e) {
-            self::save_log_error($e->getMessage());
+            self::save_log_error("¡Error!: " . $e->getMessage());
             //Devolvemos $conBD, que será null si no se pudo realizar la conexion 
             //correctamente.
             return $conBD;
@@ -348,11 +348,6 @@ class Utils
      * 
      * @return mixed Devuelve la cadena generada
      */
-    //Creamos una función que genere un código aleatorio, pasando como parámetro
-    //la cantidad de caracteres que queremos que tenga. Por ejemplo, para el salt
-    //ponemos 16 y para el código de activación, pues 5
-    //Por defecto, la longitud será de 16
-    //Por defecto, ponemos que no queremos que el código sea numerico
     public static function generate_code(int $length = 16, bool $numeric = false)
     {
         //Utilizamos la funcion array_merge para crear un array que contenga todas

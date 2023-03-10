@@ -13,7 +13,7 @@
 <body class="bg-secondary">
     <div class="container mt-5">
         <div class="d-flex align-items-center justify-content-center">
-            <form action="index_product.php" method="POST" enctype="multipart/form-data" class="bg-dark text-white p-4" style="width: 370px;">
+            <form action="controller_product.php" method="POST" enctype="multipart/form-data" class="bg-dark text-white p-4" style="width: 370px;">
                 <!-- Si option es 1, ponermos Add Product, si no lo es, edit Product -->
                 <h2 class="text-center my-4"><b><?= ($option == 1) ? "Add Product" : "Edit Product" ?></b></h2>
                 <!--Si option es 1, no aparecerá el recuadro de id_product-->
@@ -22,27 +22,27 @@
                 if ($option == 2) {
                     echo "<div class='form-group col-md-12'>";
                     echo "<label for='id_producto' class='mb-3'>Id</label>";
-                    echo "<input type=text name=new_id class=form-control value=" . $data["id_producto"] . ">";
-                    echo "<input type=hidden name=id_producto value=" . $data["id_producto"] . ">";
+                    echo "<input type=text name=new_id class=form-control value=" . $data_product["id_producto"] . ">";
+                    echo "<input type=hidden name=id_producto value=" . $data_product["id_producto"] . ">";
                     echo "</div>";
                 }
                 ?>
                 <div class="form-group col-md-12">
                     <label for="nombre" class="mt-2 mb-1">Nombre</label>
                     <!-- Si option vale 2, se muestran datos del nombre a cambiar -->
-                    <input type="text" name="nombre" class="form-control" value="<?= ($option == 2) ? $data["nombre"] : "" ?>">
+                    <input type="text" name="nombre" class="form-control" value="<?= ($option == 2) ? $data_product["nombre"] : "" ?>">
                 </div>
                 <div class="form-group col-md-12">
                     <label for="precio" class="mt-2 mb-1">Precio</label>
-                    <input type="text" name="precio" class="form-control" value=<?= ($option == 2) ? $data["precio"] : "" ?>>
+                    <input type="text" name="precio" class="form-control" value=<?= ($option == 2) ? $data_product["precio"] : "" ?>>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="stock" class="mt-2 mb-1">Stock</label>
-                    <input type="text" name="stock" class="form-control" value=<?= ($option == 2) ? $data["stock"] : "" ?>>
+                    <input type="text" name="stock" class="form-control" value=<?= ($option == 2) ? $data_product["stock"] : "" ?>>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="categoria" class="mt-2 mb-1">Categoria</label>
-                    <input type="text" name="categoria" class="form-control" value=<?= ($option == 2) ? $data["categoria"] : "" ?>>
+                    <input type="text" name="categoria" class="form-control" value=<?= ($option == 2) ? $data_product["categoria"] : "" ?>>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="img" class="mt-2 mb-1">Foto/s</label>
@@ -51,7 +51,7 @@
                     //Sin embargo, puede ser que no queramos cambiar la foto ya subida
                     //así que guardamos su url
                     if ($option == 2) {
-                        echo "<input type='hidden' name='prev_img' value='" . $data["prev_img"] . "'>";
+                        echo "<input type='hidden' name='prev_img' value='" . $data_product["prev_img"] . "'>";
                     }
                     ?>
 

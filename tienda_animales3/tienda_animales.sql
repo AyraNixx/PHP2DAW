@@ -10,7 +10,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 -- Schema tienda_animales
 -- -----------------------------------------------------
-DROP SCHEMA IF EXISTS `tienda_animales` ;
+DROP SCHEMA IF EXISTS `tienda_animales`;
 
 -- -----------------------------------------------------
 -- Schema tienda_animales
@@ -46,9 +46,7 @@ CREATE TABLE IF NOT EXISTS `tienda_animales`.`Usuarios` (
   `correo` VARCHAR(100) NOT NULL,
   `passwd` VARCHAR(400) NOT NULL,
   `salt` VARCHAR(16) NOT NULL,
-  `foto` VARCHAR(4000) NULL,
-  `activo` TINYINT NOT NULL,
-  `cod_activacion` INT(5) NOT NULL,
+  `cod_activacion` VARCHAR(5) NOT NULL,
   `id_rol` INT NOT NULL,
   PRIMARY KEY (`id_usuario`),
   UNIQUE INDEX `id_usuario_UNIQUE` (`id_usuario` ASC),

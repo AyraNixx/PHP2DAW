@@ -143,4 +143,9 @@ $(document).on("ready", function () {
 });
 
 
+$(document).on("submit", function(){
+    alert("hola");
+})
+
+
 
