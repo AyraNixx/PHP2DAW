@@ -8,7 +8,7 @@
     <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/8d125d2b91.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="../view/css/css.css">
+    <link rel="stylesheet" href="./view/css/css.css">
 </head>
 
 <body class="bg-img">
@@ -22,6 +22,7 @@
                     <button type="button" class="btn-close" id="cerrarModalBtn" aria-label="Close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
+                    <!-- Si no existe la variable $msg, no se mostrará nada y si existe se muestra el mensaje -->
                     <p><?= !isset($msg) ? "" : $msg ?></p>
                 </div>
             </div>
@@ -31,24 +32,34 @@
         <div class="row justify-content-center align-items-center">
             <div class="col-6 col-md-5 col-lg-3 bg-login">
                 <div class="col-md-12">
-                    <form method="POST" action="../controller/Login.php" class="form">
+                    <!-- Formulario que envía los datos por post al controlador de Login -->
+                    <form method="POST" action="./controller/LoginC.php" class="form">
                         <h3 class="text-center text-color">Login</h3>
+                        <!-- CORREO -->
                         <div class="my-4 form-group text-color">
                             <label for="correo" class="form-label">Email</label>
+                            <!-- Ponemos required para indicar que es obligatorio rellenar el campo -->
+                            <!-- Usamos pattern para indicar el formato que queremos que tenga -->
                             <input type="email" class="form-control" name="correo" placeholder="abc@mail.com" required pattern="^\w+([\.-_]?\w+)*@\w+([\.-_]?\w+)*(\.\w{2,4})+$">
                         </div>
+                        <!-- CONTRASEÑA -->
                         <div class="my-4 form-group text-color">
+                            <!-- Ponemos required para indicar que es obligatorio rellenar el campo -->
+                            <!-- Usamos pattern para indicar el formato que queremos que tenga -->
                             <label for="passwd" class="form-label">Password</label>
                             <input type="password" class="form-control" name="passwd" id="passwd" placeholder="************" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8,}$">
                         </div>
+                        <!-- Enlace que te lleva a restablecer tu contraseña -->
                         <div class="my-4 form-group">
-                            <a href="../controller/Login.php?action='change_passwd'" class="link-dark">Restablecer contraseña</a>
+                            <a href="../controller/LoginC.php?action=change_passwd_email" class="link-dark">Restablecer contraseña</a>
                         </div>
                         <div class="my-4 form-group d-flex text-color justify-content-between">
+                            <!-- Botón para iniciar la sesión -->
                             <button type="submit" class="border p-2" name="action" value="login">
                                 Sign up
                                 <i class="fa-solid fa-arrow-right-long px-1"></i>
                             </button>
+                            <!-- Botón que te lleva al controlador de registro -->
                             <button class="border p-2">
                                 <a href="../controller/registerC.php" class="text-decoration-none text-color">Sign in</a>
                                 <i class="fa-solid fa-arrow-right-long px-1"></i>
@@ -67,11 +78,12 @@
         <script>
             $(document).on("ready", function() {
                 $("#aviso").modal("show");
-            })
+            });
         </script>
     <?php
     }
     ?>
+    <script src="./view/js/index.js"></script>
 </body>
 
 </html>

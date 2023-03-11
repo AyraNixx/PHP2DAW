@@ -1,16 +1,16 @@
 <?php
 
-use \model\Category;
+use \model\Supplier;
 use \utils\Utils;
 
-require_once("../model/Category.php");
+require_once("../model/Supplier.php");
 
 //Creamos una clase controller (lo hago para que luego en el switch no sea tan lioso)
-class CategoryC
+class SupplierC
 {
     //Lo ponemos privado para que solo se pueda acceder desde esta clase y estatico
     //para poder usarlo en funciones estaticas
-    private $element;
+    private $supplier;
 
     private $ord;
     private $field;
@@ -20,10 +20,10 @@ class CategoryC
     private $msg;
 
 
-    //Inicializamos element para que se cree un nuevo objeto de Category
+    //Inicializamos supplier para que se cree un nuevo objeto de Supplier
     function __construct(string $ord, string $field, int $page, int $amount)
     {
-        $this->element = new Category();
+        $this->supplier = new Supplier();
 
         $this->ord = $ord;
         $this->field = $field;
@@ -36,15 +36,20 @@ class CategoryC
 
 
 
+
     //Funcion que guarda los datos paginados y muestra la página principal
     public function index()
     {
         //Almacenamos los datos
-        $data = $this->element->pagination($this->ord, $this->field, $this->page, $this->amount);
-        $total_page = $this->element->get_total_pages($this->amount);
+        $data_supplier = $this->supplier->pagination($this->ord, $this->field, $this->page, $this->amount);
+        $total_page = $this->supplier->get_total_pages($this->amount);
         //Incluimos la vista del index.
-        require_once("../view/index_category.php");
+        require_once("../view/index_supplier.php");
     }
+
+
+
+
 
 
 
@@ -52,40 +57,48 @@ class CategoryC
     //Funcion que añade o modifica según la opcion elegida
     public function add_or_edit(int $option)
     {
-        //Si la opcion es 2, almacenamos en $data los valores pasados por POST
+        //Si la opcion es 2, almacenamos en $data_supplier los valores pasados por POST
         if ($option == 2) {
-            $data["id_categoria"] = $_POST["id_categoria"];
-            $data["nombre"] = $_POST["nombre"];
-            $data["descripcion"] = $_POST["descripcion"];
-
+            $data_supplier["id_proveedor"] = $_POST["id_proveedor"];
+            $data_supplier["nombre"] = $_POST["nombre"];
+            $data_supplier["direccion"] = $_POST["direccion"];
+            $data_supplier["telefono"] = $_POST["telefono"];
+            $data_supplier["correo"] = $_POST["correo"];
 
             //Validamos los campos
-            $data = Utils::clean_array($data);
+            $data_supplier = Utils::clean_array($data_supplier);
 
             //En caso de que haya un problema con la validación
-            if ($data == false) {
+            if ($data_supplier == false) {
                 $this->msg = "¡ERROR! ¡Hay un problema con los datos!";
                 $this->index();
             }
         }
         //Incluimos la vista de añadir o modificar
-        require_once("../view/add_or_edit_category.php");
+        require_once("../view/add_or_edit_supplier.php");
     }
 
 
+
+
+
+
+
     //Funcion que guarda los datos recibidos en la base de datos
-    public function save(array $data)
+    public function save(array $data_supplier)
     {
+
         //Validamos los campos
-        $data = Utils::clean_array($data);
+        $data_supplier = Utils::clean_array($data_supplier);
 
         //Si data es distinta de false
-        if ($data != false) {
-            //Si la opcion es 1, se añade la nueva categoria
-            if ($data["option"] == 1) {
+        if ($data_supplier != false) {
+
+            //Si la opcion es 1, se añade el nuevo proveedor
+            if ($data_supplier["option"] == 1) {
                 //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
                 //de datos
-                if ($this->element->add($data) != null) {
+                if ($this->supplier->add($data_supplier) != null) {
                     //Mensaje a mostrar
                     $this->msg = "Añadido con éxito!";
                 } else {
@@ -95,7 +108,7 @@ class CategoryC
             } else {
                 //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
                 //de datos
-                if ($this->element->update($data) != null) {
+                if ($this->supplier->update($data_supplier) != null) {
                     //Mensaje a mostrar
                     $this->msg = "Modificado con éxito!";
                 } else {
@@ -111,11 +124,15 @@ class CategoryC
         $this->index();
     }
 
+
+
+
+
     //Funcion que elimina la categoria seleccionado
-    public function delete(int $id_category)
+    public function delete(int $id_supplier)
     {
         //Si la funcion delete devuelve como resultado algo distinto de null
-        if ($this->element->delete(filter_var(Utils::clean($id_category)), FILTER_VALIDATE_INT) != null) {
+        if ($this->supplier->delete(filter_var(Utils::clean($id_supplier)), FILTER_VALIDATE_INT) != null) {
             //Guardamos el mensaje
             $this->msg = "¡Borrado con éxito!";
             //Llamamos a la funcion index
@@ -125,15 +142,15 @@ class CategoryC
         }
     }
 
-    //Funcion que muestra más detalles acerca del elemento seleccionado
-    public function details(int $id_category)
+    //Funcion que muestra más detalles acerca del suppliero seleccionado
+    public function details(int $id_supplier)
     {
         //Guardamos en un array el resultado de la funcion get_one
-        $data = $this->element->get_one(filter_var(Utils::clean($id_category)), FILTER_VALIDATE_INT);
+        $data_supplier = $this->supplier->get_one(filter_var(Utils::clean($id_supplier)), FILTER_VALIDATE_INT);
 
         //Si data no es nulo, incluirá la vista de detalles categoria
-        if ($data != null) {
-            include("../view/details_category.php");
+        if ($data_supplier != null) {
+            include("../view/details_supplier.php");
             //En caso contrario, se guarda un mensaje de error
         } else {
             $msg = "¡Error! ¡No se ha podido conectar con la base de datos!";
@@ -146,7 +163,14 @@ class CategoryC
 
 
 
+//Comprobamos que la sesion esta iniciada
+session_start();
 
+//Si no tenemos guardado login 
+if (!isset($_SESSION["login"])) {
+    header("Location:../controller/Login.php");
+    exit();
+}
 
 
 
@@ -160,7 +184,7 @@ if (isset($_REQUEST)) {
     if (isset($_REQUEST["field"])) {
         $field = filter_var($_REQUEST["field"], FILTER_SANITIZE_SPECIAL_CHARS);
     } else {
-        $field = "id_categoria";
+        $field = "nombre";
     }
 
     if (isset($_REQUEST["ord"])) {
@@ -201,8 +225,8 @@ if (isset($_REQUEST)) {
 
 
 
-    //Creamos un nuevo objeto de la clase CategoryC
-    $element = new CategoryC($ord, $field, $page, $amount);
+    //Creamos un nuevo objeto de la clase SupplierC
+    $supplier = new SupplierC($ord, $field, $page, $amount);
 
 
 
@@ -215,42 +239,42 @@ if (isset($_REQUEST)) {
     switch ($option) {
             //Si es 0, llamamos al index
         case 0:
-            $element->index();
+            $supplier->index();
             break;
             //Si es 1 (añadir) o 2 (modificar)
         case 1:
         case 2:
             //Llamamos a la funcion add_or_edit y le pasamos $option para que dependiendo
             //de la opcion elegida nos salga una cosa u otra
-            $element->add_or_edit($option);
+            $supplier->add_or_edit($option);
             break;
             //Si es 3, llamamos a la funcion delete
         case 3:
-            //Si id_categoria no es nulo y es numerico
-            if (isset($_POST["id_categoria"]) && is_numeric($_POST["id_categoria"])) {
+            //Si id_proveedor no es nulo y es numerico
+            if (isset($_POST["id_proveedor"]) && is_numeric($_POST["id_proveedor"])) {
                 //Se llama a la funcion delete
-                $element->delete($_POST["id_categoria"]);
+                $supplier->delete($_POST["id_proveedor"]);
             } else {
                 $this->msg = "Clave no numérica!";
-                $element->index();
+                $supplier->index();
             }
             break;
             //Si es 4, llamamos a la funcion details que nos mostrará más detalles acerca
-            //del elemento que hayamos pinchado
+            //del suppliero que hayamos pinchado
         case 4:
-            //Si el id_categoria no está vacío y es un número
+            //Si el id_proveedor no está vacío y es un número
             if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
                 //Llamamos a la funcion details
-                $element->details($_POST["id"]);
+                $supplier->details($_POST["id"]);
             } else {
                 $this->msg = "Clave no numérica!";
-                $element->index();
+                $supplier->index();
             }
             break;
             //La opcion 5, la obtenemos al enviar los datos del formulario de modificar
             //o añadir y lo que hará es llamar a la función save, pasándole el array $_POST
             //para su introduccion en la base de datos
         case 5:
-            $element->save($_POST);
+            $supplier->save($_POST);
     }
 }

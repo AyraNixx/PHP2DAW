@@ -1,3 +1,15 @@
+<?php
+
+//Comprobamos que la sesion esta iniciada
+session_start();
+
+//Si no tenemos guardado login 
+if (!isset($_SESSION["login"])) {
+    header("Location:../controller/Login.php");
+}
+$name = $_SESSION["nombre"];
+?>
+
 <!DOCTYPE html>
 <html>
 
@@ -21,9 +33,8 @@
 </head>
 
 <body>
-
-    <nav class="navbar navbar-expand-lg navbar-light bg-light bg-opacity-50">
-        <a class="navbar-brand px-2 mx-2 border border-light rounded-circle" href="../view/index.php">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand px-2 mx-2 border border-light rounded-circle" href="../view/index_admin.php">
             <i class="fa-solid fa-shop text-light"></i>
         </a>
         <button class="navbar-toggler p-2 mx-2" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -44,13 +55,19 @@
                     <a class="nav-link p-2" href="../controller/controller_supplier.php">Proveedores</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link p-2" href="../controller/loginC.php?submit=logout">
+                    <a class="nav-link p-2" href="../controller/Login.php?action=logout">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </a>
                 </li>
             </ul>
         </div>
     </nav>
+
+    <div class="container mt-5">
+        <div class="d-flex align-items-center justify-content-center bg-light bg-gradient bg-opacity-75 p-5">
+            <h1 class="text-success">Bienvenido, <?= $name ?></h1>
+        </div>
+    </div>
 
     <!-- Enlace a los archivos JavaScript de Bootstrap -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

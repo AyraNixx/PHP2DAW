@@ -3,23 +3,23 @@
         <table class="table table-striped">
             <tr>
                 <th class="table-dark text-center col-1" >#</th>
-                <td scope="col"><?= $data["id_proveedor"] ?></td>
+                <td scope="col"><?= $data_supplier["id_proveedor"] ?></td>
             </tr>
             <tr>
                 <th class="table-dark text-center col-1">Nombre</th>
-                <td scope="col"><?= $data["nombre"] ?></td>
+                <td scope="col"><?= $data_supplier["nombre"] ?></td>
             </tr>
             <tr>
                 <th class="table-dark text-center col-1">Dirección</th>
-                <td scope="col"><?= $data["direccion"] ?></td>
+                <td scope="col"><?= $data_supplier["direccion"] ?></td>
             </tr>
             <tr>
                 <th class="table-dark text-center col-1">Teléfono</th>
-                <td scope="col"><?= $data["telefono"] ?></td>
+                <td scope="col"><?= $data_supplier["telefono"] ?></td>
             </tr>
             <tr>
                 <th class="table-dark text-center col-1">Correo</th>
-                <td scope="col"><?= $data["correo"] ?></td>
+                <td scope="col"><?= $data_supplier["correo"] ?></td>
             </tr>
         </table>
     </div>

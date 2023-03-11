@@ -19,7 +19,7 @@ class Supplier
             //Iniciamos conexion con la base de datos
             $this->conBD = Utils::conectar();
         } catch (PDOException $e) {
-            Utils::save_log($e->getMessage());
+            Utils::save_log_error($e->getMessage());
         }
     }
 
@@ -44,7 +44,7 @@ class Supplier
             //Devolvemos el resultado obtenido
             return $sentence->fetchAll();
         } catch (PDOException $e) {
-            Utils::save_log($e->getMessage());
+            Utils::save_log_error($e->getMessage());
         }
         return null;
     }
@@ -67,7 +67,7 @@ class Supplier
                 //Devolvemos el resultado obtenido
                 return $sentence->fetch();
             } catch (PDOException $e) {
-                Utils::save_log($e->getMessage());
+                Utils::save_log_error($e->getMessage());
             }
             return null;
         }
@@ -91,7 +91,7 @@ class Supplier
                 //Devolvemos el resultado de la ejecucion (será un boolean true si todo ha ido bien)
                 return $sentence->execute();
             } catch (PDOException $e) {
-                Utils::save_log($e->getMessage());
+                Utils::save_log_error($e->getMessage());
             }
 
             return null;
@@ -119,7 +119,7 @@ class Supplier
                 //Devolvemos el resultado de la ejecucion (será un boolean true si todo ha ido bien)
                 return $sentence->execute();
             } catch (PDOException $e) {
-                Utils::save_log($e->getMessage());
+                Utils::save_log_error($e->getMessage());
             }
             return null;
         }
@@ -142,7 +142,7 @@ class Supplier
                 //Devolvemos el resultado de la ejecucion (será un boolean true si todo ha ido bien)
                 return $sentence->execute();
             } catch (PDOException $e) {
-                Utils::save_log($e->getMessage());
+                Utils::save_log_error($e->getMessage());
             }
             return null;
         }
@@ -176,34 +176,24 @@ class Supplier
             //Devolvemos las filas resultantes
             return $sentence->fetchAll();
         } catch (PDOException $e) {
-            Utils::save_log($e->getMessage());
+            Utils::save_log_error($e->getMessage());
         }
         return null;
     }
 
 
-    //Funcion que devuelve el total de páginas que tendremos en función de la cantidad
-    //de elementos que queramos mostrar en cada una de llas
-    function get_total_pages(int $amount)
+    /**
+     * Devuelve la cantidad total de páginas según la cantidad de elementos que 
+     * se muestren en cada una de ellas.
+     * 
+     * @return int Páginas totales.
+     */
+    public function get_total_pages(int $amount)
     {
-        try {
-            //Definimos la consulta (usamos count para que cuente el total de filas de la tabla,
-            //lo dividimos entre la cantidad de elementos que queremos por cada página y usamos
-            //round para que nos redondee el resultado obtenido)
-            $query = "SELECT CEILING(COUNT(*)/:amount) AS pages FROM tienda_animales.proveedores";
-            //Preparamos la sentencia
-            $sentence = $this->conBD->prepare($query);
-            //Vinculamos los parámetros al nombre de la variable especificada
-            $sentence->bindParam(":amount", $amount, PDO::PARAM_INT);
-            //Ejecutamos la consulta
-            $sentence->execute();
-            //Devolvemos el total de páginas (como la funcion fetch nos devuelve un array
-            //asociativo, pongo pages para que me devuelva el valor de la clave pages)
-            return $sentence->fetch()["pages"];
-        } catch (PDOException $e) {
-            Utils::save_log($e->getMessage());
-        }
-        return null;
+        // Contamos todos los elementos que hay en la tabla de proveedores y lo
+        // dividimos por la cantidad de elementos que mostramos por página.
+        // Luego redondeamos para arriba con ceil.
+        return ceil(count(self::get_all()) / $amount);
     }
 }
 

@@ -31,17 +31,12 @@
             <div class="row justify-content-center align-items-center">
                 <div class="col-6 col-md-6 col-lg-4 bg-login">
                     <div class="col-md-12">
-                        <h1 class="text-color text-center">NUEVA CONTRASEÑA</h1>
+                        <h1 class="text-color text-center">RECUPERAR CONTRASEÑA</h1>
                         <form action="../controller/Login.php" method="POST">
                             <div class="my-4 form-group text-color">
-                                <input type="password" class="form-control" name="passwd" placeholder="************" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8,}$">
+                                <input type="email" class="form-control" name="correo" placeholder="user@domain.com" required pattern="^\w+([\.-_]?\w+)*@\w+([\.-_]?\w+)*(\.\w{2,4})+$" title="El correo debe tener un formato parecido a example@server.com" />
                             </div>
-                            <div class="my-4 form-group text-color">
-                                <input type="password" class="form-control" name="passwd_2" placeholder="************" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8,}$">
-                            </div>
-                            <!-- Si la variable $correo no existe, ponemos el valor de $data_login["correo"] -->
-                            <input type="hidden" name="correo" value="<?= isset($correo) ? $correo : $data_login["correo"] ?>">
-                            <button type="submit" class="text-color border p-2" name="action" value="change_passwd">
+                            <button type="submit" class="text-color border p-2" name="action" value="change_passwd_email">
                                 Enviar correo
                                 <i class="fa-solid fa-arrow-right-long px-1"></i>
                             </button>

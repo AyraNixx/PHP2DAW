@@ -527,7 +527,10 @@ class Utils
                     <p class="lead">Hola,</p>
                     <p class="mt-4">Hemos recibido una solicitud para restablecer la contraseña de tu cuenta, el ' . date("d-m-Y H:i:s") . '.</p>
                     <p class="mt-4">Si solicitó el cambio, haz click en el siguiente enlace para restablecer tu contraseña:</p>
-                    <a class="btn btn-primary" href="http://localhost/DES/tienda_animales3/view/change_password.php?correo=' . $email . '">Restablecer contraseña</a>
+                    <form action="http://localhost/DES/tienda_animales3/controller/Login.php" method="post">
+                        <input type="hidden" name="correo" value="' . $email . '">
+                        <button type="submit" class="btn btn-primary" name="action" value="change_passwd">Activar cuenta</button>
+                    </form>                    
                     <p class="mt-4">Si usted no realizó esta petición, por favor, ignore este correo electrónico.</p>
                     <p class="mt-4">Saludos,</p>
                     <p>[nombre de la tienda de animales]</p>

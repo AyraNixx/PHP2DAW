@@ -11,7 +11,37 @@
 </head>
 
 <body class="bg-secondary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand px-2 mx-2 border border-light rounded-circle" href="../view/index_admin.php">
+            <i class="fa-solid fa-shop text-light"></i>
+        </a>
+        <button class="navbar-toggler p-2 mx-2" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link p-2" href="../controller/controller_category.php">Categorías</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-2" href="../controller/controller_product.php">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-2" href="../controller/controller_rol.php">Roles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-2" href="../controller/controller_supplier.php">Proveedores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link p-2" href="../controller/LoginC.php?action=logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
     <div class="container mt-5">
+
         <div class="d-flex align-items-center justify-content-center">
             <form action="controller_product.php" method="POST" enctype="multipart/form-data" class="bg-dark text-white p-4" style="width: 370px;">
                 <!-- Si option es 1, ponermos Add Product, si no lo es, edit Product -->
@@ -30,19 +60,19 @@
                 <div class="form-group col-md-12">
                     <label for="nombre" class="mt-2 mb-1">Nombre</label>
                     <!-- Si option vale 2, se muestran datos del nombre a cambiar -->
-                    <input type="text" name="nombre" class="form-control" value="<?= ($option == 2) ? $data_product["nombre"] : "" ?>">
+                    <input type="text" name="nombre" class="form-control" required value="<?= ($option == 2) ? $data_product["nombre"] : "" ?>">
                 </div>
                 <div class="form-group col-md-12">
                     <label for="precio" class="mt-2 mb-1">Precio</label>
-                    <input type="text" name="precio" class="form-control" value=<?= ($option == 2) ? $data_product["precio"] : "" ?>>
+                    <input type="text" name="precio" class="form-control" required value=<?= ($option == 2) ? $data_product["precio"] : "" ?>>
                 </div>
                 <div class="form-group col-md-12">
                     <label for="stock" class="mt-2 mb-1">Stock</label>
-                    <input type="text" name="stock" class="form-control" value=<?= ($option == 2) ? $data_product["stock"] : "" ?>>
+                    <input type="text" name="stock" class="form-control" required value=<?= ($option == 2) ? $data_product["stock"] : "" ?> >
                 </div>
                 <div class="form-group col-md-12">
                     <label for="categoria" class="mt-2 mb-1">Categoria</label>
-                    <input type="text" name="categoria" class="form-control" value=<?= ($option == 2) ? $data_product["categoria"] : "" ?>>
+                    <input type="text" name="categoria" class="form-control" required value=<?= ($option == 2) ? $data_product["categoria"] : "" ?> >
                 </div>
                 <div class="form-group col-md-12">
                     <label for="img" class="mt-2 mb-1">Foto/s</label>
@@ -64,8 +94,9 @@
             </form>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="../view/js/index.js"></script>
 </body>
 

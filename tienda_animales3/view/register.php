@@ -15,6 +15,20 @@
 <body>
 
     <div class="container">
+        <!-- MODAL -->
+        <div id="aviso" class="modal" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Aviso</h5>
+                        <button type="button" class="btn-close" id="cerrarModalBtn" aria-label="Close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p><?= !isset($msg) ? "" : $msg ?></p>
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <h1 class="text-color mt-5 mb-2 text-center">CREAR CUENTA</h1>
 
@@ -66,7 +80,7 @@
                             <div class="input-group-text border-0 border-bottom rounded-0 bg-transparent h-100 p-0">
                                 <i class="fa-solid fa-mobile-screen-button"></i>
                             </div>
-                            <input type="tel" class="form-control border-0 border-bottom rounded-0 bg-transparent px-4" name="telefono" placeholder="XXX-XX-XX-XX" required pattern="^\d{3}(([\s-])?\d{2}){3}$"/>
+                            <input type="tel" class="form-control border-0 border-bottom rounded-0 bg-transparent px-4" name="telefono" placeholder="XXX-XX-XX-XX" required pattern="^\d{3}(([\s-])?\d{2}){3}$" />
                         </div>
                     </div>
 
@@ -76,7 +90,7 @@
                             <div class="input-group-text border-0 border-bottom rounded-0 bg-transparent h-100 p-0">
                                 <i class="fa-sharp fa-solid fa-envelope"></i>
                             </div>
-                            <input type="email" class="form-control border-0 border-bottom rounded-0 bg-transparent px-4" name="correo" placeholder="user@domain.com" required pattern="^\w+([\.-_]?\w+)*@\w+([\.-_]?\w+)*(\.\w{2,4})+$" title="El correo debe tener un formato parecido a example@server.com"/>
+                            <input type="email" class="form-control border-0 border-bottom rounded-0 bg-transparent px-4" name="correo" placeholder="user@domain.com" required pattern="^\w+([\.-_]?\w+)*@\w+([\.-_]?\w+)*(\.\w{2,4})+$" title="El correo debe tener un formato parecido a example@server.com" />
                         </div>
                     </div>
 
@@ -113,7 +127,17 @@
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
-    <script src="js/index.js"></script>
+    <?php
+        if (isset($msg) && $msg != "") { ?>
+
+            <script>
+                $(document).on("ready", function() {
+                    $("#aviso").modal("show");
+                })
+            </script>
+        <?php
+        }
+        ?>    
 </body>
 
 </html>

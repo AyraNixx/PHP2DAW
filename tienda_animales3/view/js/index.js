@@ -44,7 +44,7 @@ $(document).on("click", function (e) {
     if ($(e.target).hasClass("filter")) {
 
         // //Obtenemos el numero de página que es aquel que tenga la clase active
-        let page = $(".active").first().text();
+        let page = $(".pagina").first().text();
         //Obtenemos la url del nodo padre (que es la etiqueta a)
         let url = $(e.target).parent().attr("href");
 
@@ -121,19 +121,6 @@ $(document).on("ready", function () {
                     return false;
                 }
             }
-
-            // //Si type es igual a file
-            // if (type == "file") {
-            //     // Obtener el valor del campo de entrada de tipo file
-            //     let fileInput = $(inputs[i]).get(0);
-            //     let file = fileInput.files[0];
-
-            //     // Verificar si el archivo está vacío
-            //     if (!file) {
-            //         alert("Seleccione un archivo antes de enviar el formulario.");
-            //         return false;
-            //     }
-            // }
         }
 
         //En caso de que esté todo correcto
@@ -142,10 +129,11 @@ $(document).on("ready", function () {
     })
 });
 
-
-$(document).on("submit", function(){
-    alert("hola");
-})
+document.querySelector('form').addEventListener('keydown', function (event) {
+    if (event.key === 'Enter') {
+        event.preventDefault();
+    }
+});
 
 
 

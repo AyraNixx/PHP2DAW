@@ -36,7 +36,7 @@
                             <div class="my-4 form-group text-color">
                                 <input type="text" class="form-control" name="cod_activacion" placeholder="Introduzca código de activación" required pattern="^\d{5}$" title="Código de activación no válido">
                             </div>
-                            <input type="hidden" name="correo" value="<?= isset($new_user["correo"]) ? $new_user["correo"] : $data_login["correo"] ?>">
+                            <input type="hidden" name="correo" value="<?= isset($new_user["correo"]) ? $new_user["correo"] : (isset($data_login["correo"]) ? $data_login["correo"] : $_REQUEST["correo"]) ?>">
 
                             <button type="submit" class="text-color border p-2" name="action" value="activation">
                                 Activar

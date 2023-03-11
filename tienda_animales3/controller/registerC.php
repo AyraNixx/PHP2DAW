@@ -94,7 +94,6 @@ try {
     // que indica que es un usuario normal y no un administrador
     $new_user["id_rol"] = 2;
 
-    $new_user["foto"] = "../imgs/default.jpg";
     // Encriptamos la contraseña junto con el salt y la guardamos
     // en la base de datos con la función hash. En ella indicaremos
     // el tipo de encriptación como primer argumento y de segundo,
@@ -128,6 +127,8 @@ try {
         // conectar con la base de datos
         throw new Exception("¡Error! No se ha podido enviar el código de activación");
     }
+
+    $msg = "Código de activación enviado";
 
     // Redirigimos a la página de activación
     require_once("../view/activation.php");

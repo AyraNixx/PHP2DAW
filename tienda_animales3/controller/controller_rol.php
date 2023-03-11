@@ -10,7 +10,7 @@ class RolC
 {
     //Lo ponemos privado para que solo se pueda acceder desde esta clase y estatico
     //para poder usarlo en funciones estaticas
-    private $element;
+    private $rol;
 
     private $ord;
     private $field;
@@ -23,7 +23,7 @@ class RolC
     //Inicializamos rol para que se cree un nuevo objeto de Rol
     function __construct(string $ord, string $field, int $page, int $amount)
     {
-        $this->element = new Rol();
+        $this->rol = new Rol();
 
         $this->ord = $ord;
         $this->field = $field;
@@ -37,10 +37,10 @@ class RolC
 
     //Funcion que guarda los datos paginados y muestra la página principal
     public function index()
-    {
+    {        
         //Almacenamos los datos
-        $data = $this->element->pagination($this->ord, $this->field, $this->page, $this->amount);
-        $total_page = $this->element->get_total_pages($this->amount);
+        $data_rol = $this->rol->pagination($this->ord, $this->field, $this->page, $this->amount);
+        $total_page = $this->rol->get_total_pages($this->amount);
         //Incluimos la vista del index.
         require_once("../view/index_rol.php");
     }
@@ -54,15 +54,15 @@ class RolC
         //Si la opcion es 2, almacenamos en $data los valores pasados por POST
         if ($option == 2) 
         {
-            $data["id_rol"] = $_POST["id_rol"];
-            $data["rol"] = $_POST["rol"];
-            $data["descripcion"] = $_POST["descripcion"];
+            $data_rol["id_rol"] = $_POST["id_rol"];
+            $data_rol["rol"] = $_POST["rol"];
+            $data_rol["descripcion"] = $_POST["descripcion"];
 
             //Validamos los campos
-            $data = Utils::clean_array($data);
+            $data_rol = Utils::clean_array($data_rol);
 
             //En caso de que haya un problema con la validación
-            if($data == false)
+            if($data_rol == false)
             {
                 $this->msg = "¡ERROR! ¡Hay un problema con los datos!";
                 $this->index();
@@ -74,22 +74,23 @@ class RolC
 
 
 
+
     
 
     //Funcion que guarda los datos recibidos en la base de datos
-    public function save(array $data)
+    public function save(array $data_rol)
     {
         //Validamos los campos
-        $data = Utils::clean_array($data);
+        $data_rol = Utils::clean_array($data_rol);
 
         //Si data es distinta de false
-        if ($data != false) {
+        if ($data_rol != false) {
 
             //Si la opcion es 1, se añade el nuevo rol
-            if ($data["option"] == 1) {
+            if ($data_rol["option"] == 1) {
                 //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
                 //de datos
-                if ($this->element->add($data) != null) {
+                if ($this->rol->add($data_rol) != null) {
                     //Mensaje a mostrar
                     $this->msg = "Añadido con éxito!";
                 } else {
@@ -99,7 +100,7 @@ class RolC
             } else {
                 //Pasamos el array como argumento a la funcion add para añadirlo a nuestra base
                 //de datos
-                if ($this->element->update($data) != null) {
+                if ($this->rol->update($data_rol) != null) {
                     //Mensaje a mostrar
                     $this->msg = "Modificado con éxito!";
                 } else {
@@ -123,7 +124,7 @@ class RolC
     public function delete(int $id_rol)
     {
         //Si la funcion delete devuelve como resultado algo distinto de null
-        if ($this->element->delete(filter_var(Utils::clean($id_rol)), FILTER_VALIDATE_INT) != null) {
+        if ($this->rol->delete(filter_var(Utils::clean($id_rol)), FILTER_VALIDATE_INT) != null) {
             //Guardamos el mensaje
             $this->msg = "¡Borrado con éxito!";
             //Llamamos a la funcion index
@@ -137,14 +138,14 @@ class RolC
 
 
     
-    //Funcion que muestra más detalles acerca del elemento seleccionado
+    //Funcion que muestra más detalles acerca del data_rolo seleccionado
     public function details(int $id_rol)
     {
         //Guardamos en un array el resultado de la funcion get_one
-        $data = $this->element->get_one(filter_var(Utils::clean($id_rol)), FILTER_VALIDATE_INT);
+        $data_rol = $this->rol->get_one(filter_var(Utils::clean($id_rol)), FILTER_VALIDATE_INT);
 
         //Si data no es nulo, incluirá la vista de detalles rol
-        if ($data != null) {
+        if ($data_rol != null) {
             include("../view/details_rol.php");
             //En caso contrario, se guarda un mensaje de error
         } else {
@@ -163,6 +164,23 @@ class RolC
 
 
 
+//Comprobamos que la sesion esta iniciada
+session_start();
+
+//Si no tenemos guardado login 
+if (!isset($_SESSION["login"])) {
+    header("Location:../controller/Login.php");
+    exit();
+}
+
+
+
+
+
+
+
+
+
 
 
 //Si el array $_REQUEST no está vacío
@@ -172,7 +190,7 @@ if (isset($_REQUEST)) {
     if (isset($_REQUEST["field"])) {
         $field = filter_var($_REQUEST["field"], FILTER_SANITIZE_SPECIAL_CHARS);
     } else {
-        $field = "id_rol";
+        $field = "rol";
     }
 
     if (isset($_REQUEST["ord"])) {
@@ -214,9 +232,7 @@ if (isset($_REQUEST)) {
 
 
     //Creamos un nuevo objeto de la clase RolC
-    $element = new RolC($ord, $field, $page, $amount);
-
-
+    $data_rol = new RolC($ord, $field, $page, $amount);
 
 
 
@@ -227,42 +243,42 @@ if (isset($_REQUEST)) {
     switch ($option) {
             //Si es 0, llamamos al index
         case 0:
-            $element->index();
+            $data_rol->index();
             break;
             //Si es 1 (añadir) o 2 (modificar)
         case 1:
         case 2:
             //Llamamos a la funcion add_or_edit y le pasamos $option para que dependiendo
             //de la opcion elegida nos salga una cosa u otra
-            $element->add_or_edit($option);
+            $data_rol->add_or_edit($option);
             break;
             //Si es 3, llamamos a la funcion delete
         case 3:
             //Si id_rol no es nulo y es numerico
             if (isset($_POST["id_rol"]) && is_numeric($_POST["id_rol"])) {
                 //Se llama a la funcion delete
-                $element->delete($_POST["id_rol"]);
+                $data_rol->delete($_POST["id_rol"]);
             }else{
                 $this->msg = "Clave no numérica!";
-                $element->index();
+                $data_rol->index();
             }
             break;
             //Si es 4, llamamos a la funcion details que nos mostrará más detalles acerca
-            //del elemento que hayamos pinchado
+            //del data_rolo que hayamos pinchado
         case 4:
             //Si el id_rol no está vacío y es un número
             if (isset($_POST["id"]) && is_numeric($_POST["id"])) {
                 //Llamamos a la funcion details
-                $element->details($_POST["id"]);
+                $data_rol->details($_POST["id"]);
             }else{
                 $this->msg = "Clave no numérica!";
-                $element->index();
+                $data_rol->index();
             }
             break;
             //La opcion 5, la obtenemos al enviar los datos del formulario de modificar
             //o añadir y lo que hará es llamar a la función save, pasándole el array $_POST
             //para su introduccion en la base de datos
         case 5:
-            $element->save($_POST);
+            $data_rol->save($_POST);
     }
 }
