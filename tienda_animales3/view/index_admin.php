@@ -5,7 +5,7 @@ session_start();
 
 //Si no tenemos guardado login 
 if (!isset($_SESSION["login"])) {
-    header("Location:../controller/Login.php");
+    header("Location:../controller/LoginC.php");
 }
 $name = $_SESSION["nombre"];
 ?>

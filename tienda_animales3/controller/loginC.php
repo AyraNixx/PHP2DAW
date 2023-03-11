@@ -66,7 +66,7 @@ class Login
             // Guardamos el resultado obtenido al llamar a la función user_found(),
             // que devuelve un array con los datos del usuario si lo ha encontrado
             // o null si no.
-            $data_user = self::user_found($data_login["correo"]);
+            $data_user = $this->user_found($data_login["correo"]);
 
             // Si nos ha devuelto null
             if ($data_user === null) {
@@ -81,7 +81,7 @@ class Login
             // base de datos. Si no coinciden, guardamos el mensaje y mostramos el Login
             $passwd_login = $data_user["salt"] . $data_login["passwd"];
 
-            if (!self::verify_password($data_user["passwd"], $passwd_login, true)) {
+            if (!$this->verify_password($data_user["passwd"], $passwd_login, true)) {
                 // Guardamos el mensaje a mostrar
                 $msg = self::ERROR_LOGIN;
                 // Mostramos la página de login
@@ -132,8 +132,7 @@ class Login
         // Ahora, destruimos la sesion
         session_destroy();
         // Borramos la cookie de sesión del cliente
-        if (ini_get("session.use_cookies")) 
-        {
+        if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
             setcookie(
                 session_name(),
@@ -315,10 +314,10 @@ class Login
         try {
             // Obtenemos los datos del usuario con el correo pasado
             // Validamos y limpiamos los valores del array obtenido 
-            $cod_activation_bd = Utils::clean_array($this->user->get_one($data_login["correo"]));
+            $data_user_bd = Utils::clean_array($this->user->get_one($data_login["correo"]));
 
             // Si nos devuelve nulo, algo ha salido mal
-            if ($cod_activation_bd === null) {
+            if ($data_user_bd === null) {
                 // Guardamos mensaje
                 $msg = self::ERROR_BD;
                 // Incluimos la vista de activacion
@@ -329,10 +328,10 @@ class Login
             }
 
             // Guardamos el rol de usuario
-            $rol_user = $cod_activation_bd["id_rol"];
+            $rol_user = $data_user_bd["id_rol"];
 
             // Si todo ha ido bien, guardamos el código de activación de la base de datos
-            $cod_activation_bd = $cod_activation_bd["cod_activacion"];
+            $cod_activation_bd = $data_user_bd["cod_activacion"];
 
             // Si el código de activación pasado como argumento es igual que el que 
             // tenemos en la base de datos. Definimos una variable llamada $code que
@@ -364,6 +363,15 @@ class Login
                 throw new Exception(self::ERROR_BD);
                 return;
             }
+
+
+            // Iniciamos sesión
+            session_start();
+            // Guardamos las siguientes variables en la session
+            $_SESSION["login"] = true;
+            $_SESSION["id_usuario"] = $data_user_bd["id_usuario"];
+            $_SESSION["nombre"] = $data_user_bd["nombre"];
+            $_SESSION["correo"] = $data_user_bd["correo"];
 
             // Dependiendo del rol asignado al usuario, le llevamos a una vista u otra
             // 1- El usuario es un administrador
@@ -425,12 +433,12 @@ switch ($action) {
 
         // Si lo que se va hacer es activar la cuenta
     case "activation":
-        
+
         // Comprobamos que esté la clave de correo y que solo haya dos elementos en el
         // array, la clave correo y la clave action.
         // Si es así, mostramos la vista sin mensaje alguno
         if (!isset($_REQUEST["correo"]) || count($_REQUEST) == 2) {
-            // Incluimos la vista login
+            // Incluimos la vista activation
             require_once("../view/activation.php");
             break;
         }
@@ -488,7 +496,7 @@ switch ($action) {
             // Cambiamos el valor al atributo msg
             $msg = "¡ERROR! Datos no encontrados";
             // Incluimos la vista login
-            // require_once("../view/login.php");
+            require_once("../view/login.php");
             break;
         }
 
