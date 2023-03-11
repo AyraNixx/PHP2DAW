@@ -8,7 +8,37 @@
     <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <script src="https://kit.fontawesome.com/8d125d2b91.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="./view/css/css.css">
+    <style>
+        body {
+            background-color: #FBFBFB;
+        }
+
+        .text-color {
+            font-family: monospace;
+            color: #303030;
+        }
+
+        textarea:focus,
+        input[type="text"]:focus,
+        input[type="password"]:focus,
+        input[type="datetime"]:focus,
+        input[type="datetime-local"]:focus,
+        input[type="date"]:focus,
+        input[type="month"]:focus,
+        input[type="time"]:focus,
+        input[type="week"]:focus,
+        input[type="number"]:focus,
+        input[type="email"]:focus,
+        input[type="url"]:focus,
+        input[type="search"]:focus,
+        input[type="tel"]:focus,
+        input[type="color"]:focus,
+        .uneditable-input:focus {
+            border-color: #30303032;
+            box-shadow: none;
+            outline: 0 none;
+        }
+    </style>
 </head>
 
 <body class="bg-img">
@@ -33,7 +63,7 @@
             <div class="col-6 col-md-5 col-lg-3 bg-login">
                 <div class="col-md-12">
                     <!-- Formulario que envía los datos por post al controlador de Login -->
-                    <form method="POST" action="./controller/LoginC.php" class="form">
+                    <form method="POST" action="../controller/LoginC.php" class="form">
                         <h3 class="text-center text-color">Login</h3>
                         <!-- CORREO -->
                         <div class="my-4 form-group text-color">
@@ -56,12 +86,12 @@
                         <div class="my-4 form-group d-flex text-color justify-content-between">
                             <!-- Botón para iniciar la sesión -->
                             <button type="submit" class="border p-2" name="action" value="login">
-                                Sign up
+                                Sign in
                                 <i class="fa-solid fa-arrow-right-long px-1"></i>
                             </button>
                             <!-- Botón que te lleva al controlador de registro -->
                             <button class="border p-2">
-                                <a href="../controller/registerC.php" class="text-decoration-none text-color">Sign in</a>
+                                <a href="../controller/registerC.php" class="text-decoration-none text-color">Sign up</a>
                                 <i class="fa-solid fa-arrow-right-long px-1"></i>
                             </button>
                         </div>

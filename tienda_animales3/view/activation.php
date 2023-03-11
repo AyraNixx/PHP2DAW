@@ -32,7 +32,7 @@
                 <div class="col-6 col-md-6 col-lg-4 bg-login">
                     <div class="col-md-12">
                         <h1 class="text-color text-center">ACTIVAR CUENTA</h1>
-                        <form action="../controller/Login.php" method="POST">
+                        <form action="../controller/LoginC.php" method="POST">
                             <div class="my-4 form-group text-color">
                                 <input type="text" class="form-control" name="cod_activacion" placeholder="Introduzca código de activación" required pattern="^\d{5}$" title="Código de activación no válido">
                             </div>

@@ -32,7 +32,7 @@
                 <div class="col-6 col-md-6 col-lg-4 bg-login">
                     <div class="col-md-12">
                         <h1 class="text-color text-center">RECUPERAR CONTRASEÑA</h1>
-                        <form action="../controller/Login.php" method="POST">
+                        <form action="../controller/LoginC.php" method="POST">
                             <div class="my-4 form-group text-color">
                                 <input type="email" class="form-control" name="correo" placeholder="user@domain.com" required pattern="^\w+([\.-_]?\w+)*@\w+([\.-_]?\w+)*(\.\w{2,4})+$" title="El correo debe tener un formato parecido a example@server.com" />
                             </div>

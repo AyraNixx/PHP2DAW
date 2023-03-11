@@ -471,7 +471,7 @@ class Utils
                     <p class="mt-4">le informamos que su cuenta ha sido creada el ' . date("d-m-Y H:i:s") . '.</p>
                     <p class="mt-4">Su código de activación es <b>' . $user["cod_activacion"] . '</b>.</p>
                     <p class="mt-4">Para activar su cuenta, haga click en el siguiente enlace:</p>
-                    <form action="http://localhost/DES/tienda_animales3/controller/Login.php" method="post">
+                    <form action="http://localhost/DES/tienda_animales3/controller/LoginC.php" method="post">
                         <input type="hidden" name="correo" value="' . $user["correo"] . '">
                         <button type="submit" class="btn btn-primary" name="action" value="activation">Activar cuenta</button>
                     </form>
@@ -527,7 +527,7 @@ class Utils
                     <p class="lead">Hola,</p>
                     <p class="mt-4">Hemos recibido una solicitud para restablecer la contraseña de tu cuenta, el ' . date("d-m-Y H:i:s") . '.</p>
                     <p class="mt-4">Si solicitó el cambio, haz click en el siguiente enlace para restablecer tu contraseña:</p>
-                    <form action="http://localhost/DES/tienda_animales3/controller/Login.php" method="post">
+                    <form action="http://localhost/DES/tienda_animales3/controller/LoginC.php" method="post">
                         <input type="hidden" name="correo" value="' . $email . '">
                         <button type="submit" class="btn btn-primary" name="action" value="change_passwd">Activar cuenta</button>
                     </form>                    

@@ -55,7 +55,7 @@ $name = $_SESSION["nombre"];
                     <a class="nav-link p-2" href="../controller/controller_supplier.php">Proveedores</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link p-2" href="../controller/Login.php?action=logout">
+                    <a class="nav-link p-2" href="../controller/LoginC.php?action=logout">
                         <i class="fa-solid fa-right-from-bracket"></i>
                     </a>
                 </li>

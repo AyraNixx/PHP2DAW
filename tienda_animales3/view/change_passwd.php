@@ -32,7 +32,7 @@
                 <div class="col-6 col-md-6 col-lg-4 bg-login">
                     <div class="col-md-12">
                         <h1 class="text-color text-center">NUEVA CONTRASEÑA</h1>
-                        <form action="../controller/Login.php" method="POST">
+                        <form action="../controller/LoginC.php" method="POST">
                             <div class="my-4 form-group text-color">
                                 <input type="password" class="form-control" name="passwd" placeholder="************" required pattern="^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8,}$">
                             </div>
@@ -42,7 +42,7 @@
                             <!-- Si la variable $correo no existe, ponemos el valor de $data_login["correo"] -->
                             <input type="hidden" name="correo" value="<?= isset($correo) ? $correo : $data_login["correo"] ?>">
                             <button type="submit" class="text-color border p-2" name="action" value="change_passwd">
-                                Enviar correo
+                                Restablecer contraseña
                                 <i class="fa-solid fa-arrow-right-long px-1"></i>
                             </button>
                         </form>

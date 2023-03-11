@@ -21,7 +21,7 @@ class Login
     const SUCCESS_EMAIL = "Correo enviado";
     const SUCCESS_CHANGE_PASSWD = "La contraseña ha sido restablecida";
 
-    const VIEW_LOGIN = "../login.php";
+    const VIEW_LOGIN = "../view/login.php";
     const VIEW_ACTIVATION = "../view/activation.php";
     const VIEW_CHANGE_PASSWD_EMAIL = "../view/change_passwd_email.php";
     const VIEW_CHANGE_PASSWD = "../view/change_passwd.php";
@@ -517,7 +517,7 @@ switch ($action) {
 
     default:
         // Incluimos la vista de Login
-        header("Location:../login.php");
+        header("Location:../view/login.php");
         exit();
         break;
 }
