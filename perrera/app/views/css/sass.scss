@@ -1,0 +1,231 @@
+/*********************************************************/
+
+//                        COLORES
+
+/*********************************************************/
+
+//-- Colores fondos
+$bg_white: #FBFBFB;
+$bg_light-gray: #F5F5F5; // Se usa también para las filas de las tablas
+$bg-gray: #E0E0E0;
+$bg_darker-gray: #9FA0A1;
+$bg_dark-blue: #425C81;
+
+//-- Colores filas tablas
+$bg_light-blue: #a8b9e099;
+
+//-- Colores letras
+$font_dark-blue: #7A8BB0;
+
+//-- Colores bordes
+$border_light-blue: #A8B9E0; // Lo he usado en el mockup para el botón de agregar
+$border_light-blue-opacity: #a8b9e0a1;
+
+
+
+
+
+
+
+/*********************************************************/
+
+//                        COLORES BOOTSTRAP
+
+/*********************************************************/
+$white: $bg_white;
+$primary: $bg_dark-blue;
+$secondary: $border_light-blue-opacity;
+
+
+
+/*********************************************************/
+
+//                        FORM
+
+/*********************************************************/
+
+$input-disabled-bg: true;
+$input-placeholder-color: $bg_dark-blue;
+$form-text-color: $bg_dark-blue;
+
+
+@import "../../../bootstrap/scss/bootstrap.scss";
+
+.login {
+
+
+    .form-control {
+        border-radius: 0;
+        border: 0;
+        border-bottom: 1px solid #425C81;
+
+        padding-left: 0;
+
+        color: $font_dark-blue;
+
+        &:focus {
+            outline: 0;
+            box-shadow: none;
+        }
+
+        &:focus {
+            outline: 0;
+            box-shadow: none;
+        }
+    }
+
+    .form-check {
+        &:focus {
+            border: 0;
+            outline: 0;
+            box-shadow: none;
+        }
+
+        &:checked {
+            background-color: #425C81;
+        }
+    }
+
+
+
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+/// 
+///                 FONDOS  
+/// 
+/// /////////////////////////////////////////////////////////////////////////////////
+
+.bg-1,
+.bg-2 {
+
+    position: absolute;
+    z-index: -1;
+}
+
+.bg-2 {
+    right: 0;
+}
+
+@media (max-width: 576px) {
+    .bg-1 {
+        max-width: 220px;
+        top: 23rem;
+    }
+
+    .bg-2 {
+        max-width: 200px;
+        top: 10rem;
+    }
+
+    form {
+        position: relative;
+        padding: 30px;
+    }
+
+    form::before {
+        content: "";
+
+        width: 100%;
+        height: 100%;
+
+        background: linear-gradient(286deg, $bg_darker-gray 0%, $bg-gray 50%, $bg_light-gray 100%);
+
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        filter: blur(100px);
+        clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0);
+
+        z-index: -1;
+    }
+}
+
+@media (min-width: 576px) {
+
+    .bg-1 {
+        max-width: 220px;
+        top: 23rem;
+    }
+
+    .bg-2 {
+        max-width: 200px;
+        top: 10rem;
+    }
+
+    form {
+        position: relative;
+        padding: 30px;
+    }
+
+    form::before {
+        content: "";
+
+        width: 100%;
+        height: 100%;
+
+        background: linear-gradient(286deg, $bg_darker-gray 0%, $bg-gray 50%, $bg_light-gray 100%);
+
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        filter: blur(100px);
+        clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0);
+
+        z-index: -1;
+    }
+
+}
+
+@media (min-width: 768px) {
+
+    .bg-1 {
+        max-width: 280px;
+        top: 19rem;
+    }
+
+    .bg-2 {
+        max-width: 230px;
+        top: 5rem;
+    }
+
+    form{padding: 0;}
+    form::before{display: none;}
+}
+
+@media (min-width: 992px) {
+
+    .bg-1 {
+        max-width: 320px;
+        top: 17rem;
+    }
+
+    .bg-2 {
+        max-width: 250px;
+    }
+}
+
+@media (min-width: 1200px) {
+
+    .bg-1 {
+        max-width: 350px;
+        top: 15rem;
+    }
+
+    .bg-2 {
+        max-width: 270px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .bg-1 {
+        max-width: 400px;
+        top: 12rem;
+    }
+
+    .bg-2 {
+        max-width: 300px;
+    }
+}

@@ -215,7 +215,7 @@ class User
             // Preparamos la consulta para su ejecución
             $statement = $this->conBD->prepare($query);
             // Vinculamos los parámetros al nombre de la variable especificada
-            $statement->bindParam(":id", $id, PDO::PARAM_INT);
+            $statement->bindParam(":id", $id, PDO::PARAM_INT); 
             //  Ejecutamos la consulta
             return $statement->execute();
         } catch (PDOException $e) {
