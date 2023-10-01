@@ -4,10 +4,12 @@
 namespace controller;
 
 use \utils\Utils;
+// use \utils\Route;
 use \model\Empleado;
 use \Exception;
 
 require_once "../utils/Utils.php";
+// require_once "../utils/Routes.php";
 require_once "../models/Empleado.php";
 /*
 
@@ -37,8 +39,8 @@ class LoginC
     // 
     // -- CONSTANTES
     // 
-    const VIEW_LOGIN = __DIR__ . '/../public/Login.php';
-    const VIEW_INDEX = '../../app/views/Index.php'; // TEMPORAL! Por alguna razón DIR me da fallos con el header
+    const VIEW_LOGIN = '../../public/Login.php';
+    const VIEW_INDEX = '../../app/views/V_Home-Page.php'; // 
     const VIEW_NOT_FOUND = __DIR__ . '/../views/NotFound.php'; // TEMPORAL!
     const VIEW_NOT_ACTIVATE = __DIR__ . '/../views/Activate.php'; // TEMPORAL!
 
@@ -51,6 +53,7 @@ class LoginC
     // -- ATRIBUTOS
     // 
     private $empleado;
+    // private $routes;
 
 
 
@@ -60,8 +63,15 @@ class LoginC
     function __construct()
     {
         $this->empleado = new Empleado();
+        // $this->routes = new Route();
+
+        // $this->routes->dispatch();
     }
 
+    // public function index()
+    // {
+    //     include "/Login";
+    // }
 
     /**
      * Inicia la sesión si el usuario se encuentra en la base de datos.
@@ -78,12 +88,13 @@ class LoginC
             $data_user = $this->empleado->user_found($data_login["correo"]);
 
             // Si nos ha devuelto null
-            if ($data_user === null) {
+            if ($data_user === null || $data_user === false) {
                 // Guardamos el mensaje a mostrar
-                $msg = self::USER_NOT_FOUND;
+                $msg = base64_encode(self::USER_NOT_FOUND);
+
                 // Mostramos la página de login
-                require_once(self::USER_NOT_FOUND);
-                return;
+                header("Location:" . self::VIEW_LOGIN . "?msg=$msg");
+                exit();
             }
 
             // Comprobamos si la contraseña pasada, coincide con la contraseña en nuestra
@@ -92,18 +103,17 @@ class LoginC
 
             if (!$passwd_login == true) {
                 // Guardamos el mensaje a mostrar
-                $msg = self::USER_NOT_FOUND;
-                // Mostramos la página NotFound
-                require_once(self::VIEW_NOT_FOUND);
-                return;
+                $msg = base64_encode(self::USER_NOT_FOUND);
+
+                // Mostramos la página de login
+                header("Location:" . self::VIEW_LOGIN . "?msg=$msg");
+                exit();
             }
 
             // Comprobamos si se trata de una cuenta activa, si es una cuenta activa, habrá cambiado
             // la contraseña de default 
-            if ($data_user["passwd"] == "pato123") { //(SE HARÁ MÁS ADELANTE CUANDO EMPIECE A CREAR LOS FORMULARIOS.
-                                                     // ESTO ES SOLO DE PRUEBA)
+            if ($data_user["passwd"] == "pato123") { 
                 $msg = self::USER_NOT_ACTIVATE;
-                echo "DEBUG BABY";
                 // Mostramos la página de login
                 require_once(self::VIEW_NOT_ACTIVATE);
                 return;
@@ -161,6 +171,7 @@ class LoginC
 }
 
 
+// $routes = new Route();
 
 
 // Comprobamos que la clave action se encuentra dentro del array de $_REQUEST
@@ -176,7 +187,6 @@ $data_login = [];
 
 
 
-
 // Dependiendo del valor de $action, realizamos una cosa u otra
 switch ($action) {
 
@@ -185,8 +195,6 @@ switch ($action) {
     case "login":
         // Comprobamos que estén las claves correo y passwd en el array $_REQUEST
         if (!isset($_REQUEST["correo"]) || !isset($_REQUEST["passwd"])) {
-            // Cambiamos el valor al atributo msg
-            $msg = "Contraseña o correo no encontrados";
             // Incluimos la vista login
             header("Location:../../public/Login.php");
             break;
@@ -214,7 +222,7 @@ switch ($action) {
 
     default:
         // Incluimos la vista de Login
-        header("Location:../public/Login.php");
+        header("Location: /DES/perrera/public/Login.php");
         exit();
         break;
 }

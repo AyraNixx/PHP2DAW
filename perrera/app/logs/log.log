@@ -1,0 +1,9 @@
+2023-05-16 23:22:08: PDOException caught: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`perrera`.`empleados`, CONSTRAINT `fk_empleados_roles1` FOREIGN KEY (`roles_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE)
+2023-05-16 23:23:47: PDOException caught: SQLSTATE[23000]: Integrity constraint violation: 1452 Cannot add or update a child row: a foreign key constraint fails (`perrera`.`empleados`, CONSTRAINT `fk_empleados_roles1` FOREIGN KEY (`roles_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE ON UPDATE CASCADE)
+2023-05-16 23:27:23: PDOException caught: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'correo@ejemplo.com' for key 'correo_UNIQUE'
+2023-05-16 23:33:03: PDOException caught: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'correo@ejemplo.com' for key 'correo_UNIQUE'
+2023-05-17 00:09:08: PDOException caught: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'correo@ejemplo.com' for key 'correo_UNIQUE'
+2023-05-17 00:11:13: PDOException caught: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'correo@ejemplo.com' for key 'correo_UNIQUE'
+2023-05-17 00:11:15: PDOException caught: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'correo@ejemplo.com' for key 'correo_UNIQUE'
+2023-05-17 20:39:29: PDOException caught: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'correo@ejemplo.com' for key 'correo_UNIQUE'
+2023-05-17 20:39:48: PDOException caught: SQLSTATE[23000]: Integrity constraint violation: 1062 Duplicate entry 'correo@ejemplo.com' for key 'correo_UNIQUE'

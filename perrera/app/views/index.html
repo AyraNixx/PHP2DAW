@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tabla con AJAX y PHP</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            cargarRegistros();
+
+            $('#btn-agregar').click(function() {
+                var rol = $('#rol').val();
+                var descripcion = $('#descripcion').val();
+                agregarRegistro(rol, descripcion);
+            });
+
+            $(document).on('click', '.btn-borrar', function() {
+                var id = $(this).data('id');
+                borrarRegistro(id);
+            });
+
+            $(document).on('click', '.ordenar', function() {
+                var orden = $(this).data('orden');
+                cargarRegistros(orden);
+            });
+
+            function cargarRegistros(ord = 'ASC') {
+                $.ajax({
+                    url: '../controllers/ModeloEjemploC.php',
+                    method: 'POST',
+                    data: { action: 'obtener_registros', ord: ord },
+                    dataType: 'json',
+                    success: function(data) {
+                        var tabla = $('#tabla-registros tbody');
+                        tabla.empty();
+                        $.each(data, function(index, registro) {
+                            var fila = '<tr>';
+                            fila += '<td>' + registro.id + '</td>';
+                            fila += '<td>' + registro.rol + '</td>';
+                            fila += '<td>' + registro.descripcion + '</td>';
+                            fila += '<td><button class="btn-borrar" data-id="' + registro.id + '">Borrar</button></td>';
+                            fila += '</tr>';
+                            tabla.append(fila);
+                        });
+                    }
+                });
+            }
+
+            function agregarRegistro(rol, descripcion) {
+                $.ajax({
+                    url: '../controllers/ModeloEjemploC.php',
+                    method: 'POST',
+                    data: { action: 'agregar_registro', rol: rol, descripcion: descripcion },
+                    success: function(data) {
+                        console.log(data);
+                        $('#rol').val('');
+                        $('#descripcion').val('');
+                        cargarRegistros();
+                    }
+                });
+            }
+
+            function borrarRegistro(id) {
+                $.ajax({
+                    url: '../controllers/ModeloEjemploC.php',
+                    method: 'POST',
+                    data: { action: 'borrar_registro', id: id },
+                    success: function() {
+                        cargarRegistros();
+                    }
+                });
+            }
+        });
+    </script>
+</head>
+<body>
+    <h1>Tabla con AJAX y PHP</h1>
+    <table id="tabla-registros">
+        <thead>
+            <tr>
+                <th>ID <button class="ordenar" data-orden="ASC">↑</button> <button class="ordenar" data-orden="DESC">↓</button></th>
+                <th>Rol</th>
+                <th>Descripción</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Los registros se cargarán dinámicamente aquí -->
+        </tbody>
+    </table>
+
+    <h2>Agregar Registro</h2>
+    <input type="text" id="rol" placeholder="Rol">
+    <input type="text" id="descripcion" placeholder="Descripción">
+    <button id="btn-agregar">Agregar</button>
+</body>
+</html>

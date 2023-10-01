@@ -1,7 +1,12 @@
 <?php
 
+namespace model;
+
 use \model\Model;
 use \utils\Utils;
+use \PDO;
+use \PDOException;
+use \Exception;
 
 require_once "Model.php";
 

@@ -68,6 +68,8 @@ class Empleado extends Model
             //Preparamos la query
             $stm = $this->conBD->prepare($query);
 
+            var_dump($empleado["roles_id"]);
+
             $stm->bindParam(":nombre", $empleado["nombre"], PDO::PARAM_STR);
             $stm->bindParam(":apellidos", $empleado["apellidos"], PDO::PARAM_STR);
             $stm->bindParam(":NIF", $empleado["NIF"], PDO::PARAM_STR);
@@ -75,18 +77,16 @@ class Empleado extends Model
             $stm->bindParam(":passwd", $empleado["passwd"], PDO::PARAM_STR);
             $stm->bindParam(":salt", $empleado["salt"], PDO::PARAM_STR);
             $stm->bindParam(":telf", $empleado["telf"], PDO::PARAM_STR);
-            $stm->bindParam(":roles_id", $empleado["roles_id"], PDO::PARAM_INT);
+            $stm->bindParam(":roles_id", $empleado["roles_id"], PDO::PARAM_STR);
 
             // Ejecutamos la query           
             // Devolvemos resultados
             return $stm->execute();
             // En caso de excepción, lo guardamos en el log
         } catch (PDOException $e) {
-            echo "todo mal";
             // Guardamos el error en el log
             Utils::save_log_error("PDOException caught: " . $e->getMessage());
         } catch (Exception $e) {
-            echo "todo mal";
             // Guardamos el error en el log
             Utils::save_log_error("Unexpected error caught: " . $e->getMessage());
         }
@@ -98,4 +98,4 @@ class Empleado extends Model
 
 // $empleado = new Empleado();
 // var_dump($empleado->get_all("empleados"));
-// var_dump($empleado->insert(["nombre"=>"Prueba", "apellidos"=>"Apellido", "NIF"=>"12345678B", "correo" =>"correo@ejemplo.com", "passwd" => '$2y$10$R3df5klmB4465I67XRSaUuZT/FYme6cpyZL1v8fw6Zlr/cjMcc66O', "salt" => "12385753","telf"=>"123456789", "roles_id"=>"1"]));
+// var_dump($empleado->insert(["nombre"=>"Prueba", "apellidos"=>"Apellido", "NIF"=>"12345678B", "correo" =>"correo@ejemplo.com", "passwd" => '$2y$10$R3df5klmB4465I67XRSaUuZT/FYme6cpyZL1v8fw6Zlr/cjMcc66O', "salt" => "12385753","telf"=>"123456789", "roles_id"=>"001100310115940302850"]));

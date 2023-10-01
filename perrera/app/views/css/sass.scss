@@ -10,6 +10,8 @@ $bg_light-gray: #F5F5F5; // Se usa también para las filas de las tablas
 $bg-gray: #E0E0E0;
 $bg_darker-gray: #9FA0A1;
 $bg_dark-blue: #425C81;
+$darker_gray: #696969;
+$bg-light_gray: #ececec;
 
 //-- Colores filas tablas
 $bg_light-blue: #a8b9e099;
@@ -21,9 +23,15 @@ $font_dark-blue: #7A8BB0;
 $border_light-blue: #A8B9E0; // Lo he usado en el mockup para el botón de agregar
 $border_light-blue-opacity: #a8b9e0a1;
 
+$bg-striped-table: #a8b9e0a1;
 
 
+$blue-menu: #7182a8d1;
 
+
+//--ERROR-LABEL
+$red: #6a1313;
+$green: #69a264;
 
 
 
@@ -35,6 +43,10 @@ $border_light-blue-opacity: #a8b9e0a1;
 $white: $bg_white;
 $primary: $bg_dark-blue;
 $secondary: $border_light-blue-opacity;
+$success: $green;
+$info: $darker_gray;
+$danger: $red;
+
 
 
 
@@ -50,6 +62,74 @@ $form-text-color: $bg_dark-blue;
 
 
 @import "../../../bootstrap/scss/bootstrap.scss";
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+
+    /* Forma de controlar como se calcula el tamaño total de un elemento en relación 
+    con su contenido y sus bordes. En este caso, indica que para calcular el tamñ total
+    se incluyan los bordes, los rellenos y el contenido */
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+body {
+    display: flex;
+
+    width: 100%;
+
+    position: relative;
+
+    background: $white;
+
+    font-family: 'Poppins', sans-serif !important;
+}
+
+a {
+    text-decoration: none;
+}
+
+h5 {
+    font-size: 1em;
+    font-weight: 300;
+
+    text-transform: uppercase;
+    letter-spacing: .2em;
+}
+
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #7182a8d1;
+    border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background-color: #425C81;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background-color: #425C81;
+}
+
+::-webkit-scrollbar-track:hover,
+::-webkit-scrollbar-track:active,
+::-webkit-scrollbar-track {
+    background-color: #b8bbbe;
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+/// 
+///                 LOGIN  
+/// 
+/// /////////////////////////////////////////////////////////////////////////////////
 
 .login {
 
@@ -90,6 +170,283 @@ $form-text-color: $bg_dark-blue;
 
 }
 
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+/// 
+///                 MENU  
+/// 
+/// /////////////////////////////////////////////////////////////////////////////////
+
+.show-menu
+{
+    width: 100% !important;
+    transition: width .3s ease-in-out;
+}
+
+.close-menu 
+{
+    opacity: 1;
+    width: 0;
+    transition: width .2s ease-in-out;
+}
+
+#menu {
+    display: block;
+    min-height: 100%;
+    width: 17em;
+    position: fixed;
+    top: 0;
+
+    #close-btn {
+        display: none;
+    }
+
+    &>div {
+        max-height: 700px;
+        overflow-y: auto;
+
+        &::-webkit-scrollbar-thumb {
+            background-color: transparent;
+        }
+
+        &::-webkit-scrollbar-track:hover,
+        &::-webkit-scrollbar-track:active,
+        &::-webkit-scrollbar-track {
+            background-color: #7182a8d1;
+            border-radius: 5px;
+        }
+
+        hr {
+            margin: 0;
+        }
+
+        .info-user {
+            padding: 20px;
+
+            h3,
+            h6 {
+                font-weight: 400;
+                color: $border_light-blue;
+            }
+
+            h6 {
+                font-weight: 300;
+            }
+        }
+
+        .settings,
+        .logout {
+            padding: 20px 0;
+        }
+
+        .settings:hover,
+        .logout:hover {
+            background: $blue-menu;
+
+            border-left: 5px solid $white;
+            transition: border-left .2s ease-in-out;
+        }
+
+        .menu-items>h5,
+        .menu-items>details,
+        .settings h5 a,
+        .logout h5 a {
+            padding: 20px;
+            margin: 0;
+        }
+
+        .menu-items {
+
+            h5:hover:not(details h5),
+            details:hover,
+            .settings:hover,
+            .logout:hover {
+                background: $blue-menu;
+
+                border-left: 5px solid $white;
+                transition: border-left .2s ease-in-out;
+            }
+
+            details {
+                summary:first-of-type {
+                    display: list-item;
+                    list-style: inside disclosure-closed;
+
+                    h5 {
+                        display: inline-block;
+                    }
+                }
+
+                &[open]>summary:first-of-type {
+                    list-style: inside disclosure-open;
+                }
+
+                a {
+                    display: inline-block;
+                    width: 100%;
+                }
+
+                &>a {
+                    padding: 10px 0;
+                    padding-left: 16px;
+
+                    color: $white;
+                }
+
+                &>*:hover:not(summary) {
+                    background: $bg_dark-blue;
+                }
+            }
+        }
+    }
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+/// 
+///                 HEADER  
+/// 
+/// /////////////////////////////////////////////////////////////////////////////////
+
+header {
+    height: 57px;
+
+    button {
+        visibility: hidden;
+        width: 80px;
+
+        font-size: 28px;
+
+        cursor: pointer;
+
+        .hamburguer-inner {
+            width: 40px;
+            height: 20px;
+
+            transform: translate(-50%, 50%);
+
+            &>span {
+                height: 4px;
+
+                background-color: $bg_dark-blue;
+
+                border: 0;
+
+                position: absolute;
+
+                &:nth-of-type(2) {
+                    width: calc(100% - 10px);
+                }
+
+                &:last-of-type {
+                    width: calc(100% - 20px);
+                }
+            }
+        }
+    }
+}
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////
+/// 
+///                 CONTENT  
+/// 
+/// /////////////////////////////////////////////////////////////////////////////////
+
+
+//
+//
+// CONTENT
+//
+//
+#content {
+    width: calc(100% - 17em);
+    position: relative;
+    left: 17em;
+}
+
+///
+/// 
+/// TASKS
+///
+/// 
+.home-tasks {
+    height: 400px;
+    overflow-y: scroll;
+    background-color: $bg-light_gray;
+    border-radius: 5px;
+
+    .task-header {
+
+        h5,
+        select {
+            font-weight: 500;
+        }
+
+        select {
+            font-size: .75em;
+            outline: none;
+            box-shadow: none;
+            cursor: pointer;
+
+            &>option {
+                text-transform: capitalize;
+            }
+        }
+    }
+
+    .task-table {
+        width: 100%;
+        overflow: auto;
+    }
+}
+
+.table-striped {
+    thead {
+        tr>* {
+            font-weight: 300;
+            text-transform: uppercase;
+        }
+    }
+
+    tbody {
+        tr:nth-of-type(odd) {
+            background-color: $bg-striped-table;
+
+            &>* {
+                color: $bg_dark-blue;
+            }
+        }
+
+        tr>* {
+            color: $info;
+        }
+    }
+
+}
+
+//
+// PAGINATION
+//
+//
+.pagination {
+    select {
+        border: 1px solid $bg_darker-gray;
+        border-radius: 2px;
+        text-align: center;
+        appearance: none;
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        cursor: pointer;
+        outline: 0;
+    }
+}
+
+
+
 //////////////////////////////////////////////////////////////////////////////////////
 /// 
 ///                 FONDOS  
@@ -106,6 +463,72 @@ $form-text-color: $bg_dark-blue;
 .bg-2 {
     right: 0;
 }
+
+
+// LUEGO LO CAMBIO Y PONGO TODO JUNTO EN CADA MEDIA
+@media (max-width: 768px) {
+    #menu {
+        width: 0;
+
+        #close-btn {
+            display: inline-block;
+            width: 5rem;
+            height: 30px;
+            outline: none;
+    
+            &:hover 
+            {
+                background: #7A8BB0;
+                color: white;
+            }
+        }
+    }
+
+    #content {
+        width: 100%;
+        left: 0;
+
+        main {
+            display: flex;
+
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            padding: 1rem;
+
+            .date {
+                padding-top: 1rem !important;
+                padding-bottom: 0 !important;
+                text-align: center !important;
+            }
+
+            .home-tasks {
+                width: 100%;
+
+                .task-header {
+                    border-bottom: 2px solid $primary;
+                }
+
+                .task-table {
+                    padding-top: 1rem;
+                }
+            }
+        }
+    }
+
+    header {
+        #header-btn {
+            visibility: visible;
+        }
+    }
+}
+
+
+
+
+
+
 
 @media (max-width: 576px) {
     .bg-1 {
@@ -191,8 +614,13 @@ $form-text-color: $bg_dark-blue;
         top: 5rem;
     }
 
-    form{padding: 0;}
-    form::before{display: none;}
+    form {
+        padding: 0;
+    }
+
+    form::before {
+        display: none;
+    }
 }
 
 @media (min-width: 992px) {
