@@ -10,7 +10,17 @@
     <script src="https://kit.fontawesome.com/8d125d2b91.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="../views/css/sass.css">
     <style>
-        .button-30 {
+        /* 
+        
+            DROPDOWN BUTTONS
+        
+        */
+        .btn-group.dropdown
+        {
+            display: none;
+        }
+        
+        .button-dropdown {
             box-sizing: border-box;
 
             display: inline-flex;
@@ -18,7 +28,7 @@
             justify-content: center;
 
             height: 2em;
-            padding: calc(.5em - 1px) 1em;
+            padding: 1.1em;
 
             background: #fefefe;
             border: 1px solid #dbdbdb;
@@ -40,22 +50,75 @@
             cursor: pointer;
         }
 
-        .button-30:focus {
-            border-color: #485fc7;
-            outline: 0;
+        #add:hover {
+            background: #efefef;
         }
 
-        .button-30:hover {
-            border-color: #b5b5b5;
+        #add:active {
+            background: #dddddd;
         }
 
-        .button-30:focus:not(:active) {
-            outline: none !important;
-            box-shadow: rgba(72, 95, 199, .25) 0 0 0 .125em;
+        .btn-group .button-dropdown {
+            padding-left: 1em;
+            padding-right: 1em;
         }
 
-        input[type="radio"] {
+        .btn-group .button-dropdown:first-of-type {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        .btn-group .button-dropdown:last-of-type {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border-left: none;
+        }
+
+        .btn-group .button-dropdown:not(:first-of-type):not(:last-of-type) {
+            border-radius: 0%;
+            border-left: none;
+        }
+
+        .btn-dropdown-options {
             display: none;
+            border: 1px solid black;
+            border: 1px solid #dbdbdb;
+            border-top: none;
+            border-top-left-radius: 0;
+            border-top-right-radius: 0;
+            border-bottom-left-radius: .2em;
+            border-bottom-right-radius: .2em;
+            background:#fefefe;
+            top: 91%;
+            z-index: 1000;
+        }
+
+        .btn-dropdown-options ul li {
+            padding: 6.5px 1em;
+            font-size: .8em;
+            cursor: pointer;
+        }
+
+        .btn-dropdown-options ul li:hover {
+            background: #efefef;
+        }
+
+        .btn-dropdown-options ul li:active {
+            background: #dddddd;
+        }
+
+        /*
+        
+            SHOW BLOCK
+
+        */
+        .show-block {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .btn-group.dropdown{display: inline-flex;}
+            .btn-group{display: none;}
         }
     </style>
 </head>
@@ -82,41 +145,33 @@
 
 
             <div class="mb-4 p-3 w-100 bg-secondary bg-opacity-75">
-                <div class="button-option-container" style="
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    align-content: center;
-">
+                <div class="button-option-container" style=" display: flex; justify-content: space-between; width: 100%; align-content: center;">
                     <h1 style="font-size: x-large;display: inline;margin-bottom: 0;" class="pt-2 text-primary text-uppercase font-weight-light">
                         <i class="fa-solid fa-paw"></i>
                         ANIMAL
                     </h1>
-
-                    <div class="btn-group dropdown">
-                        <button type="button" onclick="" id="add" class="button-30">
+                    <div class="btn-group" role="group">
+                        <button class="button-dropdown">Nuevo</button>
+                        <button class="button-dropdown">Editar</button>
+                        <button class="button-dropdown">Eliminar</button>
+                    </div>
+                    <div class="btn-group dropdown" style="position:relative">
+                        <button type="button" onclick="" id="add" class="button-dropdown">
                             Nuevo
                         </button>
-                        <button type="button" onclick="show_btn_options()"></button>
-                    </div>
-
-                    <div class="btn-group dropdown">
-                        <button type="button" class="btn btn-light border-secondary-subtle button-60 ">
-                            Añadir
+                        <button type="button" onclick="show_btn_options()" class="button-dropdown px-1">
+                            <i class="fa-solid fa-caret-down"></i>
                         </button>
-                        <button type="button" class="btn btn-light border-secondary-subtle button-60 dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu">
-                            <a href="">Editar</a>
-                            <br>
-                            <a href="">Eliminar</a>
+                        <div class="btn-dropdown-options w-100 position-absolute start-0">
+                            <ul class="list-unstyled m-0">
+                                <li>
+                                    Editar
+                                </li>
+                                <li>
+                                    Borrar
+                                </li>
+                            </ul>
                         </div>
-                    </div>
-                    <div class="segment segment--material" style="width: fit-content;margin: 0;display: flex;justify-content: center;align-items: center;">
-                        <button class="button-30">Añadir</button>
-                        <button class="button-30">Editar</button>
-                        <button class="button-30">Eliminar</button>
                     </div>
                 </div>
                 <hr>
@@ -252,244 +307,6 @@
                 </div>
             </div>
             <br>
-            <div class="tab-content" id="nav-tabContent" style="margin: auto 3rem;">
-
-
-                <!-- Order Details -->
-                <!--<div class="tab-pane fade show active" id="order" role="tabpanel" aria-labelledby="nav-home-tab">
-                    <div id="" role="tablist">
-                        <div class="row ">
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header" role="tab" id="headingOne" data-toggle="collapse" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                        <h5 class="mb-0">
-                                            Información
-                                        </h5>
-                                    </div>
-
-                                    <div id="collapseOne" class="collapse show" role="tabpanel" aria-labelledby="headingOne" data-parent="#accordion">
-                                        <div class="card-body">
-                                            <form>
-                                                <div class="form-group row">
-                                                    <label for="draftStatus" class="col-sm-4 col-form-label ">Lettering Draft Status</label>
-                                                    <div class="col-sm-8">
-                                                        <select class="custom-select col-sm-8" id="draftStatus" readonly>
-                                                            <option selected>Choose...</option>
-                                                            <option value="1">One</option>
-                                                            <option value="2">Two</option>
-                                                            <option value="3">Three</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="cadStatus" class="col-sm-4 col-form-label ">CAD Status</label>
-                                                    <div class="col-sm-8">
-                                                        <select class="custom-select col-sm-8" id="cadStatus">
-                                                            <option selected>Choose...</option>
-                                                            <option value="1">One</option>
-                                                            <option value="2">Two</option>
-                                                            <option value="3">Three</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="orderStatus" class="col-sm-4 col-form-label ">Order Status</label>
-                                                    <div class="col-sm-8">
-                                                        <select class="custom-select col-sm-8" id="orderStatus">
-                                                            <option selected>Choose...</option>
-                                                            <option value="1">One</option>
-                                                            <option value="2">Two</option>
-                                                            <option value="3">Three</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header collapsed" role="tab" id="headingTwo" data-toggle="collapse" href="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                                        <h5 class="mb-0">
-                                            Delivery Info
-                                        </h5>
-                                    </div>
-                                    <div id="collapseTwo" class="collapse show" role="tabpanel" aria-labelledby="headingTwo" data-parent="#accordion">
-                                        <div class="card-body">
-                                            <div class="card-body">
-                                                <form>
-                                                    <div class="form-group row">
-                                                        <label for="graveyard" class="col-md-4 col-form-label ">Graveyard</label>
-                                                        <div class="col-md-8 col-sm-12">
-                                                            <select class="custom-select col-md-8 " id="graveyard">
-                                                                <option selected>Choose...</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label class="col-md-4 col-form-label" for="authority">Graveyard Authority</label>
-                                                        <div class="col-md-8 col-sm-12"> -->
-                <!-- <input type="text" class="col-md-8 form-control" id="authority" placeholder=""> -->
-                <!-- <a href="#">John Doe</a>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <label for="orderStatus" class="col-md-4 col-form-label ">Order Status</label>
-                                                        <div class="col-md-8 col-sm-12">
-                                                            <select class="custom-select col-md-8" id="orderStatus">
-                                                                <option selected>Choose...</option>
-                                                                <option value="1">One</option>
-                                                                <option value="2">Two</option>
-                                                                <option value="3">Three</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-header collapsed" role="tab" id="headingThree" data-toggle="collapse" href="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-                                        <h5 class="mb-0">
-                                            Delivery Status
-                                        </h5>
-                                    </div>
-                                    <div id="collapseThree" class="collapse show" role="tabpanel" aria-labelledby="headingThree" data-parent="#accordion">
-                                        <div class="card-body">
-                                            <div class="form-group row">
-                                                <label for="esp" class="col-md-4 col-form-label ">ESP</label>
-                                                <div class="col-md-8 col-sm-12">
-                                                    <select class="custom-select col-md-8" id="esp">
-                                                        <option selected>Choose...</option>
-                                                        <option value="1">One</option>
-                                                        <option value="2">Two</option>
-                                                        <option value="3">Three</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label" for="location">Location</label>
-                                                <div class="col-md-8 col-sm-12">
-                                                    <input type="text" class="col-md-8 form-control" id="location" placeholder="e.g. there ">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label" for="trackingNum">Tracking Number</label>
-                                                <div class="col-md-8 col-sm-12">
-                                                    <input type="text" class="col-md-8 form-control" id="trackingNum" placeholder="e.g. 123452">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="applicationStatus" class="col-md-4 col-form-label ">Application Status</label>
-                                                <div class="col-md-8 col-sm-12">
-                                                    <select class="custom-select col-md-8" id="applicationStatus">
-                                                        <option selected>Choose...</option>
-                                                        <option value="1">One</option>
-                                                        <option value="2">Two</option>
-                                                        <option value="3">Three</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="assemblerStatus" class="col-md-4 col-form-label ">Assemblerer Status</label>
-                                                <div class="col-md-8 col-sm-12">
-                                                    <select class="custom-select col-md-8" id="assemblerStatus">
-                                                        <option selected>Choose...</option>
-                                                        <option value="1">One</option>
-                                                        <option value="2">Two</option>
-                                                        <option value="3">Three</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-md-4 col-form-label" for="assembler">Assembler</label>
-                                                <div class="col-md-8 col-sm-12">
-                                                    <select class="custom-select col-md-8" id="assembler">
-                                                        <option selected>Choose...</option>
-                                                        <option value="1">One</option>
-                                                        <option value="2">Two</option>
-                                                        <option value="3">Three</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label for="assemblerPayment" class="col-md-4 col-form-label ">Payment to Assembler</label>
-                                                <div class="col-md-8 col-sm-12">
-                                                    <select class="custom-select col-md-8" id="assemblerPayment">
-                                                        <option selected>Choose...</option>
-                                                        <option value="1">One</option>
-                                                        <option value="2">Two</option>
-                                                        <option value="3">Three</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <div class="d-inline h4">Order Details</div>
-                                        <div class="d-inline float-right"><small><a href="">Edit</a></small></div>
-                                    </div>
-                                    <div class="card-body">
-                                        <dl class="row">
-                                            <dd class="col-sm-4">Headstone Model</dd>
-                                            <dt class="col-sm-8">Bamse</dt>
-                                            <dd class="col-sm-4">Headstone Material</dd>
-                                            <dt class="col-sm-8">none</dt>
-                                        </dl>
-                                        <dl class="row">
-
-                                        </dl>
-                                        <dl class="row">
-                                            <dd class="col-sm-4">Headstone Size</dd>
-                                            <dt class="col-sm-8">Medium (75x65x12)</dt>
-                                            <dd class="col-sm-4">Headstone Base</dd>
-                                            <dt class="col-sm-8">Regular (15x56x24)</dt>
-                                        </dl>
-                                        <dl class="row">
-                                            <dd class="col-sm-4">Assembler Discount</dd>
-                                            <dt class="col-sm-8">Yes</dt>
-                                            <dd class="col-sm-4">Total Price</dd>
-                                            <dt class="col-sm-8">9330 <br>
-                                                <button>View Bill</button>
-                                            </dt>
-                                        </dl>
-                                        <hr>
-                                        <dl class="row">
-                                            <dt class="col-sm-12">Comments</dt>
-                                            <dd class="col-sm-12">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                                tempor incididunt ut labore et dolore magna aliqua.</dd>
-                                        </dl>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- End of Order Details -->
-                <!--Product Info  -->
-                <!--<div class="tab-pane fade" id="product" role="tabpanel" aria-labelledby="nav-profile-tab">
-                    Display Product Info Content
-                </div> -->
-                <!--Factory Order  -->
-                <!--<div class="tab-pane fade" id="factory" role="tabpanel" aria-labelledby="nav-profile-tab">
-                    Display Factory Order Content
-                </div> -->
-                <!--Customer Info  -->
-                <!--<div class="tab-pane fade" id="customer" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    Display Customer Info Content
-                </div> -->
-                <!--Files   -->
-                <!--<div class="tab-pane fade" id="files" role="tabpanel" aria-labelledby="nav-contact-tab">
-                    Display Files
-                </div>-->
-            </div>
             </div>
         </main>
 
@@ -498,6 +315,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="./js/Utils.js"></script>
 
 
     <script src="./js/widthMenu.js"></script>
