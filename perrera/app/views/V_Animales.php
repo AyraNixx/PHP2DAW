@@ -202,8 +202,8 @@
 
             <br />
 
-            <div class="tab-content w-100" id="nav-tabContent">
-                <div class="tab-pane fade show active" id="order" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="tab-content w-100" id="tabcontent">
+                <div class="tab-pane fade show active" id="details" role="tabpanel" aria-labelledby="details-tab">
                     <div role="tablist">
                         <div class="row" id="infoAnimal-show">
                             <div class="col-md-12 col-lg-6">
@@ -305,6 +305,7 @@
 
                     </div>
                 </div>
+                <div class="tab-pane fade show" id="files" role="tabpanel" aria-labelledby="files-tab">eeee</div>
             </div>
             <br>
             </div>
