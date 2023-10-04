@@ -60,8 +60,7 @@ $(function () {       // when the page is ready
 
     // TLF VALIDATION
     $("input[type=tel]").on("blur", function () {
-        let tlfPattern = /^\(?\+?\d{2,3}\)?$/;
-        /\(?\+?\d{2,3}\)?\s?^\(?\+?\d{2,3}\)?(?:[\s-]?\d{2,3}){2}[\s-]?\d{2}$/
+        let tlfPattern = /^(\(\+?\d{2,3}\)[\*|\s|\-|\.]?(([\d][\*|\s|\-|\.]?){6})(([\d][\s|\-|\.]?){2})?|(\+?[\d][\s|\-|\.]?){8}(([\d][\s|\-|\.]?){2}(([\d][\s|\-|\.]?){2})?)?)$/;
         if (!tlfPattern.test($(this).val())) {
             return false; // NEEDS TO BE MODIFIED
         }
