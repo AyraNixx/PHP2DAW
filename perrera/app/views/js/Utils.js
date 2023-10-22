@@ -115,6 +115,10 @@ $(function () {
     $('p[input_type]').each(function () {
         show_hide_str($(this));
     });
+
+    $('.title_name').text($('head title').text());
+
+    console.log($('head title').text())
 });
 
 

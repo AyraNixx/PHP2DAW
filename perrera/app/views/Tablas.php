@@ -106,8 +106,11 @@ $user_profile = 'Administrador';
 
 
         <!-- CONTENEDOR PRINCIPAL -->
-        <main class="mt-5">
+        <main class="mt-5 d-flex flex-column justify-content-center align-content-center p-3">
 
+            <!-- CABECERA FILTROS -->
+            <?php include_once "../views/components/filterAnimal.php"; ?> 
+            <!-- TABLA CON LOS REGISTROS -->
             <?php include_once "../views/components/animalList.php"; ?>
 
         </main>
@@ -117,12 +120,13 @@ $user_profile = 'Administrador';
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    
     
     <script src="../views/js/widthMenu.js"></script>
-    <script src="../views/js/filteredTable.js"></script>
+    <script src="./js/Utils.js"></script>
+    <!-- <script src="../views/js/filteredTable.js"></script>
     <script src="../views/js/changeJaulaValues.js"></script>
-    <script src="../views/js/pagination.js"></script>
+    <script src="../views/js/pagination.js"></script> -->
 </body>
 
 </html>

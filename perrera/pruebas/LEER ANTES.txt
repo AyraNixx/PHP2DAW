@@ -1,1 +1,3 @@
-He entregado un vídeo de lo que tengo por ahora en mi proyecto y el pdf con la propuesta que elegí el curso pasado, ya que voy a continuar con él.
+Mi cuenta de AWS Academy ha llegado casi al presupuesto máximo que es 100$, va por 97,5$.
+
+Cuándo llegue al máximo, no podré utilizarla, ¿continúo el proyecto en local, se puede aumentar el budget?
